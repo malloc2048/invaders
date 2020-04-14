@@ -10,7 +10,9 @@ void Emulate8080(State8080* state) {
 void Run(State8080* state, long bufferLength) {
     if(nullptr != state) {
         while (state->pc < bufferLength) {
+#if DEBUG_ON == 1
             printf("address 0x%04x => %02x: ", state->pc, state->memory[state->pc]);
+#endif
             Emulate8080(state);
         }
     }

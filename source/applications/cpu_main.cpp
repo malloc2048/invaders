@@ -19,10 +19,6 @@ int main(int argc, char** argv) {
         exit(-1);
     }
 
-    State8080 state;
-    state.pc = 0;
-    state.memory = (uint8_t*)malloc(sizeof(uint8_t) * 65536);
-
     char romFilename[256];
     sprintf(romFilename, "%s/%s", argv[1], argv[2]);
     FILE* romFile = fopen(romFilename, "r");
@@ -30,6 +26,10 @@ int main(int argc, char** argv) {
         printf("unable to open rom file file %s", romFilename);
         exit(errno);
     }
+    State8080 state = { .a = 0, .b = 0, .c = 0, .d = 0, .e = 0, .h = 0, .l = 0, .sp = 0, .pc = 0,
+        .memory = (uint8_t*)malloc(sizeof(uint8_t) * 65536),
+        .cc = ConditionCodes{ .z = 0, .s = 0, .p = 0, .cy = 0, .ac = 0, .pad = 0}, .int_enable = 0
+    };
     long romFileSize = ReadRomFile(romFile, state.memory);
     fclose(romFile);
     Run(&state, romFileSize);
