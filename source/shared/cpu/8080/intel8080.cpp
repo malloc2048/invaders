@@ -5,7 +5,6 @@
 void Emulate8080(State8080* state) {
     uint8_t* opcode = &state->memory[state->pc];
     (*handlers[*opcode]) (state, opcode);
-//    state->pc += 1;
 }
 
 void Run(uint8_t* buffer, long bufferLength) {
@@ -22,7 +21,7 @@ void Run(uint8_t* buffer, long bufferLength) {
     state.memory = buffer;
     state.int_enable = 0;
 
-    for(; state.pc < bufferLength; state.pc++) {
+    while(state.pc < bufferLength) {
         printf("address 0x%04x => %02x: ", state.pc, state.memory[state.pc]);
         Emulate8080(&state);
     }

@@ -7,62 +7,77 @@
 #include "../state.h"
 
 void RNZ(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("RNZ\n");
+    state->pc += 1;
 }
 
 void PopB(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("Pop B\n");
+    state->pc += 1;
 }
 
 void JNZ(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("JNZ\n");
+    state->pc += 1;
 }
 
 void JMP(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("JMP\n");
+    state->pc += 1;
 }
 
 void CNZ(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("CNZ\n");
+    state->pc += 1;
 }
 
 void PushB(State8080* state, const uint8_t* opcode) {
     printf("PUSH B\n");
+    state->pc += 1;
 }
 
 void ADI(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("ADI\n");
+    state->pc += 1;
 }
 
 void RST0(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("RST0\n");
+    state->pc += 1;
 }
 
 void RZ(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("RZ\n");
+    state->pc += 1;
 }
 
 void RET(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("RET\n");
+    state->pc += 1;
 }
 
 void JZ(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("JZ\n");
+    state->pc += 1;
 }
 
 void CZ(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("CZ\n");
+    state->pc += 1;
 }
 
 void CALL(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("CALL\n");
+    state->pc += 1;
 }
 
 void ACI(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("ACI\n");
+    state->pc += 1;
 }
 
 void RST1(State8080* state, const uint8_t* opcode) {
-    printf("PUSH B\n");
+    printf("RST1\n");
+    state->pc += 1;
 }
 #endif

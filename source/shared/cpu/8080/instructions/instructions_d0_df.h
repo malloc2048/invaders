@@ -8,65 +8,79 @@
 
 void RNC(State8080* state, const uint8_t* opcode) {
     printf("RNC \n");
+    state->pc += 1;
 }
 
 void POPD(State8080* state, const uint8_t* opcode) {
     printf("POP D \n");
+    state->pc += 1;
 }
 
 void JNC(State8080* state, const uint8_t* opcode) {
     state->pc += 2;
     printf("JNC \n");
+    state->pc += 1;
 }
 
 void OUT(State8080* state, const uint8_t* opcode) {
     state->pc += 1;
     printf("OUT \n");
+    state->pc += 1;
 }
 
 void CNC(State8080* state, const uint8_t* opcode) {
     state->pc += 2;
     printf("CNC \n");
+    state->pc += 1;
 }
 
 void PushD(State8080* state, const uint8_t* opcode) {
     printf("PUSH D\n");
+    state->pc += 1;
 }
 
 void SUI(State8080* state, const uint8_t* opcode) {
     state->pc += 1;
     printf("SUI \n");
+    state->pc += 1;
 }
 
 void RST2(State8080* state, const uint8_t* opcode) {
     printf("RST 2 \n");
+    state->pc += 1;
 }
 
 void RC(State8080* state, const uint8_t* opcode) {
     printf("RC \n");
+    state->pc += 1;
 }
 
 void JC(State8080* state, const uint8_t* opcode) {
     printf("JC\n");
     state->pc += 2;
+    state->pc += 1;
 }
 
 void IN(State8080* state, const uint8_t* opcode) {
     printf("IN D8\n");
+    state->pc += 1;
     state->pc += 1;
 }
 
 void CC(State8080* state, const uint8_t* opcode) {
     state->pc += 2;
     printf("CC \n");
+    state->pc += 1;
 }
 
 void SBI(State8080* state, const uint8_t* opcode) {
     state->pc += 1;
     printf("SBI \n");
+    state->pc += 1;
 }
 
 void RST3(State8080* state, const uint8_t* opcode) {
     printf("RST3 \n");
+    state->pc += 1;
 }
 #endif

@@ -8,6 +8,7 @@
 
 void UnimplementedInstruction(State8080* state, const uint8_t* opcode) {
     printf("error: unimplemented instruction 0x%02x\n", *opcode);
+    state->pc += 1;
 //    exit(1);
 }
 #endif

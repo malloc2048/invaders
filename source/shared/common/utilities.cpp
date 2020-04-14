@@ -10,6 +10,14 @@ long GetFileSize(FILE *file) {
     return fileLength;
 }
 
+int Parity(int number, int size) {
+    int parity = 0;
+    for(int i = 0; i < size; i++) {
+        parity += number & (0x01 << i);
+    }
+    return parity & 0x01;
+}
+
 uint8_t *ReadFile(FILE *file, long fileLength) {
     uint8_t* buffer = (uint8_t*)malloc(sizeof(unsigned char) * (fileLength + 1));
     fread(buffer, sizeof(char), fileLength, file);
