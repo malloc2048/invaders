@@ -25,3 +25,9 @@ uint8_t *ReadFile(FILE *file, long fileLength) {
 
     return buffer;
 }
+
+long ReadRomFile(FILE *file, uint8_t* buffer) {
+    long fileLength = GetFileSize(file);
+    fread(buffer, sizeof(char), fileLength, file);
+    return fileLength;
+}

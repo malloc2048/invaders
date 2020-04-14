@@ -5,5 +5,5 @@
 #include "state.h"
 
 void Emulate8080(State8080* state);
-void Run(uint8_t* buffer, long bufferLength);
+void Run(State8080* state, long bufferLength);
 #endif
