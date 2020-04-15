@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "utilities.h"
+#include "common/utilities.h"
 
 long GetFileSize(FILE *file) {
     fseek(file, 0L, SEEK_END);

@@ -1,4 +1,4 @@
-#include "branch_group.h"
+#include "cpu/8080/instructions/branch_group.h"
 
 uint16_t jump(uint8_t highByte, uint8_t lowByte, uint16_t* pc) {
     uint16_t address = (highByte << 8) | lowByte;

@@ -7,7 +7,7 @@
 //void (*handlers[256])(State8080 *state, const uint8_t *opcode) = {
 void (*handlers[256])(State8080 *state) = {
     NoOp,	// 0X00
-    UnimplementedInstruction,	// 0X00
+    UnimplementedInstruction,	// 0X01
     UnimplementedInstruction,	// 0X02
     UnimplementedInstruction,	// 0X03
     UnimplementedInstruction,	// 0X04
@@ -18,10 +18,11 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X09
     UnimplementedInstruction,	// 0X0A
     UnimplementedInstruction,	// 0X0B
-    UnimplementedInstruction,	// 0X00
+    UnimplementedInstruction,	// 0X0C
     UnimplementedInstruction,	// 0X0D
-    UnimplementedInstruction,	// 0X0E
+    MoveImmediateC,	// 0X0E
     UnimplementedInstruction,	// 0X0F
+
     UnimplementedInstruction,	// 0X10
     LoadRegisterPairImmediateDE,	// 0X11
     UnimplementedInstruction,	// 0X12
@@ -31,29 +32,31 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X16
     UnimplementedInstruction,	// 0X17
     UnimplementedInstruction,	// 0X18
-    UnimplementedInstruction,	// 0X19
+    AddRegisterPairDE,	// 0X19
     LoadAccumulatorIndirectDE,	// 0X1A
     UnimplementedInstruction,	// 0X1B
     UnimplementedInstruction,	// 0X1C
     UnimplementedInstruction,	// 0X1D
     UnimplementedInstruction,	// 0X1E
     UnimplementedInstruction,	// 0X1F
+
     UnimplementedInstruction,	// 0X20
     LoadRegisterPairImmediateHL,	// 0X21
     UnimplementedInstruction,	// 0X22
     IncrementRegisterPairHL,	// 0X23
     UnimplementedInstruction,	// 0X24
     UnimplementedInstruction,	// 0X25
-    UnimplementedInstruction,	// 0X26
+    MoveImmediateH,	// 0X26
     UnimplementedInstruction,	// 0X27
     UnimplementedInstruction,	// 0X28
-    UnimplementedInstruction,	// 0X29
+    AddRegisterPairHL,	// 0X29
     UnimplementedInstruction,	// 0X2A
     UnimplementedInstruction,	// 0X2B
     UnimplementedInstruction,	// 0X2C
     UnimplementedInstruction,	// 0X2D
     UnimplementedInstruction,	// 0X2E
     UnimplementedInstruction,	// 0X2F
+
     UnimplementedInstruction,	// 0X30
     LoadRegisterPairImmediateSP,	// 0X31
     UnimplementedInstruction,	// 0X32
@@ -70,6 +73,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X3D
     UnimplementedInstruction,	// 0X3E
     UnimplementedInstruction,	// 0X3F
+
     UnimplementedInstruction,	// 0X40
     UnimplementedInstruction,	// 0X41
     UnimplementedInstruction,	// 0X42
@@ -86,6 +90,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X4D
     UnimplementedInstruction,	// 0X4E
     UnimplementedInstruction,	// 0X4F
+
     UnimplementedInstruction,	// 0X50
     UnimplementedInstruction,	// 0X51
     UnimplementedInstruction,	// 0X52
@@ -102,6 +107,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X5D
     UnimplementedInstruction,	// 0X5E
     UnimplementedInstruction,	// 0X5F
+
     UnimplementedInstruction,	// 0X60
     UnimplementedInstruction,	// 0X61
     UnimplementedInstruction,	// 0X62
@@ -117,7 +123,8 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X6C
     UnimplementedInstruction,	// 0X6D
     UnimplementedInstruction,	// 0X6E
-    UnimplementedInstruction,	// 0X6F
+    MoveRegistersLA,	// 0X6F
+
     UnimplementedInstruction,	// 0X70
     UnimplementedInstruction,	// 0X71
     UnimplementedInstruction,	// 0X72
@@ -134,6 +141,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X7D
     UnimplementedInstruction,	// 0X7E
     UnimplementedInstruction,	// 0X7F
+
     UnimplementedInstruction,	// 0X80
     UnimplementedInstruction,	// 0X81
     UnimplementedInstruction,	// 0X82
@@ -150,6 +158,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X8D
     UnimplementedInstruction,	// 0X8E
     UnimplementedInstruction,	// 0X8F
+
     UnimplementedInstruction,	// 0X90
     UnimplementedInstruction,	// 0X91
     UnimplementedInstruction,	// 0X92
@@ -166,6 +175,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X9D
     UnimplementedInstruction,	// 0X9E
     UnimplementedInstruction,	// 0X9F
+
     UnimplementedInstruction,	// 0xA0
     UnimplementedInstruction,	// 0xA1
     UnimplementedInstruction,	// 0xA2
@@ -182,6 +192,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0xAD
     UnimplementedInstruction,	// 0xAE
     UnimplementedInstruction,	// 0xAF
+
     UnimplementedInstruction,	// 0xB0
     UnimplementedInstruction,	// 0xB1
     UnimplementedInstruction,	// 0xB2
@@ -198,6 +209,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0xBD
     UnimplementedInstruction,	// 0xBE
     UnimplementedInstruction,	// 0xBF
+
     UnimplementedInstruction,	// 0XC0
     UnimplementedInstruction,	// 0XC1
     JumpNotZero,	// 0XC2
@@ -214,12 +226,13 @@ void (*handlers[256])(State8080 *state) = {
     Call,	// 0XCD
     UnimplementedInstruction,	// 0XCE
     UnimplementedInstruction,	// 0XCF
+
     UnimplementedInstruction,	// 0XD0
     UnimplementedInstruction,	// 0XD1
     UnimplementedInstruction,	// 0XD2
     UnimplementedInstruction,	// 0XD3
     UnimplementedInstruction,	// 0XD4
-    UnimplementedInstruction,	// 0XD5
+    PushDE,	// 0XD5
     UnimplementedInstruction,	// 0XD6
     UnimplementedInstruction,	// 0XD7
     UnimplementedInstruction,	// 0XD8
@@ -230,22 +243,24 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0XDD
     UnimplementedInstruction,	// 0XDE
     UnimplementedInstruction,	// 0xDF
+
     UnimplementedInstruction,	// 0xE0
     UnimplementedInstruction,	// 0xE1
     UnimplementedInstruction,	// 0xE2
     UnimplementedInstruction,	// 0xE3
     UnimplementedInstruction,	// 0xE4
-    UnimplementedInstruction,	// 0xE5
+    PushHL,	// 0xE5
     UnimplementedInstruction,	// 0xE6
     UnimplementedInstruction,	// 0xE7
     UnimplementedInstruction,	// 0xE8
     UnimplementedInstruction,	// 0xE9
     UnimplementedInstruction,	// 0xEA
-    UnimplementedInstruction,	// 0xEB
+    ExchangeHL_DE,	// 0xEB
     UnimplementedInstruction,	// 0xEC
     UnimplementedInstruction,	// 0xED
     UnimplementedInstruction,	// 0xEE
     UnimplementedInstruction,	// 0xEF
+
     UnimplementedInstruction,	// 0xF0
     UnimplementedInstruction,	// 0xF1
     UnimplementedInstruction,	// 0xF2
@@ -258,8 +273,9 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0xF9
     UnimplementedInstruction,	// 0xFA
     UnimplementedInstruction,	// 0xFB
+    UnimplementedInstruction,	// 0xFC
     UnimplementedInstruction,	// 0xFD
-    UnimplementedInstruction,	// 0xFE
+    CompareImmediate,	// 0xFE
     UnimplementedInstruction    // 0xFF
 };
 #endif

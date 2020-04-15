@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "config.h"
+#include "common/config.h"
 
 int Emulate() {
     return 0;
@@ -9,7 +9,7 @@ int TraceOn() {
     return 1;
 }
 
-FILE* traceFile = nullptr;
+FILE* traceFile = stdout;
 FILE* TraceOut() {
     if(traceFile == nullptr) {
         traceFile = fopen("./config/traceout.dis", "w");

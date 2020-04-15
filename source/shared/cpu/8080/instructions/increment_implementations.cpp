@@ -1,4 +1,4 @@
-#include "arithmetic_group.h"
+#include "cpu/8080/instructions/arithmetic_group.h"
 
 void IncrementRegisterPairDE(State8080* state) {
     uint16_t value = (((state->d & 0xff) << 8) | state->e) + 1;

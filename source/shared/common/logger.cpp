@@ -1,5 +1,5 @@
 #include <cstdio>
-#include "logger.h"
+#include "common/logger.h"
 
 const char* LOG_LEVEL_STRINGS[4] = {
     "ERROR",

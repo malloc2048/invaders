@@ -10,4 +10,8 @@ void IncrementRegisterPairHL(State8080* state);
 
 // DCR r (r) <- (r) - 1
 void DecrementRegisterB(State8080* state);
+
+// DAD rp (H)(L) <- (H)(L) + (rh)(rl)
+void AddRegisterPairDE(State8080* state);
+void AddRegisterPairHL(State8080* state);
 #endif

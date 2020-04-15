@@ -4,8 +4,6 @@
 #include <cstdio>
 #include "cpu/8080/state.h"
 
-void NoOp(State8080 *state);
-
 // MVI M, data ((H)(L)) <- (byte 2)
 void MoveImmediateB(State8080* state);
 void MoveImmediateC(State8080* state);
@@ -21,6 +19,7 @@ void MoveAccumulatorToMemoryHL(State8080* state);
 
 // MOV r1, r2 (r1) <- (r2)
 void MoveRegistersHA(State8080* state);
+void MoveRegistersLA(State8080* state);
 
 // LXI rp, data 16 (rh) <- (byte 3) (rl) <- (byte 2)
 void LoadRegisterPairImmediateBC(State8080* state);
@@ -31,4 +30,6 @@ void LoadRegisterPairImmediateSP(State8080* state);
 // LDAX rp (A) <- ((rp))
 void LoadAccumulatorIndirectBC(State8080* state);
 void LoadAccumulatorIndirectDE(State8080* state);
+
+void ExchangeHL_DE(State8080* state);
 #endif

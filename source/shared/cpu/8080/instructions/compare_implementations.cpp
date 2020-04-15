@@ -1,5 +1,5 @@
 #include "common/config.h"
-#include "logical_group.h"
+#include "cpu/8080/instructions/logical_group.h"
 
 void CompareImmediate(State8080* state) {
     uint8_t answer = state->a - state->memory[state->pc + 1];

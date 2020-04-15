@@ -1,11 +1,5 @@
 #include "cpu/8080/instructions/data_transfer_group.h"
 
-void NoOp(State8080 *state) {
-    if(TraceOn())
-        fprintf(TraceOut(), "NOP\n");
-    state->pc += 1;
-}
-
 void LoadRegisterPairImmediateSP(State8080* state) {
     uint16_t address = (state->memory[state->pc + 2] << 8) | state->memory[state->pc + 1];
     state->sp = address;
@@ -51,4 +45,19 @@ void LoadAccumulatorIndirectDE(State8080* state) {
         fprintf(TraceOut(), "LDAX DE %02x\n", state->a);
 
     state->pc += 1;
+}
+
+// XCHG (H) <-> (D) (L) <-> (E)
+void ExchangeHL_DE(State8080* state) {
+    uint8_t d = state->d;
+    state->d = state->h;
+    state->h = d;
+
+    uint8_t e = state->e;
+    state->e = state->l;
+    state->l = e;
+    state->pc += 1;
+
+    if(TraceOn())
+        fprintf(TraceOut(), "XCHG HL DE %02x%02x %02x%02x\n", state->h, state->l, state->d, state->e);
 }
