@@ -4,7 +4,6 @@
 #include "intel8080.h"
 #include "cpu/8080/instructions/instructions.h"
 
-//void (*handlers[256])(State8080 *state, const uint8_t *opcode) = {
 void (*handlers[256])(State8080 *state) = {
     NoOp,	// 0X00
     UnimplementedInstruction,	// 0X01
@@ -215,7 +214,7 @@ void (*handlers[256])(State8080 *state) = {
     JumpNotZero,	// 0XC2
     Jump,	// 0XC3
     UnimplementedInstruction,	// 0XC4
-    UnimplementedInstruction,	// 0XC5
+    PushBC,	// 0XC5
     UnimplementedInstruction,	// 0XC6
     UnimplementedInstruction,	// 0XC7
     UnimplementedInstruction,	// 0XC8
@@ -230,7 +229,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0XD0
     UnimplementedInstruction,	// 0XD1
     UnimplementedInstruction,	// 0XD2
-    UnimplementedInstruction,	// 0XD3
+    Out,	// 0XD3
     UnimplementedInstruction,	// 0XD4
     PushDE,	// 0XD5
     UnimplementedInstruction,	// 0XD6
@@ -245,7 +244,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0xDF
 
     UnimplementedInstruction,	// 0xE0
-    UnimplementedInstruction,	// 0xE1
+    PopH,	// 0xE1
     UnimplementedInstruction,	// 0xE2
     UnimplementedInstruction,	// 0xE3
     UnimplementedInstruction,	// 0xE4
