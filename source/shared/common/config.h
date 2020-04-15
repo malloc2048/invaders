@@ -1,5 +1,11 @@
 #ifndef EMULATOR_CONFIG_H
 #define EMULATOR_CONFIG_H
 
-#define DEBUG_ON 1
+#include <cstdio>
+
+#define LOGGING_LEVEL 3
+
+int Emulate();
+int TraceOn();
+FILE* TraceOut();
 #endif

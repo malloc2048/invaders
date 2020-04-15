@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
     };
     long romFileSize = ReadRomFile(romFile, state.memory);
     fclose(romFile);
-    Run(&state, romFileSize);
+    Emulate8080(&state, romFileSize);
 
     return 0;
 }

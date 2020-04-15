@@ -1,14 +1,15 @@
 #ifndef EMULATOR_STATE_H
 #define EMULATOR_STATE_H
 
+#include <cstdint>
 #include "common/config.h"
 
 typedef struct ConditionCodes {
-    uint8_t z:1;
-    uint8_t s:1;
-    uint8_t p:1;
-    uint8_t cy:1;
-    uint8_t ac:1;
+    uint8_t z:1; // zero flag
+    uint8_t s:1; // sign flag?
+    uint8_t p:1; // parity flag
+    uint8_t cy:1; // carry flag
+    uint8_t ac:1; // additional carry flag?
     uint8_t pad:3;
 } ConditionCodes;
 
