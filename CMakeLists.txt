@@ -10,3 +10,8 @@ set(SHARED_INC_ROOT ${PROJECT_ROOT}/include/shared)
 
 add_subdirectory(source/shared)
 add_subdirectory(source/applications)
+
+option(BUILD_TESTS "build tests also" ON)
+if(BUILD_TESTS)
+    add_subdirectory(test)
+ENDIF()

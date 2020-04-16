@@ -5,34 +5,34 @@
 #include "cpu/8080/instructions/instructions.h"
 
 void (*handlers[256])(State8080 *state) = {
-    NoOp,	// 0X00
-    UnimplementedInstruction,	// 0X01
+    NOP,	// 0X00
+    LXI_B,	// 0X01
     UnimplementedInstruction,	// 0X02
     UnimplementedInstruction,	// 0X03
     UnimplementedInstruction,	// 0X04
-    DecrementRegisterB,	// 0X05
-    MoveImmediateB,	// 0X06
+    DCR_B,	// 0X05
+    MVI_B,	// 0X06
     UnimplementedInstruction,	// 0X07
     UnimplementedInstruction,	// 0X08
-    UnimplementedInstruction,	// 0X09
+    DAD_B,	// 0X09
     UnimplementedInstruction,	// 0X0A
     UnimplementedInstruction,	// 0X0B
     UnimplementedInstruction,	// 0X0C
-    UnimplementedInstruction,	// 0X0D
-    MoveImmediateC,	// 0X0E
+    DCR_C,	// 0X0D
+    MVI_C,	// 0X0E
     UnimplementedInstruction,	// 0X0F
 
     UnimplementedInstruction,	// 0X10
-    LoadRegisterPairImmediateDE,	// 0X11
+    LXI_D,	// 0X11
     UnimplementedInstruction,	// 0X12
-    IncrementRegisterPairDE,	// 0X13
+    INX_D,	// 0X13
     UnimplementedInstruction,	// 0X14
     UnimplementedInstruction,	// 0X15
     UnimplementedInstruction,	// 0X16
     UnimplementedInstruction,	// 0X17
     UnimplementedInstruction,	// 0X18
-    AddRegisterPairDE,	// 0X19
-    LoadAccumulatorIndirectDE,	// 0X1A
+    DAD_D,	// 0X19
+    LDAX_D,	// 0X1A
     UnimplementedInstruction,	// 0X1B
     UnimplementedInstruction,	// 0X1C
     UnimplementedInstruction,	// 0X1D
@@ -40,15 +40,15 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X1F
 
     UnimplementedInstruction,	// 0X20
-    LoadRegisterPairImmediateHL,	// 0X21
+    LXI_H,	// 0X21
     UnimplementedInstruction,	// 0X22
-    IncrementRegisterPairHL,	// 0X23
+    INX_H,	// 0X23
     UnimplementedInstruction,	// 0X24
     UnimplementedInstruction,	// 0X25
-    MoveImmediateH,	// 0X26
+    MVI_H,	// 0X26
     UnimplementedInstruction,	// 0X27
     UnimplementedInstruction,	// 0X28
-    AddRegisterPairHL,	// 0X29
+    DAD_H,	// 0X29
     UnimplementedInstruction,	// 0X2A
     UnimplementedInstruction,	// 0X2B
     UnimplementedInstruction,	// 0X2C
@@ -57,16 +57,16 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X2F
 
     UnimplementedInstruction,	// 0X30
-    LoadRegisterPairImmediateSP,	// 0X31
+    LXI_SP,	// 0X31
     UnimplementedInstruction,	// 0X32
     UnimplementedInstruction,	// 0X33
     UnimplementedInstruction,	// 0X34
     UnimplementedInstruction,	// 0X35
-    MoveImmediateM,	// 0X36
+    MVI_M,	// 0X36
     UnimplementedInstruction,	// 0X37
     UnimplementedInstruction,	// 0X38
     UnimplementedInstruction,	// 0X39
-    UnimplementedInstruction,	// 0X3A
+    LDA,	// 0X3A
     UnimplementedInstruction,	// 0X3B
     UnimplementedInstruction,	// 0X3C
     UnimplementedInstruction,	// 0X3D
@@ -122,7 +122,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X6C
     UnimplementedInstruction,	// 0X6D
     UnimplementedInstruction,	// 0X6E
-    MoveRegistersLA,	// 0X6F
+    MOV_L_A,	// 0X6F
 
     UnimplementedInstruction,	// 0X70
     UnimplementedInstruction,	// 0X71
@@ -131,12 +131,12 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0X74
     UnimplementedInstruction,	// 0X75
     UnimplementedInstruction,	// 0X76
-    MoveAccumulatorToMemoryHL,	// 0X77
+    MOV_M_A,	// 0X77
     UnimplementedInstruction,	// 0X78
     UnimplementedInstruction,	// 0X79
     UnimplementedInstruction,	// 0X7A
     UnimplementedInstruction,	// 0X7B
-    MoveRegistersHA,	// 0X7C
+    MOV_H_A,	// 0X7C
     UnimplementedInstruction,	// 0X7D
     UnimplementedInstruction,	// 0X7E
     UnimplementedInstruction,	// 0X7F
@@ -210,28 +210,28 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0xBF
 
     UnimplementedInstruction,	// 0XC0
-    UnimplementedInstruction,	// 0XC1
-    JumpNotZero,	// 0XC2
-    Jump,	// 0XC3
+    POP_B,	// 0XC1
+    JNZ,	// 0XC2
+    JMP,	// 0XC3
     UnimplementedInstruction,	// 0XC4
-    PushBC,	// 0XC5
+    PUSH_B,	// 0XC5
     UnimplementedInstruction,	// 0XC6
     UnimplementedInstruction,	// 0XC7
     UnimplementedInstruction,	// 0XC8
-    Return,	// 0XC9
+    RET,	// 0XC9
     UnimplementedInstruction,	// 0XCA
     UnimplementedInstruction,	// 0XCB
     UnimplementedInstruction,	// 0XCC
-    Call,	// 0XCD
+    CALL,	// 0XCD
     UnimplementedInstruction,	// 0XCE
     UnimplementedInstruction,	// 0XCF
 
     UnimplementedInstruction,	// 0XD0
-    UnimplementedInstruction,	// 0XD1
+    POP_D,	// 0XD1
     UnimplementedInstruction,	// 0XD2
     Out,	// 0XD3
     UnimplementedInstruction,	// 0XD4
-    PushDE,	// 0XD5
+    PUSH_D,	// 0XD5
     UnimplementedInstruction,	// 0XD6
     UnimplementedInstruction,	// 0XD7
     UnimplementedInstruction,	// 0XD8
@@ -244,17 +244,17 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0xDF
 
     UnimplementedInstruction,	// 0xE0
-    PopH,	// 0xE1
+    POP_H,	// 0xE1
     UnimplementedInstruction,	// 0xE2
     UnimplementedInstruction,	// 0xE3
     UnimplementedInstruction,	// 0xE4
-    PushHL,	// 0xE5
+    PUSH_H,	// 0xE5
     UnimplementedInstruction,	// 0xE6
     UnimplementedInstruction,	// 0xE7
     UnimplementedInstruction,	// 0xE8
     UnimplementedInstruction,	// 0xE9
     UnimplementedInstruction,	// 0xEA
-    ExchangeHL_DE,	// 0xEB
+    XCHG,	// 0xEB
     UnimplementedInstruction,	// 0xEC
     UnimplementedInstruction,	// 0xED
     UnimplementedInstruction,	// 0xEE
@@ -274,7 +274,7 @@ void (*handlers[256])(State8080 *state) = {
     UnimplementedInstruction,	// 0xFB
     UnimplementedInstruction,	// 0xFC
     UnimplementedInstruction,	// 0xFD
-    CompareImmediate,	// 0xFE
+    CPI,	// 0xFE
     UnimplementedInstruction    // 0xFF
 };
 #endif

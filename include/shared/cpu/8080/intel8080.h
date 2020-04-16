@@ -4,5 +4,6 @@
 #include <cstdint>
 #include "state.h"
 
-void Emulate8080(State8080* state, long bufferLength);
+void Run(State8080* state, long bufferLength);
+void Emulate8080(State8080* state);
 #endif

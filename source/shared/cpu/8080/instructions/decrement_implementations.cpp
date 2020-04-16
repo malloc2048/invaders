@@ -1,42 +1,24 @@
-#include <cpu/8080/state.h>
+#include "cpu/8080/state.h"
+#include "common/utilities.h"
 #include "cpu/8080/instructions/arithmetic_group.h"
 
-void DecrementRegisterB(State8080* state) {
+void DCR_B(State8080* state) {
+    uint8_t b = state->b;
     state->b -= 1;
+    state->pc += 1;
 
-    if(TraceOn())
+    state->cc.z = state->b == 0 ? 1 : 0;
+    state->cc.s = state->b >= 0x80 ? 1 : 0;
+    state->cc.p = Parity(state->b, 8);
+    state->cc.ac = (state->b & 0x0fu) == 0x0fu ? 1 : 0;
+
+    if(IsTraceOn())
         fprintf(TraceOut(), "DCR B %02x\n", state->b);
-    state->pc += 1;
 }
 
-void AddRegisterPairDE(State8080* state) {
-    uint16_t low = state->e + state->l;
-    state->l = low & 0xff;
-    uint16_t high = state->d + state->h;
-    state->h = high & 0xff;
-    if((high & 0xff00) > 0) {
-        state->cc.cy = 1;
-    } else {
-        state->cc.cy = 0;
-    }
+void DCR_C(State8080* state) {
+    state->c -= 1;
     state->pc += 1;
-
-    if(TraceOut())
-        fprintf(TraceOut(), "DAD H %02x%02x %02x\n", state->h, state->l, state->cc.cy);
-}
-
-void AddRegisterPairHL(State8080* state) {
-    uint16_t low = state->l + state->l;
-    state->l = low & 0xff;
-    uint16_t high = state->h + state->h;
-    state->h = high & 0xff;
-    if((high & 0xff00) > 0) {
-        state->cc.cy = 1;
-    } else {
-        state->cc.cy = 0;
-    }
-    state->pc += 1;
-
-    if(TraceOut())
-        fprintf(TraceOut(), "DAD H %02x%02x %02x\n", state->h, state->l, state->cc.cy);
+    if(IsTraceOn())
+        fprintf(TraceOut(), "DCR C %02x\n", state->c);
 }

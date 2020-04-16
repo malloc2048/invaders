@@ -1,12 +1,18 @@
 #include <cstdlib>
 #include "common/config.h"
 
-int Emulate() {
-    return 0;
+int traceOn = 1;
+
+void TraceOn() {
+    traceOn = 1;
 }
 
-int TraceOn() {
-    return 1;
+void TraceOff() {
+    traceOn = 0;
+}
+
+int IsTraceOn() {
+    return traceOn;
 }
 
 FILE* traceFile = stdout;

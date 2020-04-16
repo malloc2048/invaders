@@ -5,7 +5,8 @@
 
 #define LOGGING_LEVEL 3
 
-int Emulate();
-int TraceOn();
+void TraceOn();
+void TraceOff();
+int IsTraceOn();
 FILE* TraceOut();
 #endif

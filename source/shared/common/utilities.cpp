@@ -10,12 +10,13 @@ long GetFileSize(FILE *file) {
     return fileLength;
 }
 
-int Parity(int number, int size) {
-    int parity = 0;
-    for(int i = 0; i < size; i++) {
-        parity += number & (0x01 << i);
+uint8_t Parity(uint32_t number, uint8_t size) {
+    uint32_t parity = 0;
+    for(uint8_t i = 0; i < size; i++) {
+        if(number & (0x01u << i))
+            parity++;
     }
-    return parity & 0x01;
+    return parity & 0x01u;
 }
 
 uint8_t *ReadFile(FILE *file, long fileLength) {

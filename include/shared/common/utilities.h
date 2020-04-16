@@ -5,7 +5,7 @@
 #include <cstdint>
 
 long GetFileSize(FILE* file);
-int Parity(int number, int size);
+uint8_t Parity(uint32_t number, uint8_t size);
 uint8_t* ReadFile(FILE* file, long fileLength);
 long ReadRomFile(FILE* file, uint8_t* buffer);
 #endif
