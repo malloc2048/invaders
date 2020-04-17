@@ -26,13 +26,17 @@ int main(int argc, char** argv) {
         printf("unable to open rom file file %s", romFilename);
         exit(errno);
     }
-    State8080 state = { .a = 0, .b = 0, .c = 0, .d = 0, .e = 0, .h = 0, .l = 0, .sp = 0, .pc = 0,
-        .memory = (uint8_t*)malloc(sizeof(uint8_t) * 65536),
-        .cc = ConditionCodes{ .z = 0, .s = 0, .p = 0, .cy = 0, .ac = 0, .pad = 0}, .int_enable = 0
-    };
-    long romFileSize = ReadRomFile(romFile, state.memory);
+
+    Intel8080 cpu;
+
+//    State8080 state = { .a = 0, .b = 0, .c = 0, .d = 0, .e = 0, .h = 0, .l = 0, .sp = 0, .pc = 0,
+//        .memory = (uint8_t*)malloc(sizeof(uint8_t) * 65536),
+//        .cc = ConditionCodes{ .z = 0, .s = 0, .p = 0, .cy = 0, .ac = 0, .pad = 0}, .int_enable = 0
+//    };
+    long romFileSize = ReadRomFile(romFile, cpu.state.memory);
     fclose(romFile);
-    Run(&state, romFileSize);
+
+   cpu.Run(romFileSize);
 
     return 0;
 }

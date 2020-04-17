@@ -1,12 +1,8 @@
 #ifndef EMULATOR_ARITHMETIC_GROUP_H
 #define EMULATOR_ARITHMETIC_GROUP_H
 
-#define OPCODE_DCR_B 0x05
-
 #include <cstdio>
 #include "cpu/8080/state.h"
-
-
 
 // ADD r add register
 // content of register r is added to content of accumulator, result stored in A (A) <- (A) + (r)

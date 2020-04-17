@@ -8,11 +8,13 @@
 
 class ArithmeticTestFixture: public ::testing::Test {
 public:
-    ArithmeticTestFixture();
+    ArithmeticTestFixture() = default;
+    ~ArithmeticTestFixture() override = default;
+
     void SetUp() override;
     void SetMemory(uint8_t value, size_t length, size_t start = 0) const;
 
 protected:
-    State8080 state;
+    Intel8080 cpu;
 };
 #endif
