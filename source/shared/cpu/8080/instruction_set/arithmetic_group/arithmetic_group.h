@@ -3,6 +3,10 @@
 
 #include "cpu/8080/instruction_set/registers.h"
 
+namespace arithmetic {
+    void Add(Registers &registers, uint8_t src, const char* instr);
+}
+
 namespace addition {
     void ADD_A(Registers &registers);
     void ADD_B(Registers &registers);

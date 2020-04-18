@@ -21,7 +21,7 @@ FILE* TraceOut() {
         traceFile = fopen("./config/traceout.dis", "w");
 
         if(traceFile == nullptr) {
-            printf("failed to open file: %d", errno);
+            printf("failed to open file: %s", "./config/traceout.dis");
             return stdout;
         }
     }

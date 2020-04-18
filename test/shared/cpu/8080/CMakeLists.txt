@@ -1,10 +1,10 @@
-file(GLOB INSTRUCTION_TEST_SRC
+file(GLOB_RECURSE INSTRUCTION_TEST_SRC
     ${CMAKE_CURRENT_LIST_DIR}/instructions/*.h
     ${CMAKE_CURRENT_LIST_DIR}/instructions/*.cpp
 )
 
 add_executable(instruction_tests ${INSTRUCTION_TEST_SRC})
-target_link_libraries(instruction_tests gtest_main gtest cpulib)
+target_link_libraries(instruction_tests gtest_main gtest cpulib pthread)
 add_dependencies(instruction_tests cpulib)
 
 option(USE_COVERAGE "coverage" OFF)

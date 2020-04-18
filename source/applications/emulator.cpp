@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
     FILE* romFile = fopen(romFilename, "r");
     if(romFile == nullptr) {
         printf("unable to open rom file file %s", romFilename);
-        exit(errno);
+        exit(-1);
     }
 
     Intel8080 cpu(65536);

@@ -1,29 +1,38 @@
 #include "common/config.h"
 #include "arithmetic_group.h"
 
-
-
 namespace addition {
-    void ADD_A(Registers &registers) { registers.pc.d16 += 1; }
-
-    void ADD_B(Registers &registers) {
-        registers.pc.d16 += 1;
-
-        if (IsTraceOn())
-            fprintf(TraceOut(), "ADD B %04x %02x\n", registers.hl.d16, registers.psw.flags.cy);
+    void ADD_A(Registers &registers) {
+        arithmetic::Add(registers, registers.a, "ADD A");
     }
 
-    void ADD_C(Registers &registers) { registers.pc.d16 += 1; }
+    void ADD_B(Registers &registers) {
+        arithmetic::Add(registers, registers.bc.d8.highByte, "ADD B");
+    }
 
-    void ADD_D(Registers &registers) { registers.pc.d16 += 1; }
+    void ADD_C(Registers &registers) {
+        arithmetic::Add(registers, registers.bc.d8.lowByte, "ADD C");
+    }
 
-    void ADD_E(Registers &registers) { registers.pc.d16 += 1; }
+    void ADD_D(Registers &registers) {
+        arithmetic::Add(registers, registers.de.d8.highByte, "ADD D");
+    }
 
-    void ADD_H(Registers &registers) { registers.pc.d16 += 1; }
+    void ADD_E(Registers &registers) {
+        arithmetic::Add(registers, registers.de.d8.lowByte, "ADD E");
+    }
 
-    void ADD_L(Registers &registers) { registers.pc.d16 += 1; }
+    void ADD_H(Registers &registers) {
+        arithmetic::Add(registers, registers.hl.d8.highByte, "ADD H");
+    }
 
-    void ADD_M(Registers &registers) { registers.pc.d16 += 1; }
+    void ADD_L(Registers &registers) {
+        arithmetic::Add(registers, registers.hl.d8.lowByte, "ADD L");
+    }
+
+    void ADD_M(Registers &registers) {
+        arithmetic::Add(registers, registers.memory[registers.hl.d16], "ADD M");
+    }
 
     void ADI(Registers &registers) { registers.pc.d16 += 2; }
     void ACI(Registers &registers) { registers.pc.d16 += 2; }
