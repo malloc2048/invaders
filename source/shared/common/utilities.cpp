@@ -1,6 +1,14 @@
 #include <cstdlib>
 #include "common/utilities.h"
 
+namespace utilities {
+    void swap(uint8_t& x, uint8_t& y) {
+        x ^= y;
+        y ^= x;
+        x ^= y;
+    }
+}
+
 long GetFileSize(FILE *file) {
     fseek(file, 0L, SEEK_END);
     long fileLength = ftell(file);
