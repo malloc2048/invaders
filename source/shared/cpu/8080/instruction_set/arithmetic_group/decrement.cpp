@@ -1,6 +1,7 @@
 #include "common/config.h"
 #include "common/utilities.h"
 #include "arithmetic_group.h"
+#include "../stack_io_machine_group/stack_io_machine_group.h"
 
 namespace decrement {
     void decrement(Registers& registers, uint8_t* reg, const char* instr) {
@@ -25,8 +26,8 @@ namespace decrement {
     void DCR_L(Registers& registers) { decrement(registers, &registers.a, "DCR L"); }
     void DCR_M(Registers& registers) { decrement(registers, &registers.a, "DCR M"); }
 
-    void DCX_B(Registers &registers) { registers.pc.d16 += 1; }
-    void DCX_D(Registers &registers) { registers.pc.d16 += 1; }
-    void DCX_H(Registers &registers) { registers.pc.d16 += 1; }
-    void DCX_SP(Registers &registers) { registers.pc.d16 += 1; }
+    void DCX_B(Registers &registers) { machine::Unimplemented(registers); }
+    void DCX_D(Registers &registers) { machine::Unimplemented(registers); }
+    void DCX_H(Registers &registers) { machine::Unimplemented(registers); }
+    void DCX_SP(Registers &registers) { machine::Unimplemented(registers); }
 }

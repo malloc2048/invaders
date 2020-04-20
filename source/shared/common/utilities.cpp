@@ -1,3 +1,4 @@
+#include <ctime>
 #include <cstdlib>
 #include "common/utilities.h"
 
@@ -6,6 +7,26 @@ namespace utilities {
         x ^= y;
         y ^= x;
         x ^= y;
+    }
+
+    void delay(int milliseconds) {
+        clock_t start_time = clock();
+        while(clock() < start_time + milliseconds) ;
+    }
+
+    void hexDump(uint8_t* buffer, long length) {
+        FILE* hexDumpFile = fopen("../../../config/dump.hex" , "w");
+        if(hexDumpFile != nullptr) {
+            for(long address = 0; address < length; address++) {
+                if(address % 16 == 0) {
+                    if(address != 0) {
+                        fprintf(hexDumpFile, "\n");
+                    }
+                    fprintf(hexDumpFile, "0x%04x\t", address);
+                }
+                fprintf(hexDumpFile, "0x%02x ", buffer[address]);
+            }
+        }
     }
 }
 

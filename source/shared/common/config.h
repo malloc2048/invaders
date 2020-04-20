@@ -9,4 +9,9 @@ void TraceOn();
 void TraceOff();
 int IsTraceOn();
 FILE* TraceOut();
+
+namespace config {
+    int IsHexDump();
+}
+
 #endif

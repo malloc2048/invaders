@@ -1,3 +1,4 @@
+#include <cerrno>
 #include <cstdio>
 #include <cstdlib>
 #include "opcodes/opcodes.h"
@@ -31,15 +32,15 @@ int main(int argc, char** argv) {
     sprintf(romFilename, "%s/%s", argv[1], argv[3]);
     FILE *romFile = fopen(romFilename, "r");
     if(romFile == nullptr) {
-        printf("unable to open ROM file %s", romFile);
+        printf("unable to open ROM file %s", romFilename);
         exit(errno);
     }
 
-    char outputFilename[256];
+    char outputFilename[260];
     sprintf(outputFilename, "%s.dis", romFilename);
     FILE *disFile = fopen(outputFilename, "w");
     if(disFile == nullptr) {
-        printf("unable to open output file %s", disFile);
+        printf("unable to open output file %s", outputFilename);
         exit(errno);
     }
 

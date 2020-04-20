@@ -6,6 +6,8 @@
 
 namespace utilities {
     void swap(uint8_t& x, uint8_t& y);
+    void delay(int timeToDelay);
+    void hexDump(uint8_t* buffer, long length);
 }
 
 long GetFileSize(FILE* file);

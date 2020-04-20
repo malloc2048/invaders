@@ -1,5 +1,6 @@
 #include "common/config.h"
 #include "arithmetic_group.h"
+#include "../stack_io_machine_group/stack_io_machine_group.h"
 
 namespace addition {
     void ADD_A(Registers &registers) {
@@ -34,17 +35,17 @@ namespace addition {
         arithmetic::Add(registers, registers.memory[registers.hl.d16], "ADD M");
     }
 
-    void ADI(Registers &registers) { registers.pc.d16 += 2; }
-    void ACI(Registers &registers) { registers.pc.d16 += 2; }
+    void ADI(Registers &registers) { machine::Unimplemented(registers); }
+    void ACI(Registers &registers) { machine::Unimplemented(registers); }
 
-    void ADC_A(Registers &registers) { registers.pc.d16 += 1; }
-    void ADC_B(Registers &registers) { registers.pc.d16 += 1; }
-    void ADC_C(Registers &registers) { registers.pc.d16 += 1; }
-    void ADC_D(Registers &registers) { registers.pc.d16 += 1; }
-    void ADC_E(Registers &registers) { registers.pc.d16 += 1; }
-    void ADC_H(Registers &registers) { registers.pc.d16 += 1; }
-    void ADC_L(Registers &registers) { registers.pc.d16 += 1; }
-    void ADC_M(Registers &registers) { registers.pc.d16 += 1; }
+    void ADC_A(Registers &registers) { machine::Unimplemented(registers); }
+    void ADC_B(Registers &registers) { machine::Unimplemented(registers); }
+    void ADC_C(Registers &registers) { machine::Unimplemented(registers); }
+    void ADC_D(Registers &registers) { machine::Unimplemented(registers); }
+    void ADC_E(Registers &registers) { machine::Unimplemented(registers); }
+    void ADC_H(Registers &registers) { machine::Unimplemented(registers); }
+    void ADC_L(Registers &registers) { machine::Unimplemented(registers); }
+    void ADC_M(Registers &registers) { machine::Unimplemented(registers); }
 
     void DAD_B(Registers &registers) { addition::dad(registers.bc.d8.highByte, registers.bc.d8.lowByte, registers, "DAD B"); }
     void DAD_D(Registers &registers) { addition::dad(registers.de.d8.highByte, registers.de.d8.lowByte, registers, "DAD D"); }
@@ -66,5 +67,5 @@ namespace addition {
             fprintf(TraceOut(), "%s %04x %02x", instr, registers.hl.d16, registers.psw.flags.cy);
     }
 
-    void DAA(Registers &registers) { registers.pc.d16 += 1; }
+    void DAA(Registers &registers) { machine::Unimplemented(registers); }
 }

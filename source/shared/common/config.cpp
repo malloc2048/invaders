@@ -2,6 +2,7 @@
 #include "common/config.h"
 
 int traceOn = 1;
+int dumpHex = 1;
 
 void TraceOn() {
     traceOn = 1;
@@ -9,6 +10,12 @@ void TraceOn() {
 
 void TraceOff() {
     traceOn = 0;
+}
+
+namespace config {
+    int IsHexDump() {
+        return dumpHex;
+    }
 }
 
 int IsTraceOn() {

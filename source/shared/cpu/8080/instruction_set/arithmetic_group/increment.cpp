@@ -1,15 +1,16 @@
 #include "common/config.h"
 #include "arithmetic_group.h"
+#include "../stack_io_machine_group/stack_io_machine_group.h"
 
 namespace increment {
-    void INR_A(Registers& registers) { registers.pc.d16 += 1; }
-    void INR_B(Registers& registers) { registers.pc.d16 += 1; }
-    void INR_C(Registers& registers) { registers.pc.d16 += 1; }
-    void INR_D(Registers& registers) { registers.pc.d16 += 1; }
-    void INR_E(Registers& registers) { registers.pc.d16 += 1; }
-    void INR_H(Registers& registers) { registers.pc.d16 += 1; }
-    void INR_L(Registers& registers) { registers.pc.d16 += 1; }
-    void INR_M(Registers& registers) { registers.pc.d16 += 1; }
+    void INR_A(Registers& registers) { machine::Unimplemented(registers); }
+    void INR_B(Registers& registers) { machine::Unimplemented(registers); }
+    void INR_C(Registers& registers) { machine::Unimplemented(registers); }
+    void INR_D(Registers& registers) { machine::Unimplemented(registers); }
+    void INR_E(Registers& registers) { machine::Unimplemented(registers); }
+    void INR_H(Registers& registers) { machine::Unimplemented(registers); }
+    void INR_L(Registers& registers) { machine::Unimplemented(registers); }
+    void INR_M(Registers& registers) { machine::Unimplemented(registers); }
 
     void incrementPair(pair& pc, pair& regPair, const char* instr) {
         if(regPair.d8.lowByte == 0xff)

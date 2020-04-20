@@ -1,5 +1,6 @@
-#include "common/config.h"
 #include "branch_group.h"
+#include "common/config.h"
+#include "../stack_io_machine_group/stack_io_machine_group.h"
 
 namespace jump {
     void JMP(Registers& registers) {
@@ -90,5 +91,5 @@ namespace jump {
             fprintf(TraceOut(), "JM %04x", registers.pc.d16);
     }
 
-    void PCHL(Registers& registers) { registers.pc.d16 += 1; }
+    void PCHL(Registers& registers) { machine::Unimplemented(registers); }
 }

@@ -1,16 +1,17 @@
 #include "common/config.h"
 #include "logical_group.h"
 #include "common/utilities.h"
+#include "../stack_io_machine_group/stack_io_machine_group.h"
 
 namespace compare {
-    void CMP_A(Registers& registers) { registers.pc.d16 += 1; }
-    void CMP_B(Registers& registers) { registers.pc.d16 += 1; }
-    void CMP_C(Registers& registers) { registers.pc.d16 += 1; }
-    void CMP_D(Registers& registers) { registers.pc.d16 += 1; }
-    void CMP_E(Registers& registers) { registers.pc.d16 += 1; }
-    void CMP_H(Registers& registers) { registers.pc.d16 += 1; }
-    void CMP_L(Registers& registers) { registers.pc.d16 += 1; }
-    void CMP_M(Registers& registers) { registers.pc.d16 += 1; }
+    void CMP_A(Registers& registers) { machine::Unimplemented(registers); }
+    void CMP_B(Registers& registers) { machine::Unimplemented(registers); }
+    void CMP_C(Registers& registers) { machine::Unimplemented(registers); }
+    void CMP_D(Registers& registers) { machine::Unimplemented(registers); }
+    void CMP_E(Registers& registers) { machine::Unimplemented(registers); }
+    void CMP_H(Registers& registers) { machine::Unimplemented(registers); }
+    void CMP_L(Registers& registers) { machine::Unimplemented(registers); }
+    void CMP_M(Registers& registers) { machine::Unimplemented(registers); }
 
     void CPI(Registers& registers) {
         registers.psw.flags.z = registers.a == registers.memory[registers.pc.d16 + 1] ? 1 : 0;;

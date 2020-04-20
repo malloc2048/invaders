@@ -87,6 +87,6 @@ namespace stack {
             fprintf(TraceOut(), "POP PSW %02x %02x", registers.a, registers.psw.psw);
     }
 
-    void XTHL(Registers& registers) { registers.pc.d16 += 1; }
-    void SPHL(Registers& registers) { registers.pc.d16 += 1; }
+    void XTHL(Registers& registers) { machine::Unimplemented(registers); }
+    void SPHL(Registers& registers) { machine::Unimplemented(registers); }
 }

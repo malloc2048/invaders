@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
+#include "common/config.h"
 #include "common/utilities.h"
 #include "cpu/8080/intel8080.h"
 
@@ -29,8 +30,11 @@ int main(int argc, char** argv) {
 
     Intel8080 cpu(65536);
     long romFileSize = ReadRomFile(romFile, cpu.registers.memory);
-    fclose(romFile);
+    if(config::IsHexDump()) {
+        utilities::hexDump(cpu.registers.memory, romFileSize);
+    }
     cpu.Run(romFileSize);
+    fclose(romFile);
 
     return 0;
 }

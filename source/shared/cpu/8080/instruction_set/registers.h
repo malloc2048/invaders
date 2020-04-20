@@ -1,6 +1,7 @@
 #ifndef EMULATOR_REGISTERS_H
 #define EMULATOR_REGISTERS_H
 
+#include <cstdio>
 #include <cstdint>
 
 struct Flags {
@@ -39,5 +40,22 @@ struct Registers {
     PSW psw;        // flags
     uint8_t int_enable; // interrupt enabled?
     uint16_t shift;     // shift register
+
+    void Dump() const {
+        printf("registers:\n");
+        printf("registers:\ta: %02x\n", a);
+        printf("registers:\tbc: %04x\n", bc.d16);
+        printf("registers:\t\tb: %02x\n", bc.d8.highByte);
+        printf("registers:\t\tc: %02x\n", bc.d8.lowByte);
+        printf("registers:\tde: %04x\n", de.d16);
+        printf("registers:\t\td: %02x\n", de.d8.highByte);
+        printf("registers:\t\te: %02x\n", de.d8.lowByte);
+        printf("registers:\thl: %04x\n", hl.d16);
+        printf("registers:\t\th: %02x\n", hl.d8.highByte);
+        printf("registers:\t\tl: %02x\n", hl.d8.lowByte);
+        printf("registers:\tpc: %04x\n", pc.d16);
+        printf("registers:\tsp: %04x\n", sp.d16);
+        printf("registers:\tmemory 0x0910: %02x\n", memory[0x0910]);
+    }
 };
 #endif

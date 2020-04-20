@@ -1,5 +1,7 @@
 #include <cstdio>
+#include <unistd.h>
 #include "common/config.h"
+#include "common/utilities.h"
 #include "cpu/8080/intel8080.h"
 #include "cpu/8080/instruction_set/instruction_set.h"
 
@@ -27,20 +29,22 @@ Intel8080::~Intel8080() {
 }
 
 void Intel8080::Emulate8080() {
-//    uint8_t currentOpCode = registers->memory[registers->pc];
-    if(IsTraceOn())
+    if(IsTraceOn()){
         fprintf(TraceOut(), "0x%04x\t%02x\t", registers.pc.d16, registers.memory[registers.pc.d16]);
+    }
+    uint8_t opcode = registers.memory[registers.pc.d16];
 
     (*instructionSet[registers.memory[registers.pc.d16]])(registers);
 
     if(IsTraceOn())
-        fprintf(TraceOut(), "\n");
+        fprintf(TraceOut(), "\t%02x\n", registers.memory[0x910]);
 }
 
 //void Intel8080::Run(registers8080* _registers, long bufferLength) {
 void Intel8080::Run(long bufferLength) {
     while (registers.pc.d16 < bufferLength) {
         Emulate8080();
+        utilities::delay(0);
     }
 }
 

@@ -51,8 +51,10 @@ namespace move {
     }
 
     void MOV_M_A(Registers& registers) {
+//        registers.Dump();
         registers.memory[registers.hl.d16] = registers.a;
         registers.pc.d16 += 1;
+//        registers.Dump();
 
         if(IsTraceOn())
             fprintf(TraceOut(), "MOV M, A %02x", registers.memory[registers.hl.d16]);
