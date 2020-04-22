@@ -14,6 +14,5 @@ public:
 
 protected:
     Intel8080 cpu;
-    const uint16_t TestMemorySize = 32;
 };
 #endif

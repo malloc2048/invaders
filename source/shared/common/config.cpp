@@ -22,13 +22,14 @@ int IsTraceOn() {
     return traceOn;
 }
 
-FILE* traceFile = stdout;
+FILE* traceFile = nullptr;
+//FILE* traceFile = stdout;
 FILE* TraceOut() {
     if(traceFile == nullptr) {
-        traceFile = fopen("./config/traceout.dis", "w");
+        traceFile = fopen("../../../config/trace.dis", "w");
 
         if(traceFile == nullptr) {
-            printf("failed to open file: %s", "./config/traceout.dis");
+            printf("failed to open file: %s", "./config/trace.dis");
             return stdout;
         }
     }

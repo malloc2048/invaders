@@ -3,7 +3,7 @@
 #include "arithmetic_group.h"
 
 namespace arithmetic {
-    void Add(Registers &registers, uint8_t src, const char* instr) {
+    void Add(Regs &registers, uint8_t src, const char* instr) {
         registers.pc.d16 += 1;
         uint8_t previousA = registers.a;
         registers.a += src;

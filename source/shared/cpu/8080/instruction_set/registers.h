@@ -1,5 +1,5 @@
-#ifndef EMULATOR_REGISTERS_H
-#define EMULATOR_REGISTERS_H
+#ifndef EMULATOR_REG_H
+#define EMULATOR_REG_H
 
 #include <cstdio>
 #include <cstdint>
@@ -28,7 +28,7 @@ union pair {
     uint16_t d16;
 };
 
-struct Registers {
+struct Regs {
     uint8_t a;          // accumulator
     pair bc;
     pair de;

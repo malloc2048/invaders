@@ -7,7 +7,7 @@ add_executable(instruction_tests ${INSTRUCTION_TEST_SRC})
 target_link_libraries(instruction_tests gtest_main gtest cpulib pthread)
 add_dependencies(instruction_tests cpulib)
 
-option(USE_COVERAGE "coverage" OFF)
+option(USE_COVERAGE "coverage" ON)
 if (USE_COVERAGE)
     target_compile_options(instruction_tests PUBLIC --coverage)
     target_compile_options(cpulib PUBLIC --coverage)

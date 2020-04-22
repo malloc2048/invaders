@@ -141,3 +141,93 @@ TEST_F(InstructionTestFixture, AddA) {
     ASSERT_TRUE(cpu.registers.psw.flags.ac == 0x00);
     ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x00);
 }
+
+TEST_F(InstructionTestFixture, ADI) {
+    SetMemory(4, 0xc6, 0xff, 0xc6, 0x01);
+
+    cpu.registers.a = 0x00;
+    cpu.Emulate8080();
+    ASSERT_TRUE(cpu.registers.a == 0xff);
+    ASSERT_TRUE(cpu.registers.pc.d16 == 0x02);
+    ASSERT_TRUE(cpu.registers.psw.flags.z == 0x00);
+    ASSERT_TRUE(cpu.registers.psw.flags.s == 0x01);
+    ASSERT_TRUE(cpu.registers.psw.flags.p == 0x00);
+    ASSERT_TRUE(cpu.registers.psw.flags.ac == 0x00);
+    ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x00);
+
+    cpu.Emulate8080();
+    ASSERT_TRUE(cpu.registers.a == 0x00);
+    ASSERT_TRUE(cpu.registers.pc.d16 == 0x04);
+    ASSERT_TRUE(cpu.registers.psw.flags.z == 0x01);
+    ASSERT_TRUE(cpu.registers.psw.flags.s == 0x00);
+    ASSERT_TRUE(cpu.registers.psw.flags.p == 0x00);
+    ASSERT_TRUE(cpu.registers.psw.flags.ac == 0x01);
+    ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x01);
+}
+
+TEST_F(InstructionTestFixture, DAD_B) {
+    SetMemory(2, 0x09, 0x09);
+
+    cpu.registers.bc.d16 = 0xff00;
+    cpu.registers.hl.d16 = 0x0000;
+    cpu.Emulate8080();
+    ASSERT_TRUE(cpu.registers.hl.d16 == 0xff00);
+    ASSERT_TRUE(cpu.registers.pc.d16 == 0x0001);
+    ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x00);
+
+    cpu.registers.bc.d16 = 0x01ff;
+    cpu.Emulate8080();
+    ASSERT_TRUE(cpu.registers.hl.d16 == 0x00ff);
+    ASSERT_TRUE(cpu.registers.pc.d16 == 0x0002);
+    ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x01);
+}
+
+TEST_F(InstructionTestFixture, DAD_D) {
+    SetMemory(2, 0x19, 0x19);
+
+    cpu.registers.de.d16 = 0xff00;
+    cpu.registers.hl.d16 = 0x0000;
+    cpu.Emulate8080();
+    ASSERT_TRUE(cpu.registers.hl.d16 == 0xff00);
+    ASSERT_TRUE(cpu.registers.pc.d16 == 0x0001);
+    ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x00);
+
+    cpu.registers.de.d16 = 0x01ff;
+    cpu.Emulate8080();
+    ASSERT_TRUE(cpu.registers.hl.d16 == 0x00ff);
+    ASSERT_TRUE(cpu.registers.pc.d16 == 0x0002);
+    ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x01);
+}
+
+TEST_F(InstructionTestFixture, DAD_H) {
+    SetMemory(2, 0x29, 0x29);
+
+    cpu.registers.hl.d16 = 0x0001;
+    cpu.Emulate8080();
+    ASSERT_TRUE(cpu.registers.hl.d16 == 0x0002);
+    ASSERT_TRUE(cpu.registers.pc.d16 == 0x0001);
+    ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x00);
+
+    cpu.registers.hl.d16 = 0xffff;
+    cpu.Emulate8080();
+    ASSERT_TRUE(cpu.registers.hl.d16 == 0xfffe);
+    ASSERT_TRUE(cpu.registers.pc.d16 == 0x0002);
+    ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x01);
+}
+
+TEST_F(InstructionTestFixture, DAD_SP) {
+    SetMemory(2, 0x39, 0x39);
+
+    cpu.registers.sp.d16 = 0xff00;
+    cpu.registers.hl.d16 = 0x0000;
+    cpu.Emulate8080();
+    ASSERT_TRUE(cpu.registers.hl.d16 == 0xff00);
+    ASSERT_TRUE(cpu.registers.pc.d16 == 0x0001);
+    ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x00);
+
+    cpu.registers.sp.d16 = 0x01ff;
+    cpu.Emulate8080();
+    ASSERT_TRUE(cpu.registers.hl.d16 == 0x00ff);
+    ASSERT_TRUE(cpu.registers.pc.d16 == 0x0002);
+    ASSERT_TRUE(cpu.registers.psw.flags.cy == 0x01);
+}

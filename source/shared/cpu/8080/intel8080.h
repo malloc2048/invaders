@@ -3,21 +3,22 @@
 
 #include <cstdint>
 #include "instruction_set/registers.h"
-#include "instruction_set/registers.h"
 
 class Intel8080 {
 public:
-    Intel8080() = delete;
+    Intel8080();
     ~Intel8080();
-    explicit Intel8080(uint64_t memorySize);
 
     void Emulate8080();
     void Run(long bufferLength);
 
-    Registers registers;
+    Regs registers;
+
+protected:
+    void debug();
 
 private:
-    typedef void (*instruction)(Registers&);
+    typedef void (*instruction)(Regs&);
     static instruction instructionSet[256];
 };
 #endif

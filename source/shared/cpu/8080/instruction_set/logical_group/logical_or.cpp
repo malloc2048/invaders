@@ -2,14 +2,14 @@
 #include "../stack_io_machine_group/stack_io_machine_group.h"
 
 namespace logical_or {
-    void ORA_A(Registers& registers) { machine::Unimplemented(registers); }
-    void ORA_B(Registers& registers) { machine::Unimplemented(registers); }
-    void ORA_C(Registers& registers) { machine::Unimplemented(registers); }
-    void ORA_D(Registers& registers) { machine::Unimplemented(registers); }
-    void ORA_E(Registers& registers) { machine::Unimplemented(registers); }
-    void ORA_H(Registers& registers) { machine::Unimplemented(registers); }
-    void ORA_L(Registers& registers) { machine::Unimplemented(registers); }
-    void ORA_M(Registers& registers) { machine::Unimplemented(registers); }
+    void ORA_A(Regs& registers) { machine::Unimplemented(registers); }
+    void ORA_B(Regs& registers) { machine::Unimplemented(registers); }
+    void ORA_C(Regs& registers) { machine::Unimplemented(registers); }
+    void ORA_D(Regs& registers) { machine::Unimplemented(registers); }
+    void ORA_E(Regs& registers) { machine::Unimplemented(registers); }
+    void ORA_H(Regs& registers) { machine::Unimplemented(registers); }
+    void ORA_L(Regs& registers) { machine::Unimplemented(registers); }
+    void ORA_M(Regs& registers) { machine::Unimplemented(registers); }
 
-    void ORI(Registers& registers) { machine::Unimplemented(registers); }
+    void ORI(Regs& registers) { machine::Unimplemented(registers); }
 }

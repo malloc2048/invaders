@@ -2,21 +2,21 @@
 #include "common/config.h"
 
 namespace call {
-    void CALL(Registers& registers) { 
+    void CALL(Regs& registers) {
         branch::Call(registers);
 
         if(IsTraceOn())
             fprintf(TraceOut(), "CALL %04x", registers.pc.d16);
     }
 
-    void RET(Registers& registers) { 
+    void RET(Regs& registers) {
         branch::Return(registers);
 
         if(IsTraceOn())
             fprintf(TraceOut(), "RET %04x", registers.pc.d16);
     }
 
-    void CNZ(Registers& registers) {
+    void CNZ(Regs& registers) {
         if(registers.psw.flags.z == 0)
             branch::Call(registers);
         else
@@ -25,7 +25,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "CNZ %04x", registers.pc.d16);
     }
-    void CZ(Registers& registers) {
+    void CZ(Regs& registers) {
         if(registers.psw.flags.z == 1)
             branch::Call(registers);
         else
@@ -34,7 +34,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "CZ %04x", registers.pc.d16);
     }
-    void CNC(Registers& registers) {
+    void CNC(Regs& registers) {
         if(registers.psw.flags.cy == 0)
             branch::Call(registers);
         else
@@ -43,7 +43,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "CNC %04x", registers.pc.d16);
     }
-    void CC(Registers& registers) {
+    void CC(Regs& registers) {
         if(registers.psw.flags.cy == 1)
             branch::Call(registers);
         else
@@ -52,7 +52,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "CC %04x", registers.pc.d16);
     }
-    void CPO(Registers& registers) {
+    void CPO(Regs& registers) {
         if(registers.psw.flags.p == 0)
             branch::Call(registers);
         else
@@ -61,7 +61,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "CPO %04x", registers.pc.d16);
     }
-    void CPE(Registers& registers) {
+    void CPE(Regs& registers) {
         if(registers.psw.flags.p == 1)
             branch::Call(registers);
         else
@@ -70,7 +70,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "CPE %04x", registers.pc.d16);
     }
-    void CP(Registers& registers) {
+    void CP(Regs& registers) {
         if(registers.psw.flags.s == 0)
             branch::Call(registers);
         else
@@ -79,7 +79,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "CP %04x", registers.pc.d16);
     }
-    void CM(Registers& registers) {
+    void CM(Regs& registers) {
         if(registers.psw.flags.s == 1)
             branch::Call(registers);
         else
@@ -89,7 +89,7 @@ namespace call {
             fprintf(TraceOut(), "CM %04x", registers.pc.d16);
     }
 
-    void RNZ(Registers& registers) {
+    void RNZ(Regs& registers) {
         if(registers.psw.flags.z == 0)
             branch::Return(registers);
         else
@@ -98,7 +98,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "RNZ %04x", registers.pc.d16);
     }
-    void RZ(Registers& registers) {
+    void RZ(Regs& registers) {
         if(registers.psw.flags.z == 1)
             branch::Return(registers);
         else
@@ -107,7 +107,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "RZ %04x", registers.pc.d16);
     }
-    void RNC(Registers& registers) {
+    void RNC(Regs& registers) {
         if(registers.psw.flags.cy == 0)
             branch::Return(registers);
         else
@@ -116,7 +116,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "RNC %04x", registers.pc.d16);
     }
-    void RC(Registers& registers) {
+    void RC(Regs& registers) {
         if(registers.psw.flags.cy == 1)
             branch::Return(registers);
         else
@@ -125,7 +125,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "RC %04x", registers.pc.d16);
     }
-    void RPO(Registers& registers) {
+    void RPO(Regs& registers) {
         if(registers.psw.flags.p == 0)
             branch::Return(registers);
         else
@@ -134,7 +134,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "RPO %04x", registers.pc.d16);
     }
-    void RPE(Registers& registers) {
+    void RPE(Regs& registers) {
         if(registers.psw.flags.p == 1)
             branch::Return(registers);
         else
@@ -143,7 +143,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "RPE %04x", registers.pc.d16);
     }
-    void RP(Registers& registers) {
+    void RP(Regs& registers) {
         if(registers.psw.flags.s == 0)
             branch::Return(registers);
         else
@@ -152,7 +152,7 @@ namespace call {
         if(IsTraceOn())
             fprintf(TraceOut(), "RP %04x", registers.pc.d16);
     }
-    void RM(Registers& registers) {
+    void RM(Regs& registers) {
         if(registers.psw.flags.s == 1)
             branch::Return(registers);
         else

@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
         exit(-1);
     }
 
-    Intel8080 cpu(65536);
+    Intel8080 cpu;
     long romFileSize = ReadRomFile(romFile, cpu.registers.memory);
     if(config::IsHexDump()) {
         utilities::hexDump(cpu.registers.memory, romFileSize);

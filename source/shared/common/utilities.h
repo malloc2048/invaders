@@ -4,11 +4,12 @@
 #include <cstdio>
 #include <cstdint>
 
-namespace utilities {
-    void swap(uint8_t& x, uint8_t& y);
-    void delay(int timeToDelay);
-    void hexDump(uint8_t* buffer, long length);
-}
+class utilities {
+public:
+    static void swap(uint8_t& x, uint8_t& y);
+    static void delay(int timeToDelay);
+    static void hexDump(uint8_t* buffer, long length);
+};
 
 long GetFileSize(FILE* file);
 uint8_t Parity(uint32_t number, uint8_t size);

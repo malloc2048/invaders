@@ -10,8 +10,8 @@ void Disassemble(FILE* romFile, FILE* output) {
     for(long address = 0; address < fileLength; address += jump) {
         struct OpCode* opcode = GetOpCode(buffer[address]);
 
-        fprintf(output, "%04lX\t", address);
-        fprintf(output, "%02x\t", buffer[address]);
+        fprintf(output, "0x%lx\t", address);
+//        fprintf(output, "%02x\t", buffer[address]);
         fprintf(output, "%s", opcode->instruction);
 
         switch (opcode->size) {

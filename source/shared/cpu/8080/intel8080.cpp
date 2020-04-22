@@ -1,11 +1,10 @@
 #include <cstdio>
-#include <unistd.h>
 #include "common/config.h"
 #include "common/utilities.h"
 #include "cpu/8080/intel8080.h"
 #include "cpu/8080/instruction_set/instruction_set.h"
 
-Intel8080::Intel8080(uint64_t memorySize) {
+Intel8080::Intel8080(): registers() {
     registers.a = 0;
     registers.shift = 0;
     registers.bc.d16 = 0;
@@ -14,7 +13,7 @@ Intel8080::Intel8080(uint64_t memorySize) {
     registers.pc.d16 = 0;
     registers.sp.d16 = 0;
     registers.int_enable = 0;
-    registers.memory = new uint8_t[sizeof(uint8_t) * memorySize];
+    registers.memory = new uint8_t[65536];
 
     registers.psw.flags.z = 0;
     registers.psw.flags.s = 0;
@@ -28,19 +27,37 @@ Intel8080::~Intel8080() {
     delete registers.memory;
 }
 
-void Intel8080::Emulate8080() {
-    if(IsTraceOn()){
-        fprintf(TraceOut(), "0x%04x\t%02x\t", registers.pc.d16, registers.memory[registers.pc.d16]);
+void Intel8080::debug() {
+    if(IsTraceOn()) {
+        fprintf(TraceOut(), "0x%04x\t", registers.pc.d16);
+        fprintf(TraceOut(), "pc[0]: 0x%02x\t", registers.memory[registers.pc.d16]);
+        fprintf(TraceOut(), "pc[1]: 0x%02x\t", registers.memory[registers.pc.d16 + 1]);
+        fprintf(TraceOut(), "pc[2]: 0x%02x\t", registers.memory[registers.pc.d16 + 2]);
+        fprintf(TraceOut(), "a: 0x%02x\t", registers.a);
+        fprintf(TraceOut(), "b: 0x%02x\t", registers.bc.d8.highByte);
+        fprintf(TraceOut(), "c: 0x%02x\t", registers.bc.d8.lowByte);
+        fprintf(TraceOut(), "d: 0x%02x\t", registers.de.d8.highByte);
+        fprintf(TraceOut(), "e: 0x%02x\t", registers.de.d8.lowByte);
+        fprintf(TraceOut(), "h: 0x%02x\t", registers.hl.d8.highByte);
+        fprintf(TraceOut(), "l: 0x%02x\t", registers.hl.d8.lowByte);
+        fprintf(TraceOut(), "sp: 0x%04x\t", registers.sp.d16);
+        fprintf(TraceOut(), "sp[0]: 0x%02x\t", registers.memory[registers.sp.d16]);
+        fprintf(TraceOut(), "sp[1]: 0x%02x\t", registers.memory[registers.sp.d16 + 1]);
+        fprintf(TraceOut(), "z: 0x%02x\t", registers.psw.flags.z);
+        fprintf(TraceOut(), "s: 0x%02x\t", registers.psw.flags.s);
+        fprintf(TraceOut(), "p: 0x%02x\t", registers.psw.flags.p);
+        fprintf(TraceOut(), "cy: 0x%02x\t", registers.psw.flags.cy);
+        fprintf(TraceOut(), "ac: 0x%02x\t", registers.psw.flags.ac);
     }
-    uint8_t opcode = registers.memory[registers.pc.d16];
-
-    (*instructionSet[registers.memory[registers.pc.d16]])(registers);
-
-    if(IsTraceOn())
-        fprintf(TraceOut(), "\t%02x\n", registers.memory[0x910]);
 }
 
-//void Intel8080::Run(registers8080* _registers, long bufferLength) {
+void Intel8080::Emulate8080() {
+    debug();
+    (*instructionSet[registers.memory[registers.pc.d16]])(registers);
+    if(IsTraceOn())
+        fprintf(TraceOut(), "\n");
+}
+
 void Intel8080::Run(long bufferLength) {
     while (registers.pc.d16 < bufferLength) {
         Emulate8080();
