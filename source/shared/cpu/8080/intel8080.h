@@ -2,7 +2,8 @@
 #define EMULATOR_INTEL8080_H
 
 #include <cstdint>
-#include "instruction_set/registers.h"
+#include "memorymap.h"
+#include "instruction_set/regs.h"
 
 class Intel8080 {
 public:
@@ -12,12 +13,16 @@ public:
     void Emulate8080();
     void Run(long bufferLength);
 
+    MemoryMap mm;
     Regs registers;
 
 protected:
     void debug();
 
 private:
+    typedef void (*opcode)(MemoryMap&);
+    static opcode opcodes[256];
+
     typedef void (*instruction)(Regs&);
     static instruction instructionSet[256];
 };

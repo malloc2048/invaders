@@ -4,6 +4,8 @@
 #include "cpu/8080/intel8080.h"
 #include "cpu/8080/instruction_set/instruction_set.h"
 
+Intel8080::opcode Intel8080::opcodes[256] = {};
+
 Intel8080::Intel8080(): registers() {
     registers.a = 0;
     registers.shift = 0;
@@ -21,6 +23,8 @@ Intel8080::Intel8080(): registers() {
     registers.psw.flags.cy = 0;
     registers.psw.flags.ac = 0;
     registers.psw.flags.pad = 0;
+
+    opcodes[0x87] = addition::ADD_A_New;
 }
 
 Intel8080::~Intel8080() {

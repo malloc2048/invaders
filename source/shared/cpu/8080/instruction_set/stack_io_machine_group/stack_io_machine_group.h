@@ -1,7 +1,7 @@
 #ifndef EMULATOR_STACK_IO_MACHINE_GROUP_H
 #define EMULATOR_STACK_IO_MACHINE_GROUP_H
 
-#include "cpu/8080/instruction_set/registers.h"
+#include "cpu/8080/instruction_set/regs.h"
 
 namespace machine {
     void EI(Regs& registers);

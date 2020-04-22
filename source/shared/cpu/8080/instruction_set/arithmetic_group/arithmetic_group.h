@@ -1,13 +1,15 @@
 #ifndef EMULATOR_ARITHMETIC_GROUP_H
 #define EMULATOR_ARITHMETIC_GROUP_H
 
-#include "cpu/8080/instruction_set/registers.h"
+#include "cpu/8080/memorymap.h"
+#include "cpu/8080/instruction_set/regs.h"
 
 namespace arithmetic {
     void Add(Regs &registers, uint8_t src, const char* instr);
 }
 
 namespace addition {
+    void ADD_A_New(MemoryMap& mm);
     void ADD_A(Regs &registers);
     void ADD_B(Regs &registers);
     void ADD_C(Regs &registers);
@@ -20,6 +22,7 @@ namespace addition {
     void ADI(Regs &registers);
     void ACI(Regs &registers);
 
+    void ADC(uint8_t value, Regs& registers, const char* instr);
     void ADC_A(Regs &registers);
     void ADC_B(Regs &registers);
     void ADC_C(Regs &registers);
@@ -29,7 +32,6 @@ namespace addition {
     void ADC_L(Regs &registers);
     void ADC_M(Regs &registers);
 
-//    void dad(uint16_t highByte, uint16_t lowByte, Regs& registers, const char* instr);
     void DAD(pair& value, Regs& registers, const char* instr);
     void DAD_B(Regs &registers);
     void DAD_D(Regs &registers);
@@ -63,7 +65,7 @@ namespace subtraction {
 }
 
 namespace increment {
-    void incrementReg(Regs& registers, uint8_t* reg, const char* instr);
+    uint8_t INR(Regs& registers, uint8_t reg, const char* instr);
     void INR_A(Regs& registers);
     void INR_B(Regs& registers);
     void INR_C(Regs& registers);
@@ -91,6 +93,7 @@ namespace decrement {
     void DCR_L(Regs& registers);
     void DCR_M(Regs& registers);
 
+    uint16_t DCX(Regs& registers, uint16_t value, const char* instr);
     void DCX_B(Regs &registers);
     void DCX_D(Regs &registers);
     void DCX_H(Regs &registers);

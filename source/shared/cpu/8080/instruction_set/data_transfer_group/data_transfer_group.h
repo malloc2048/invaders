@@ -1,7 +1,7 @@
 #ifndef EMULATOR_DATA_TRANSFER_GROUP_H
 #define EMULATOR_DATA_TRANSFER_GROUP_H
 
-#include "cpu/8080/instruction_set/registers.h"
+#include "cpu/8080/instruction_set/regs.h"
 
 namespace data_transfer {
     void MoveImmediateLow(pair& dst, Regs& regs, const char* instr);

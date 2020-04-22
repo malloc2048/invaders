@@ -1,7 +1,7 @@
 #ifndef EMULATOR_LOGICAL_GROUP_H
 #define EMULATOR_LOGICAL_GROUP_H
 
-#include "cpu/8080/instruction_set/registers.h"
+#include "cpu/8080/instruction_set/regs.h"
 
 namespace logical_and {
     void ANA_A(Regs& registers);
