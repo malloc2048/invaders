@@ -1,6 +1,8 @@
+#include "common/config.h"
 #include "memorymaptestfixture.h"
 
 void MemoryMapTestFixture::SetUp() {
+    TraceOff();
     Test::SetUp();
 }
 

@@ -21,6 +21,6 @@ namespace branch {
     void Return(Regs& registers) {
         registers.pc.d8.lowByte = registers.memory[registers.sp.d16];
         registers.pc.d8.highByte = registers.memory[registers.sp.d16 + 1];
-        registers.sp.d16 += 2;
+        registers.sp.d16 += 1;
     }
 }

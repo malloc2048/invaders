@@ -62,11 +62,13 @@ void Intel8080::Emulate8080() {
         fprintf(TraceOut(), "\n");
 }
 
-void Intel8080::Run(long bufferLength) {
-    while (registers.pc.d16 < bufferLength) {
-        Emulate8080();
-        utilities::delay(0);
-    }
+void Intel8080::GenerateInterrupt(uint8_t intNumber) {
+    debug();
+    restart::PushPC(registers);
+    registers.pc.d16 = intNumber * 8;
+
+    if(IsTraceOn())
+        fprintf(TraceOut(), "interrupt %d\n", intNumber);
 }
 
 Intel8080::instruction Intel8080::instructionSet[256] = {

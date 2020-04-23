@@ -1,3 +1,4 @@
+#include "common/config.h"
 #include "memorymaptestfixture.h"
 
 TEST_F(MemoryMapTestFixture, AccumulatorReadWrite) {
@@ -40,4 +41,13 @@ TEST_F(MemoryMapTestFixture, LReadWrite) {
     ASSERT_TRUE(mm.ReadL() == 0x00);
     mm.WriteL(0xff);
     ASSERT_TRUE(mm.ReadL() == 0xff);
+}
+
+TEST_F(MemoryMapTestFixture, RAMReadWrite) {
+    ASSERT_TRUE(mm.Read(0x0000) == 0x00);
+    mm.Write(0x0000, 0xff);
+    ASSERT_TRUE(mm.Read(0x0000) == 0x00);
+
+    mm.Write(0x2000, 0xff);
+    ASSERT_TRUE(mm.Read(0x2000) == 0xff);
 }

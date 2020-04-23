@@ -47,6 +47,7 @@ namespace call {
 }
 
 namespace restart {
+    void PushPC(Regs& registers);
     void RST_0(Regs& registers);
     void RST_1(Regs& registers);
     void RST_2(Regs& registers);

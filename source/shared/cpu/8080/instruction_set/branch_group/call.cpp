@@ -93,7 +93,7 @@ namespace call {
         if(registers.psw.flags.z == 0)
             branch::Return(registers);
         else
-            registers.pc.d16 += 3;
+            registers.pc.d16 += 1;
 
         if(IsTraceOn())
             fprintf(TraceOut(), "RNZ %04x", registers.pc.d16);
@@ -102,7 +102,7 @@ namespace call {
         if(registers.psw.flags.z == 1)
             branch::Return(registers);
         else
-            registers.pc.d16 += 3;
+            registers.pc.d16 += 1;
 
         if(IsTraceOn())
             fprintf(TraceOut(), "RZ %04x", registers.pc.d16);
@@ -111,7 +111,7 @@ namespace call {
         if(registers.psw.flags.cy == 0)
             branch::Return(registers);
         else
-            registers.pc.d16 += 3;
+            registers.pc.d16 += 1;
 
         if(IsTraceOn())
             fprintf(TraceOut(), "RNC %04x", registers.pc.d16);
@@ -120,7 +120,7 @@ namespace call {
         if(registers.psw.flags.cy == 1)
             branch::Return(registers);
         else
-            registers.pc.d16 += 3;
+            registers.pc.d16 += 1;
 
         if(IsTraceOn())
             fprintf(TraceOut(), "RC %04x", registers.pc.d16);
@@ -129,7 +129,7 @@ namespace call {
         if(registers.psw.flags.p == 0)
             branch::Return(registers);
         else
-            registers.pc.d16 += 3;
+            registers.pc.d16 += 1;
 
         if(IsTraceOn())
             fprintf(TraceOut(), "RPO %04x", registers.pc.d16);
@@ -138,7 +138,7 @@ namespace call {
         if(registers.psw.flags.p == 1)
             branch::Return(registers);
         else
-            registers.pc.d16 += 3;
+            registers.pc.d16 += 1;
 
         if(IsTraceOn())
             fprintf(TraceOut(), "RPE %04x", registers.pc.d16);
@@ -147,7 +147,7 @@ namespace call {
         if(registers.psw.flags.s == 0)
             branch::Return(registers);
         else
-            registers.pc.d16 += 3;
+            registers.pc.d16 += 1;
 
         if(IsTraceOn())
             fprintf(TraceOut(), "RP %04x", registers.pc.d16);
@@ -156,7 +156,7 @@ namespace call {
         if(registers.psw.flags.s == 1)
             branch::Return(registers);
         else
-            registers.pc.d16 += 3;
+            registers.pc.d16 += 1;
 
         if(IsTraceOn())
             fprintf(TraceOut(), "RM %04x", registers.pc.d16);

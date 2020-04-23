@@ -3,7 +3,17 @@
 #include "../stack_io_machine_group/stack_io_machine_group.h"
 
 namespace rotate {
-    void RLC(Regs& registers) { machine::Unimplemented(registers); }
+    void RLC(Regs& registers) {
+        uint8_t highOrderBit = registers.a & 0x80u;
+        registers.a << 0x01u;
+        registers.a &= highOrderBit >> 7u;
+        registers.psw.flags.cy = highOrderBit;
+
+        registers.pc.d16 += 1;
+
+        if(IsTraceOn())
+            fprintf(TraceOut(), "RRC");
+    }
 
     void RRC(Regs& registers) {
         uint8_t lowOrderBit = registers.a & 0x01u;

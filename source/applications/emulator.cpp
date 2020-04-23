@@ -1,3 +1,4 @@
+#include <ctime>
 #include <cstdio>
 #include <cstdlib>
 #include "common/config.h"
@@ -14,14 +15,15 @@ void usage() {
 }
 
 int main(int argc, char** argv) {
-    if(argc != ARG_COUNT) {
-        usage();
-        printf("argc = %d", argc);
-        exit(-1);
+    char romFilename[256];
+
+    if(argc == ARG_COUNT) {
+        sprintf(romFilename, "%s/%s", argv[1], argv[2]);
+    } else {
+        sprintf(romFilename, "../../../config/invaders");
     }
 
-    char romFilename[256];
-    sprintf(romFilename, "%s/%s", argv[1], argv[2]);
+
     FILE* romFile = fopen(romFilename, "r");
     if(romFile == nullptr) {
         printf("unable to open rom file file %s", romFilename);
@@ -33,7 +35,19 @@ int main(int argc, char** argv) {
     if(config::IsHexDump()) {
         utilities::hexDump(cpu.registers.memory, romFileSize);
     }
-    cpu.Run(romFileSize);
+
+    clock_t lastInterrupt = clock();
+    while(cpu.registers.pc.d16 < romFileSize) {
+        cpu.Emulate8080();
+
+        if(clock() - lastInterrupt > 1.0/60.0) {
+            if(cpu.registers.int_enable) {
+                cpu.GenerateInterrupt(2);
+                lastInterrupt = clock();
+            }
+        }
+    }
+
     fclose(romFile);
 
     return 0;

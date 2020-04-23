@@ -1,5 +1,6 @@
+#include <cstdio>
 #include "memorymap.h"
-#include "common/config.h"
+#include "common/logger.h"
 
 const uint16_t MemoryMap::ROM_MIN_ADDRESS = 0x0000;
 const uint16_t MemoryMap::ROM_MAX_ADDRESS = 0x1fff;
@@ -14,6 +15,9 @@ bool MemoryMap::Write(uint16_t address, uint8_t value) {
         return true;
     }
 
-    fprintf(TraceOut(), "error: attempt to write to ROM %04x", address);
+    char msg[256];
+    sprintf(msg, "attempt to write to ROM address 0x%04X", address);
+    LogError(msg);
+
     return false;
 }

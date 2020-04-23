@@ -11,7 +11,7 @@ public:
     ~Intel8080();
 
     void Emulate8080();
-    void Run(long bufferLength);
+    void GenerateInterrupt(uint8_t intNumber);
 
     MemoryMap mm;
     Regs registers;

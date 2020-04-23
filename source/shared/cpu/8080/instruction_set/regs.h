@@ -41,6 +41,8 @@ struct Regs {
     uint8_t int_enable; // interrupt enabled?
     uint16_t shift;     // shift register
 
+    uint8_t ioMemory[256];
+
     void Dump() const {
         printf("registers:\n");
         printf("registers:\ta: %02x\n", a);

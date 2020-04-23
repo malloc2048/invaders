@@ -112,5 +112,21 @@ namespace addition {
             fprintf(TraceOut(), "%s %04x", instr, value.d16);
     }
 
-    void DAA(Regs &registers) { machine::Unimplemented(registers); }
+    void DAA(Regs &registers) {
+        uint8_t origValue = registers.a;
+        if(((registers.a & 0x0fu) > 9) || registers.psw.flags.ac)
+            registers.a += 6;
+        if(((registers.a & 0xf0u) > 9) || registers.psw.flags.cy)
+            registers.a += 0x60;
+
+        registers.psw.flags.z = registers.a == 0 ? 1 : 0;
+        registers.psw.flags.s = (registers.a & 0x80u) > 0 ? 1 : 0;
+        registers.psw.flags.p = Parity(registers.a, 8);
+        registers.psw.flags.cy = origValue > registers.a;
+        registers.psw.flags.ac = (origValue & 0x00ffu) > (registers.a & 0x00ffu);
+        registers.pc.d16 += 3;
+
+        if (IsTraceOn())
+            fprintf(TraceOut(), "DAA %02x", registers.a);
+    }
 }

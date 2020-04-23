@@ -8,8 +8,10 @@ namespace load {
     void LXI_SP(Regs& registers) { data_transfer::LoadImmediate(registers, registers.sp, "LXI SP"); }
 
     void LDA(Regs& registers){
-        uint16_t address = (registers.memory[registers.pc.d16 + 2] << 8u | registers.memory[registers.pc.d16 + 1]);
-        registers.a = registers.memory[address];
+        pair address = {};
+        address.d8.lowByte = registers.memory[registers.pc.d16 + 1];
+        address.d8.highByte = registers.memory[registers.pc.d16 + 2];
+        registers.a = registers.memory[address.d16];
         registers.pc.d16 += 3;
 
         if(IsTraceOn())
