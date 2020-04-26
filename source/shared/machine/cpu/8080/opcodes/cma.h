@@ -7,10 +7,10 @@ class CMA: public OpCode {
 public:
     CMA() = delete;
     ~CMA() = default;
-    CMA(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    CMA(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
@@ -18,6 +18,13 @@ public:
             registers->a = registers->a ^ (0x01u << i);
         }
         return 1;
+    }
+
+    void Disassemble(std::ostream& out) override {
+        out << "CMA";
+        registers->pc.d16 += 1;
+
+
     }
 };
 #endif

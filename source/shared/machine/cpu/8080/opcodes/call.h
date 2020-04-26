@@ -7,10 +7,10 @@ class CALL: public OpCode {
 public:
     CALL() = delete;
     ~CALL() = default;
-    CALL(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    CALL(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
@@ -69,6 +69,12 @@ public:
         return 0;
     }
 
+    void Disassemble(std::ostream& out) override {
+        out << std::hex << std::setw(2) << std::setfill('0') << (unsigned)ram->read(registers->pc.d16);
+        out << "\tCALL " << (unsigned)ram->read(registers->pc.d16 + 1) << (unsigned)ram->read(registers->pc.d16 + 2);
+        registers->pc.d16 += 3;
+    }
+
 protected:
     void call() {
         RegisterPair address{};
@@ -78,6 +84,7 @@ protected:
 
         address.bytes.low = ram->read(registers->pc.d16 + 1);
         address.bytes.high = ram->read(registers->pc.d16 + 2);
+        registers->pc.d16 = address.d16;
     }
 };
 

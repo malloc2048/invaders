@@ -10,6 +10,6 @@ set(PROJECT_ROOT ${CMAKE_CURRENT_LIST_DIR})
 set(SHARED_INC_ROOT ${PROJECT_ROOT}/include/shared)
 
 add_subdirectory(source/shared)
-#add_subdirectory(source/applications)
+add_subdirectory(source/applications)
 
-#add_subdirectory(test)
+add_subdirectory(test)

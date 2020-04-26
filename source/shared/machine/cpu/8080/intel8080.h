@@ -5,20 +5,24 @@
 #include <string>
 #include "flags.h"
 #include "opcode.h"
-#include "ram/ram.h"
+#include <iostream>
 #include "registers.h"
+#include "machine/ram/ram.h"
 
 class Intel8080 {
 public:
-    Intel8080();
+    explicit Intel8080(RAM* memory, Flags* flags, Registers* registers, std::ostream& outputStream);
     ~Intel8080() = default;
 
-    void cycle();
+    void Disassemble();
+    void tick(bool showStatus);
 
 private:
-    std::shared_ptr<RAM> ram;
-    std::shared_ptr<Flags> flags;
-    std::shared_ptr<Registers> registers;
-    std::shared_ptr<OpCode> opcodes[256];
+    std::ostream& out;
+    OpCode* opcodes[256];
+
+    RAM* memory = nullptr;
+    Flags* flags = nullptr;
+    Registers* registers = nullptr;
 };
 #endif

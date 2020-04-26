@@ -7,10 +7,10 @@ class XRA: public OpCode {
 public:
     XRA() = delete;
     ~XRA() = default;
-    XRA(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    XRA(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
@@ -51,6 +51,13 @@ public:
 
         return 1;
     }
-};
 
+    void Disassemble(std::ostream& out) override {
+        uint8_t src = ram->read(registers->pc.d16) & 0x07u;
+
+        out << std::hex << std::setw(2) << std::setfill('0');
+        out << (unsigned)ram->read(registers->pc.d16) << "\tXRA " << registerNames[src];
+        registers->pc.d16 += 1;
+    }
+};
 #endif

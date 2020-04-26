@@ -8,10 +8,10 @@ public:
     Rotate() = delete;
     ~Rotate() = default;
 
-    Rotate(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    Rotate(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
@@ -42,6 +42,33 @@ public:
                 break;
         }
         return 1;
+    }
+
+    void Disassemble(std::ostream& out) override {
+        out << std::hex << std::setw(2) << std::setfill('0');
+        out << (unsigned)ram->read(registers->pc.d16) << "\t";
+
+        auto opcode = ram->read(registers->pc.d16);
+        switch(opcode) {
+            case 0x07:  // RLC
+                out << "RLC";
+                break;
+            case 0x0f:  // RRC
+                out << "RRC";
+                break;
+            case 0x17:  // RAL
+                out << "RAL";
+                break;
+            case 0x1f:  // RAR
+                out << "RAR";
+                break;
+            default:
+                break;
+        }
+
+        registers->pc.d16 += 1;
+
+
     }
 };
 

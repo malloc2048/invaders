@@ -7,10 +7,10 @@ class SBI: public OpCode {
 public:
     SBI() = delete;
     ~SBI() = default;
-    SBI(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    SBI(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
@@ -22,6 +22,12 @@ public:
         registers->a = result & 0x00ffu;
 
         return 2;
+    }
+
+    void Disassemble(std::ostream& out) override {
+        out << std::hex << std::setw(2) << std::setfill('0');
+        out << (unsigned)ram->read(registers->pc.d16) << "\tSBI " << (unsigned)ram->read(registers->pc.d16 + 1);
+        registers->pc.d16 += 2;
     }
 };
 #endif

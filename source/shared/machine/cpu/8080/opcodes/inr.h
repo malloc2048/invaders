@@ -8,10 +8,10 @@ public:
     INR() = delete;
     ~INR() = default;
 
-    INR(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    INR(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
@@ -29,7 +29,7 @@ public:
                 value = registers->bc.bytes.low + 1;
                 updateFlags(value);
                 updateAuxiliaryCarry(registers->bc.bytes.low, value);
-                registers->bc.bytes.high = value;
+                registers->bc.bytes.low = value;
                 break;
             case D:
                 value = registers->de.bytes.high + 1;
@@ -41,7 +41,7 @@ public:
                 value = registers->de.bytes.low + 1;
                 updateFlags(value);
                 updateAuxiliaryCarry(registers->de.bytes.low, value);
-                registers->de.bytes.high = value;
+                registers->de.bytes.low = value;
                 break;
             case H:
                 value = registers->hl.bytes.high + 1;
@@ -53,7 +53,7 @@ public:
                 value = registers->hl.bytes.low + 1;
                 updateFlags(value);
                 updateAuxiliaryCarry(registers->hl.bytes.low, value);
-                registers->hl.bytes.high = value;
+                registers->hl.bytes.low = value;
                 break;
             case M:
                 value = ram->read(registers->hl.d16) + 1;
@@ -71,6 +71,15 @@ public:
                 break;
         }
         return 1;
+    }
+
+    void Disassemble(std::ostream& out) override {
+        auto r = (ram->read(registers->pc.d16) & 0x38u) >> 3u;
+        out << std::hex << std::setw(2) << std::setfill('0');
+        out << (unsigned)ram->read(registers->pc.d16) << "\tINR " << registerNames[r];
+        registers->pc.d16 += 1;
+
+
     }
 };
 #endif

@@ -7,10 +7,10 @@ class ANI: public OpCode {
 public:
     ANI() = delete;
     ~ANI() = default;
-    ANI(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    ANI(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
@@ -22,6 +22,11 @@ public:
         registers->a = result & 0x00ffu;
 
         return 2;
+    }
+
+    void Disassemble(std::ostream& out) override {
+        out << (unsigned)ram->read(registers->pc.d16) << "\tANI " << std::hex << std::setw(2) << std::setfill('0') << (unsigned)ram->read(registers->pc.d16 + 1);
+        registers->pc.d16 += 2;
     }
 };
 

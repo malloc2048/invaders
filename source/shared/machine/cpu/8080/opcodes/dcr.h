@@ -8,10 +8,10 @@ public:
     DCR() = delete;
     ~DCR() = default;
 
-    DCR(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    DCR(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
@@ -71,6 +71,14 @@ public:
                 break;
         }
         return 1;
+    }
+
+    void Disassemble(std::ostream& out) override {
+        auto r = (ram->read(registers->pc.d16) & 0x38u) >> 3u;
+
+        out << std::hex << std::setw(2) << std::setfill('0');
+        out << (unsigned)ram->read(registers->pc.d16) << "\tDCR " << registerNames[r];
+        registers->pc.d16 += 1;
     }
 };
 #endif

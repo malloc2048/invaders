@@ -8,14 +8,19 @@ public:
     HLT() = delete;
     ~HLT() = default;
 
-    HLT(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    HLT(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
         exit(0);
+    }
+
+    void Disassemble(std::ostream& out) override {
+        out << "HLT";
+        registers->pc.d16 += 1;
     }
 };
 #endif

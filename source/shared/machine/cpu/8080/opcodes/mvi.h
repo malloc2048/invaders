@@ -8,10 +8,10 @@ public:
     MVI() = delete;
     ~MVI() = default;
 
-    MVI(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    MVI(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
@@ -47,6 +47,14 @@ public:
                 break;
         }
         return 2;
+    }
+
+    void Disassemble(std::ostream& out) override {
+        auto r = (ram->read(registers->pc.d16) & 0x38u) >> 3u;
+
+        out << std::hex << std::setw(2) << std::setfill('0') << (unsigned)ram->read(registers->pc.d16);
+        out << "\tMVI " << registerNames[r] << ", " << (unsigned)ram->read(registers->pc.d16 + 1);
+        registers->pc.d16 += 2;
     }
 };
 #endif

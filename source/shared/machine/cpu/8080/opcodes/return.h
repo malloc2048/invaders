@@ -7,10 +7,10 @@ class Return: public OpCode {
 public:
     Return() = delete;
     ~Return() = default;
-    Return(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
-        ram = ram;
-        flags = flags;
-        registers = registers;
+    Return(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode) override {
@@ -66,7 +66,24 @@ public:
 
         // only get here if this is a no condition return
         ret();
-        return 0;
+        return 3;
+    }
+
+    void Disassemble(std::ostream& out) override {
+        uint8_t condition = ram->read(registers->pc.d16) & 0x038u >> 3u;
+
+        out << std::hex << std::setw(2) << std::setfill('0');
+        out << (unsigned)ram->read(registers->pc.d16) << "\tR";
+
+        if((ram->read(registers->pc.d16) & 0x007u) == 0u) {
+            out << OpCode::conditionStr[condition] << " ";
+        } else {
+            out << "ET ";
+        }
+        out << (unsigned)ram->read(registers->pc.d16 + 2) << (unsigned)ram->read(registers->pc.d16 + 1);
+        registers->pc.d16 += 3;
+
+
     }
 
 protected:

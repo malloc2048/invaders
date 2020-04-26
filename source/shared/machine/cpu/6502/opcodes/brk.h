@@ -7,17 +7,21 @@ class BRK: public OpCode {
 public:
     BRK() = delete;
     ~BRK() = default;
-    BRK(std::shared_ptr<RAM> ram, std::shared_ptr<Flags> flags, std::shared_ptr<Registers> registers) {
+    BRK(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
         opcode = 0x00;
         nemonic = "BRK";
 
-        ram = ram;
-        flags = flags;
-        registers = registers;
+        ram = ramIn;
+        flags = flagsIn;
+        registers = registersIn;
     }
 
     int8_t Execute() override {
         return 1;
+    }
+
+    void Disassemble(std::ostream& out) override {
+
     }
 };
 #endif
