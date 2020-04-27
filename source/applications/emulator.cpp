@@ -1,3 +1,4 @@
+#include <thread>
 #include <iostream>
 #include "machine/cpu/8080/intel8080.h"
 
@@ -18,8 +19,8 @@ int main(int argc, char** argv) {
     memory.loadRom(romFile);
     fclose(romFile);
 
-    while(regs.pc.d16 < RAM::ROM_MAX_ADDR) {
-        cpu.tick(true);
-    }
+    std::thread cpuThread(&Intel8080::Run, &cpu, true);
+    cpuThread.join();
+
     return 0;
 }

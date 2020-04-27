@@ -9,6 +9,17 @@ void Intel8080::Disassemble() {
     out << std::endl;
 }
 
+void Intel8080::stop() {
+    halted = false;
+}
+
+void Intel8080::Run(bool showStatus) {
+    halted = true;
+    while(halted) {
+        tick(showStatus);
+    }
+}
+
 void Intel8080::tick(bool showStatus) {
     if(registers->intEnabled == 1)
         registers->intEnabled = 2;

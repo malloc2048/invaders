@@ -14,11 +14,14 @@ public:
     explicit Intel8080(RAM* memory, Flags* flags, Registers* registers, std::ostream& outputStream);
     ~Intel8080() = default;
 
+    void stop();
     void Disassemble();
-    void tick(bool showStatus);
+    void Run(bool showStatus);
+    void tick(bool showStatus = false);
 
 private:
     std::ostream& out;
+    bool halted = true;
     OpCode* opcodes[256];
 
     RAM* memory = nullptr;

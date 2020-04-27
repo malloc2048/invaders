@@ -1,15 +1,16 @@
-file(GLOB_RECURSE TEST_SRC
-    ${CMAKE_CURRENT_LIST_DIR}/*.h
-    ${CMAKE_CURRENT_LIST_DIR}/*.cpp
-)
+file(GLOB_RECURSE CPU_TEST_SRC ${CMAKE_CURRENT_LIST_DIR}/shared/cpu/*.h ${CMAKE_CURRENT_LIST_DIR}/shared/cpu/*.cpp)
+add_executable(cpu_ut ${CPU_TEST_SRC})
+target_link_libraries(cpu_ut gtest_main gtest cpulib ramlib pthread)
+add_dependencies(cpu_ut cpulib ramlib)
 
-add_executable(tests ${TEST_SRC})
-target_link_libraries(tests gtest_main gtest machinelib pthread)
-add_dependencies(tests machinelib)
+file(GLOB_RECURSE VIDEO_TEST_SRC ${CMAKE_CURRENT_LIST_DIR}/shared/video/*.h ${CMAKE_CURRENT_LIST_DIR}/shared/video/*.cpp)
+add_executable(video_ut ${VIDEO_TEST_SRC})
+target_link_libraries(video_ut gtest_main gtest videolib ramlib pthread)
+add_dependencies(video_ut videolib ramlib)
 
-option(USE_COVERAGE "coverage" ON)
-if (USE_COVERAGE)
-    target_compile_options(tests PUBLIC --coverage)
-    target_compile_options(machinelib PUBLIC --coverage)
-    target_link_libraries(machinelib gcov)
-endif ()
+#option(USE_COVERAGE "coverage" ON)
+#if (USE_COVERAGE)
+#    target_compile_options(cpu_ut PUBLIC --coverage)
+#    target_compile_options(machinelib PUBLIC --coverage)
+#    target_link_libraries(machinelib gcov)
+#endif ()

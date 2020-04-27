@@ -7,7 +7,7 @@ uint8_t RAM::read(uint16_t address) const {
 }
 
 bool RAM::write(uint16_t address, uint8_t value) {
-    if(writeProtected && address <= ROM_MAX_ADDR) {
+    if(writeProtected && address < ROM_MAX_ADDR) {
         std::cout << std::setw(4) << std::hex << std::setfill('0');
         std::cout << "attempt to write to ROM address 0x" << address << std::endl;
         return false;

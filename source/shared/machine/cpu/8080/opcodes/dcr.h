@@ -20,56 +20,43 @@ public:
         uint8_t value;
         switch(r) {
             case B:
-                value = registers->bc.bytes.high - 1;
-                updateFlags(value);
-                updateAuxiliaryCarry(registers->bc.bytes.high, value);
-                registers->bc.bytes.high = value;
+                value = registers->bc.bytes.high;
+                registers->bc.bytes.high = value - 1;
                 break;
             case C:
-                value = registers->bc.bytes.low - 1;
-                updateFlags(value);
-                updateAuxiliaryCarry(registers->bc.bytes.low, value);
-                registers->bc.bytes.high = value;
+                value = registers->bc.bytes.low;
+                registers->bc.bytes.low = value - 1;
                 break;
             case D:
-                value = registers->de.bytes.high - 1;
-                updateFlags(value);
-                updateAuxiliaryCarry(registers->de.bytes.high, value);
-                registers->de.bytes.high = value;
+                value = registers->de.bytes.high;
+                registers->de.bytes.high = value - 1;
                 break;
             case E:
-                value = registers->de.bytes.low - 1;
-                updateFlags(value);
-                updateAuxiliaryCarry(registers->de.bytes.low, value);
-                registers->de.bytes.high = value;
+                value = registers->de.bytes.low;
+                registers->de.bytes.low = value - 1;
                 break;
             case H:
-                value = registers->hl.bytes.high - 1;
-                updateFlags(value);
-                updateAuxiliaryCarry(registers->hl.bytes.high, value);
-                registers->hl.bytes.high = value;
+                value = registers->hl.bytes.high;
+                registers->hl.bytes.high = value - 1;
                 break;
             case L:
-                value = registers->hl.bytes.low - 1;
-                updateFlags(value);
-                updateAuxiliaryCarry(registers->hl.bytes.low, value);
-                registers->hl.bytes.high = value;
+                value = registers->hl.bytes.low;
+                registers->hl.bytes.low = value - 1;
                 break;
             case M:
-                value = ram->read(registers->hl.d16) - 1;
-                updateFlags(value);
-                updateAuxiliaryCarry(ram->read(registers->hl.d16), value);
-                ram->write(registers->hl.d16, value);
+                value = ram->read(registers->hl.d16);
+                ram->write(registers->hl.d16, value - 1);
                 break;
             case A:
-                value = registers->a - 1;
-                updateFlags(value);
-                updateAuxiliaryCarry(registers->a, value);
-                registers->a = value;
+                value = registers->a;
+                registers->a = value - 1;
                 break;
             default:
-                break;
+                return 1;
         }
+
+        updateFlags(value - 1);
+        updateAuxiliaryCarry(value, value - 1);
         return 1;
     }
 

@@ -20,7 +20,7 @@ public:
     static const uint16_t MEM_MAX_ADDR = 0xffff;
 
 private:
-    uint8_t ram[65536];
+    uint8_t ram[MEM_MAX_ADDR];
     bool writeProtected = true;
 };
 #endif

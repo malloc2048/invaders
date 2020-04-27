@@ -1,8 +1,8 @@
-#include "intel8080testfixture.h"
+#include "../intel8080testfixture.h"
 
-TEST_F(Intel8080TestFixture, ACI_Test) {
+TEST_F(Intel8080TestFixture, ADI_Test) {
     std::vector<uint8_t> testMemory = {
-        0xce, 0xff, 0xce, 0x01, 0xce, 0x01
+        0xc6, 0xff, 0xc6, 0x01, 0xc6, 0x01
     };
     loadTestMemory(testMemory);
 
@@ -17,7 +17,7 @@ TEST_F(Intel8080TestFixture, ACI_Test) {
     ASSERT_EQ(regs.pc.d16, 0x0004);
 
     cpu.tick();
-    ASSERT_EQ(regs.a, 0x02);
+    ASSERT_EQ(regs.a, 0x01);
     ASSERT_EQ(flags.d8, 0x00);
     ASSERT_EQ(regs.pc.d16, 0x0006);
 }
