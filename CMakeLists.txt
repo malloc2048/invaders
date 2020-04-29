@@ -3,6 +3,8 @@ project(nesemu)
 
 set(CMAKE_CXX_STANDARD 14)
 
+add_definitions(-DSFML_STATIC)
+
 #include_directories(${CMAKE_CURRENT_LIST_DIR}/include/shared)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/source/shared)
 

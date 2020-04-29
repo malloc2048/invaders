@@ -1,9 +1,15 @@
-#include <gtest/gtest.h>
+#include <iostream>
 #include <machine/video/videodriver.h>
 
-TEST(VideoDriver, execution) {
-    RAM memory;
-    VideoDriver vd(&memory);
+void loadVideoRam(RAM* videoMemory) {
+    for(uint16_t address = VideoDriver::VIDEO_MEM_BEGIN; address < VideoDriver::VIDEO_MEM_END; address++) {
+        videoMemory->write(address, 0x0f);
+    }
+}
 
-    vd.Draw();
+int main() {
+    RAM memory;
+    loadVideoRam(&memory);
+    VideoDriver vd(&memory);
+    vd.draw();
 }

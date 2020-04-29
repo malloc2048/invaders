@@ -17,10 +17,9 @@ public:
 
     static const uint16_t ROM_MIN_ADDR = 0x0000;
     static const uint16_t ROM_MAX_ADDR = 0x2000;
-    static const uint16_t MEM_MAX_ADDR = 0xffff;
 
 private:
-    uint8_t ram[MEM_MAX_ADDR];
+    uint8_t ram[0xffff];
     bool writeProtected = true;
 };
 #endif

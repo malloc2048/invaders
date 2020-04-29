@@ -14,10 +14,12 @@ public:
         registers = registersIn;
     }
 
-    int8_t Execute(uint8_t opcode) override {
+    int8_t Execute(uint8_t opcode,std::ostream& debug) override {
         auto r = (opcode & 0x38u) >> 3u;
-
         auto value = ram->read(registers->pc.d16 + 1);
+
+        debug << "move immediate " << registerNames[r] << " ";
+        debug << std::hex << std::setw(2) << std::setfill('0') << value;
         switch(r) {
             case B:
                 registers->bc.bytes.high = value;

@@ -13,39 +13,22 @@ public:
         registers = registersIn;
     }
 
-    int8_t Execute(uint8_t opcode) override {
+    int8_t Execute(uint8_t opcode,std::ostream& debug) override {
         uint8_t src = opcode & 0x07u;
-        uint8_t dst = opcode & 0x3fu;
+        uint8_t dst = (opcode & 0x38u) >> 3u;
+        debug << "move " << registerNames[src] << " to " << registerNames[dst];
 
         switch(src) {
-            case B:
-                move(dst, registers->bc.bytes.high);
-                break;
-            case C:
-                move(dst, registers->bc.bytes.low);
-                break;
-            case D:
-                move(dst, registers->de.bytes.high);
-                break;
-            case E:
-                move(dst, registers->de.bytes.low);
-                break;
-            case H:
-                move(dst, registers->hl.bytes.high);
-                break;
-            case L:
-                move(dst, registers->hl.bytes.low);
-                break;
-            case M:
-                move(dst, ram->read(registers->hl.d16));
-                break;
-            case A:
-                move(dst, registers->a);
-                break;
-            default:
-                break;
+            case B:  move(dst, registers->bc.bytes.high); break;
+            case C:  move(dst, registers->bc.bytes.low); break;
+            case D:  move(dst, registers->de.bytes.high); break;
+            case E:  move(dst, registers->de.bytes.low); break;
+            case H:  move(dst, registers->hl.bytes.high); break;
+            case L:  move(dst, registers->hl.bytes.low); break;
+            case M:  move(dst, ram->read(registers->hl.d16)); break;
+            case A:  move(dst, registers->a); break;
+            default: break;
         }
-
         return 1;
     }
 

@@ -13,7 +13,7 @@ public:
         registers = registersIn;
     }
 
-    int8_t Execute(uint8_t opcode) override {
+    int8_t Execute(uint8_t opcode,std::ostream& debug) override {
         uint8_t number = (opcode & 0x038u) >> 3u;
 
         RegisterPair nextAddr{};
@@ -23,7 +23,7 @@ public:
         registers->sp.d16 -= 2;
         registers->pc.d16 = 8 * number;
 
-        return 1;
+        return 0;
     }
 
     void Disassemble(std::ostream& out) override {

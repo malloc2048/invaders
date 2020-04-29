@@ -13,7 +13,7 @@ public:
         registers = registersIn;
     }
 
-    int8_t Execute(uint8_t opcode) override {
+    int8_t Execute(uint8_t opcode,std::ostream& debug) override {
         registers->pc.d16 = registers->hl.d16;
         return 1;
     }

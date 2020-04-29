@@ -13,60 +13,36 @@ public:
         registers = registersIn;
     }
 
-    int8_t Execute(uint8_t opcode) override {
-        uint8_t condition = (opcode & 0x038u) >> 3u;
+    int8_t Execute(uint8_t opcode,std::ostream& debug) override {
+        bool takeJump = true;
 
-        // the lower 3 bits of the opcode == 0 this is a conditional return
-        if((opcode & 0x007u) == 0u) {
+        if((opcode & 0x007u) == 0u) { // the lower 3 bits of the opcode == 0 this is a conditional return
+            debug << "conditional return ";
+
+            uint8_t condition = (opcode & 0x038u) >> 3u;
             switch(condition) {
-                case NotZero:
-                    if(flags->zero == 0) {
-                        ret();
-                        return 0;
-                    }
-                case Zero:
-                    if(flags->zero == 1) {
-                        ret();
-                        return 0;
-                    }
-                case NoCarry:
-                    if(flags->carry == 0) {
-                        ret();
-                        return 0;
-                    }
-                case Carry:
-                    if(flags->carry == 1) {
-                        ret();
-                        return 0;
-                    }
-                case ParityOdd:
-                    if(flags->parity == 0) {
-                        ret();
-                        return 0;
-                    }
-                case ParityEven:
-                    if(flags->parity == 1) {
-                        ret();
-                        return 0;
-                    }
-                case Plus:
-                    if(flags->sign == 0) {
-                        ret();
-                        return 0;
-                    }
-                case Minus:
-                    if(flags->sign == 1) {
-                        ret();
-                        return 0;
-                    }
-                default:
-                    return 3;
+                case NotZero:       takeJump = flags->zero == 0; debug << "not zero, "; break;
+                case Zero:          takeJump = flags->zero == 1; debug << "zero, "; break;
+                case NoCarry:       takeJump = flags->carry == 0; debug << "no carry, "; break;
+                case Carry:         takeJump = flags->carry == 1; debug << "carry, "; break;
+                case ParityOdd:     takeJump = flags->parity == 0; debug << "odd parity, "; break;
+                case ParityEven:    takeJump = flags->parity == 1; debug << "even parity, "; break;
+                case Plus:          takeJump = flags->sign == 0; debug << "positive, "; break;
+                case Minus:         takeJump = flags->sign == 1; debug << "negative, "; break;
+                default:            return 3;
             }
+        } else {
+            debug << "unconditional return, ";
         }
 
-        // only get here if this is a no condition return
-        ret();
-        return 3;
+        if(takeJump) {
+            ret(debug);
+            return 0;
+        }
+        else{
+            debug << "not taken";
+            return 1;
+        }
     }
 
     void Disassemble(std::ostream& out) override {
@@ -80,20 +56,18 @@ public:
         } else {
             out << "ET ";
         }
-        out << (unsigned)ram->read(registers->pc.d16 + 2) << (unsigned)ram->read(registers->pc.d16 + 1);
-        registers->pc.d16 += 3;
-
-
+        registers->pc.d16 += 1;
     }
 
 protected:
-    void ret() {
+    void ret(std::ostream& debug) {
         RegisterPair address{};
         address.bytes.low = ram->read(registers->sp.d16);
         address.bytes.high = ram->read(registers->sp.d16 + 1);
         registers->pc.d16 = address.d16;
         registers->sp.d16 += 2;
+
+        debug << std::hex << std::setw(4) << std::setfill('0') << address.d16;
     }
 };
-
 #endif

@@ -5,6 +5,7 @@
 #include <string>
 #include "flags.h"
 #include "opcode.h"
+#include <fstream>
 #include <iostream>
 #include "registers.h"
 #include "machine/ram/ram.h"
@@ -23,9 +24,12 @@ private:
     std::ostream& out;
     bool halted = true;
     OpCode* opcodes[256];
+    std::ofstream debug_output;
 
     RAM* memory = nullptr;
     Flags* flags = nullptr;
     Registers* registers = nullptr;
+
+    static const std::string Nemonics[256];
 };
 #endif

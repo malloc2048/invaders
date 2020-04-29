@@ -15,7 +15,7 @@ public:
     ~OpCode() = default;
 
     // Returns the number of memory locations used in the instruction
-    virtual int8_t Execute(uint8_t opcode) = 0;
+    virtual int8_t Execute(uint8_t opcode, std::ostream& debug) = 0;
     virtual void Disassemble(std::ostream& out) = 0;
 
 protected:

@@ -1,5 +1,7 @@
 #include <thread>
+#include <fstream>
 #include <iostream>
+#include "machine/video/videodriver.h"
 #include "machine/cpu/8080/intel8080.h"
 
 int main(int argc, char** argv) {
@@ -10,7 +12,9 @@ int main(int argc, char** argv) {
         .intEnabled = 0
     };
 
-    Intel8080 cpu(&memory, &flags, &regs, std::cout);
+    std::ofstream disassemblyFile;//("../../../roms/debug.out");
+    Intel8080 cpu(&memory, &flags, &regs, disassemblyFile);
+
     auto romFile = fopen("../../../roms/invaders", "r");
     if(nullptr == romFile) {
         std::cout << "shit broke" << std::endl;
@@ -20,6 +24,11 @@ int main(int argc, char** argv) {
     fclose(romFile);
 
     std::thread cpuThread(&Intel8080::Run, &cpu, true);
+
+    VideoDriver vd(&memory);
+    vd.draw();
+
+    cpu.stop();
     cpuThread.join();
 
     return 0;

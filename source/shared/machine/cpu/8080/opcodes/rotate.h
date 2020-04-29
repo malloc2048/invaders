@@ -14,7 +14,7 @@ public:
         registers = registersIn;
     }
 
-    int8_t Execute(uint8_t opcode) override {
+    int8_t Execute(uint8_t opcode,std::ostream& debug) override {
         switch(opcode) {
             case 0x07:  // RLC
                 flags->carry = (registers->a & 0x80u) > 0 ? 1 : 0;

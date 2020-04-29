@@ -14,7 +14,7 @@ public:
         registers = registersIn;
     }
 
-    int8_t Execute(uint8_t opcode) override {
+    int8_t Execute(uint8_t opcode,std::ostream& debug) override {
         auto r = (opcode & 0x38u) >> 3u;
 
         uint8_t value;
@@ -57,6 +57,11 @@ public:
 
         updateFlags(value - 1);
         updateAuxiliaryCarry(value, value - 1);
+
+        std::bitset<8>psw(flags->d8);
+        debug << "decrement register " << registerNames[r] << ": ";
+        debug << std::hex << std::setfill('0') << std::setw(2) << ((value - 1u) & 0xffu) << " flags: " << psw;
+
         return 1;
     }
 

@@ -13,8 +13,9 @@ public:
         registers = registersIn;
     }
 
-    int8_t Execute(uint8_t opcode) override {
+    int8_t Execute(uint8_t opcode,std::ostream& debug) override {
         // TODO: add a log entry here?
+        std::cout << "shit broke again: " << std::hex << (unsigned)registers->pc.d16 << std::endl;
         exit(-1);
     }
 

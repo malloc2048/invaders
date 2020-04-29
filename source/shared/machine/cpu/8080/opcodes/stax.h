@@ -14,7 +14,7 @@ public:
         registers = registersIn;
     }
 
-    int8_t Execute(uint8_t opcode) override {
+    int8_t Execute(uint8_t opcode,std::ostream& debug) override {
         auto rp = (opcode & 0x30u) >> 4u;
 
         switch(rp) {

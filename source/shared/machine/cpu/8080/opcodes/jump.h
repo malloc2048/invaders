@@ -1,6 +1,7 @@
 #ifndef NESEMU_JUMP_H
 #define NESEMU_JUMP_H
 
+#include <map>
 #include "cpu/8080/opcode.h"
 
 class Jump: public OpCode {
@@ -13,86 +14,60 @@ public:
         registers = registersIn;
     }
 
-    int8_t Execute(uint8_t opcode) override {
-        uint8_t condition = opcode & 0x03fu;
-
-        // the lower 3 bits of the opcode == 2 this is a conditional jump
-        if((opcode & 0x007u) == 0u) {
+    int8_t Execute(uint8_t opcode,std::ostream& debug) override {
+        bool takeJump = true;
+        if((opcode & 0x007u) == 2u) {   // the lower 3 bits of the opcode == 2 this is a conditional jump
+            debug << "conditional jump ";
+            std::bitset<8> opcodeBits(opcode);
+            uint8_t condition = (opcode & 0x38u) >> 3u;
             switch(condition) {
-                case NotZero:
-                    if(flags->zero == 0) {
-                        jump();
-                        return 0;
-                    }
-                case Zero:
-                    if(flags->zero == 1) {
-                        jump();
-                        return 0;
-                    }
-                case NoCarry:
-                    if(flags->carry == 0) {
-                        jump();
-                        return 0;
-                    }
-                case Carry:
-                    if(flags->carry == 1) {
-                        jump();
-                        return 0;
-                    }
-                case ParityOdd:
-                    if(flags->parity == 0) {
-                        jump();
-                        return 0;
-                    }
-                case ParityEven:
-                    if(flags->parity == 1) {
-                        jump();
-                        return 0;
-                    }
-                case Plus:
-                    if(flags->sign == 0) {
-                        jump();
-                        return 0;
-                    }
-                case Minus:
-                    if(flags->sign == 1) {
-                        jump();
-                        return 0;
-                    }
-                default:
-                    return 3;
+                case NotZero:       takeJump = flags->zero == 0; debug << "not zero, "; break;
+                case Zero:          takeJump = flags->zero == 1; debug << "zero, "; break;
+                case NoCarry:       takeJump = flags->carry == 0; debug << "no carry, "; break;
+                case Carry:         takeJump = flags->carry == 1; debug << "carry, "; break;
+                case ParityOdd:     takeJump = flags->parity == 0; debug << "odd parity, "; break;
+                case ParityEven:    takeJump = flags->parity == 1; debug << "even parity, "; break;
+                case Plus:          takeJump = flags->sign == 0; debug << "positive, "; break;
+                case Minus:         takeJump = flags->sign == 1; debug << "negative, "; break;
+                default:            return 3;
             }
+        } else {
+            debug << "unconditional jump, ";
         }
 
-        // only get here if this is a no condition jump
-        jump();
-        return 0;
+        if(takeJump) {
+            jump(debug);
+            return 0;
+        }
+        else{
+            debug << "not taken";
+            return 3;
+        }
     }
 
     void Disassemble(std::ostream& out) override {
-        uint8_t condition = ram->read(registers->pc.d16) & 0x03fu;
+        uint8_t condition = (ram->read(registers->pc.d16) & 0x03fu) >> 3u;
 
         out << std::hex << std::setw(2) << std::setfill('0');
         out << (unsigned)ram->read(registers->pc.d16) << "\tJ";
 
-        if((ram->read(registers->pc.d16) & 0x007u) == 0u) {
+        if((ram->read(registers->pc.d16) & 0x007u) == 2u) {
             out << OpCode::conditionStr[condition] << " ";
         } else {
             out << "MP ";
         }
         out << (unsigned)ram->read(registers->pc.d16 + 2) << (unsigned)ram->read(registers->pc.d16 + 1);
         registers->pc.d16 += 3;
-
-
     }
 
 protected:
-    void jump() {
+    void jump(std::ostream& debug) {
         RegisterPair address{};
         address.bytes.low = ram->read(registers->pc.d16 + 1);
         address.bytes.high = ram->read(registers->pc.d16 + 2);
         registers->pc.d16 = address.d16;
+
+        debug << std::hex << std::setw(4) << std::setfill('0') << address.d16;
     }
 };
-
 #endif

@@ -5,7 +5,7 @@ add_dependencies(cpu_ut cpulib ramlib)
 
 file(GLOB_RECURSE VIDEO_TEST_SRC ${CMAKE_CURRENT_LIST_DIR}/shared/video/*.h ${CMAKE_CURRENT_LIST_DIR}/shared/video/*.cpp)
 add_executable(video_ut ${VIDEO_TEST_SRC})
-target_link_libraries(video_ut gtest_main gtest videolib ramlib pthread)
+target_link_libraries(video_ut videolib ramlib pthread)
 add_dependencies(video_ut videolib ramlib)
 
 #option(USE_COVERAGE "coverage" ON)

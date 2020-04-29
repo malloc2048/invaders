@@ -1,4 +1,5 @@
 #include <bitset>
+#include <fstream>
 #include "intel8080.h"
 #include "machine/cpu/8080/opcodes/opcodes.h"
 
@@ -10,12 +11,14 @@ void Intel8080::Disassemble() {
 }
 
 void Intel8080::stop() {
-    halted = false;
+    halted = true;
 }
 
 void Intel8080::Run(bool showStatus) {
-    halted = true;
-    while(halted) {
+    debug_output.open("../../../roms/debug.out");;
+
+    halted = false;
+    while(!halted) {
         tick(showStatus);
     }
 }
@@ -25,23 +28,26 @@ void Intel8080::tick(bool showStatus) {
         registers->intEnabled = 2;
 
     auto opcode = memory->read(registers->pc.d16);
-    registers->pc.d16 += opcodes[opcode]->Execute(opcode);
 
     if(showStatus) {
-        std::cout << "status:\t";
-        std::cout << "Instruction: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)opcode << "\t";
-        std::cout << "A: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)registers->a << "\t";
-        std::cout << "BC: " << std::hex << std::setfill('0') << std::setw(4)  << (unsigned)registers->bc.d16 << "\t";
-        std::cout << "DE: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->de.d16 << "\t";
-        std::cout << "HL: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->hl.d16 << "\t";
-        std::cout << "SP: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->sp.d16 << "\t";
-        std::cout << "PC: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->pc.d16 << "\t";
-        std::cout << "INT: " << (unsigned)registers->intEnabled << "\t";
+        debug_output << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->pc.d16 << "\t";
+        debug_output << Nemonics[opcode] << "\t";
 
-        std::bitset<8>psw(flags->d8);
-        std::cout << "PSW: " << std::setfill('0') << std::setw(2) << psw;
-        std::cout << std::endl;
+        debug_output << "\tregisters:\t";
+        debug_output << "A: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)registers->a << "\t";
+        debug_output << "BC: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->bc.d16 << "\t";
+        debug_output << "DE: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->de.d16 << "\t";
+        debug_output << "HL: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->hl.d16 << "\t";
+        debug_output << "SP: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->sp.d16 << "\t";
+
+        debug_output << "memory:\t";
+        debug_output << "byte 2: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)memory->read(registers->pc.d16 + 1) << "\t";
+        debug_output << "byte 3: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)memory->read(registers->pc.d16 + 2) << "\t";
+        debug_output << "SP: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)memory->read(registers->sp.d16) << "\t";
+        debug_output << "SP + 1: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)memory->read(registers->sp.d16 + 1);
+        debug_output << std::endl;
     }
+    registers->pc.d16 += opcodes[opcode]->Execute(opcode, out);
 
     if(registers->intEnabled == 2){
         // TODO: ?????????
@@ -378,3 +384,262 @@ Intel8080::Intel8080(RAM* memory, Flags* flags, Registers* registers, std::ostre
     opcodes[0xfb] = new EI(memory, flags, registers);
     opcodes[0xfe] = new CPI(memory, flags, registers);
 }
+
+const std::string Intel8080::Nemonics[256] = {
+    "00 NOP        ",
+    "01 LXI B, D16 ",
+    "02 STAX B     ",
+    "03 INX B      ",
+    "04 INR B      ",
+    "05 DCR B      ",
+    "06 MVI B, D8  ",
+    "07 RLC        ",
+    "08 UNIMPLEMENTED",
+    "09 DAD B      ",
+    "0A LDAX B     ",
+    "0B DCX B      ",
+    "0C INR C      ",
+    "0D DCR C      ",
+    "0E MVI C, D8  ",
+    "0F RRC        ",
+    "10 UNIMPLEMENTED",
+    "11 LXI D, D16 ",
+    "12 STAX D     ",
+    "13 INX D      ",
+    "14 INR D      ",
+    "15 DCR D      ",
+    "16 MVI D, D8  ",
+    "17 RAL        ",
+    "18 UNIMPLEMENTED",
+    "19 DAD D      ",
+    "1A LDAX D     ",
+    "1B DCX D      ",
+    "1C INR E      ",
+    "1D DCR E      ",
+    "1E MVI E, D8  ",
+    "1F RAR        ",
+    "20 UNIMPLEMENTED",
+    "21 LXI H, D16 ",
+    "22 SHLD adr   ",
+    "23 INX H      ",
+    "24 INR H      ",
+    "25 DCR H      ",
+    "26 MVI H, D8  ",
+    "27 DAA        ",
+    "28 UNIMPLEMENTED",
+    "29 DAD H      ",
+    "2A LHLD adr   ",
+    "2B DCX H      ",
+    "2C INR L      ",
+    "2D DCR L      ",
+    "2E MVI L, D8  ",
+    "2F CMA        ",
+    "30 UNIMPLEMENTED",
+    "31 LXI SP, D16",
+    "32 STA adr    ",
+    "33 INX SP     ",
+    "34 INR M      ",
+    "35 DCR M      ",
+    "36 MVI M, D8  ",
+    "37 STC        ",
+    "38 UNIMPLEMENTED",
+    "39 DAD SP     ",
+    "3A LDA adr    ",
+    "3B DCX SP     ",
+    "3C INR A      ",
+    "3D DCR A      ",
+    "3E MVI A, D8  ",
+    "3F CMC        ",
+    "40 MOV B, B   ",
+    "41 MOV B, C   ",
+    "42 MOV B, D   ",
+    "43 MOV B, E   ",
+    "44 MOV B, H   ",
+    "45 MOV B, L   ",
+    "46 MOV B, M   ",
+    "47 MOV B, A   ",
+    "48 MOV C, B   ",
+    "49 MOV C, C   ",
+    "4A MOV C, D   ",
+    "4B MOV C, E   ",
+    "4C MOV C, H   ",
+    "4D MOV C, L   ",
+    "4E MOV C, M   ",
+    "4F MOV C, A   ",
+    "50 MOV D, B   ",
+    "51 MOV D, C   ",
+    "52 MOV D, D   ",
+    "53 MOV D, E   ",
+    "54 MOV D, H   ",
+    "55 MOV D, L   ",
+    "56 MOV D, M   ",
+    "57 MOV D, A   ",
+    "58 MOV E, B   ",
+    "59 MOV E, C   ",
+    "5A MOV E, D   ",
+    "5B MOV E, E   ",
+    "5C MOV E, H   ",
+    "5D MOV E, L   ",
+    "5E MOV E, M   ",
+    "5F MOV E, A   ",
+    "60 MOV H, B   ",
+    "61 MOV H, C   ",
+    "62 MOV H, D   ",
+    "63 MOV H, E   ",
+    "64 MOV H, H   ",
+    "65 MOV H, L   ",
+    "66 MOV H, M   ",
+    "67 MOV H, A   ",
+    "68 MOV L, B   ",
+    "69 MOV L, C   ",
+    "6A MOV L, D   ",
+    "6B MOV L, E   ",
+    "6C MOV L, H   ",
+    "6D MOV L, L   ",
+    "6E MOV L, M   ",
+    "6F MOV L, A   ",
+    "70 MOV M, B   ",
+    "71 MOV M, C   ",
+    "72 MOV M, D   ",
+    "73 MOV M, E   ",
+    "74 MOV M, H   ",
+    "75 MOV M, L   ",
+    "76 HLT        ",
+    "77 MOV M, A   ",
+    "78 MOV A, B   ",
+    "79 MOV A, C   ",
+    "7A MOV A, D   ",
+    "7B MOV A, E   ",
+    "7C MOV A, H   ",
+    "7D MOV A, L   ",
+    "7E MOV A, M   ",
+    "7F MOV A, A   ",
+    "80 ADD B      ",
+    "81 ADD C      ",
+    "82 ADD D      ",
+    "83 ADD E      ",
+    "84 ADD H      ",
+    "85 ADD L      ",
+    "86 ADD M      ",
+    "87 ADD A      ",
+    "88 ADC B      ",
+    "89 ADC C      ",
+    "8A ADC D      ",
+    "8B ADC E      ",
+    "8C ADC H      ",
+    "8D ADC L      ",
+    "8E ADC M      ",
+    "8F ADC A      ",
+    "90 SUB B      ",
+    "91 SUB C      ",
+    "92 SUB D      ",
+    "93 SUB E      ",
+    "94 SUB H      ",
+    "95 SUB L      ",
+    "96 SUB M      ",
+    "97 SUB A      ",
+    "98 SBB B      ",
+    "99 SBB C      ",
+    "9A SBB D      ",
+    "9B SBB E      ",
+    "9C SBB H      ",
+    "9D SBB L      ",
+    "9E SBB M      ",
+    "9F SBB A      ",
+    "A0 ANA B      ",
+    "A1 ANA C      ",
+    "A2 ANA D      ",
+    "A3 ANA E      ",
+    "A4 ANA H      ",
+    "A5 ANA L      ",
+    "A6 ANA M      ",
+    "A7 ANA A      ",
+    "A8 XRA B      ",
+    "A9 XRA C      ",
+    "AA XRA D      ",
+    "AB XRA E      ",
+    "AC XRA H      ",
+    "AD XRA L      ",
+    "AE XRA M      ",
+    "AF XRA A      ",
+    "B0 ORA B      ",
+    "B1 ORA C      ",
+    "B2 ORA D      ",
+    "B3 ORA E      ",
+    "B4 ORA H      ",
+    "B5 ORA L      ",
+    "B6 ORA M      ",
+    "B7 ORA A      ",
+    "B8 CMP B      ",
+    "B9 CMP C      ",
+    "BA CMP D      ",
+    "BB CMP E      ",
+    "BC CMP H      ",
+    "BD CMP L      ",
+    "BE CMP M      ",
+    "BF CMP A      ",
+    "C0 RNZ        ",
+    "C1 POP B      ",
+    "C2 JNZ ADR    ",
+    "C3 JMP ADR    ",
+    "C4 CNZ ADR    ",
+    "C5 PUSH B     ",
+    "C6 ADI D8     ",
+    "C7 RST 0      ",
+    "C8 RZ         ",
+    "C9 RET        ",
+    "CA JZ ADR     ",
+    "CB UNIMPLEMENTED",
+    "CC CZ ADR     ",
+    "CD CALL ADR   ",
+    "CE ACI D8     ",
+    "CF RST 1      ",
+    "D0 RNC        ",
+    "D1 POP D      ",
+    "D2 JNC ADR    ",
+    "D3 OUT D8     ",
+    "D4 CNC ADR    ",
+    "D5 PUSH D     ",
+    "D6 SUI D8     ",
+    "D7 RST 2      ",
+    "D8 RC         ",
+    "D9 UNIMPLEMENTED",
+    "DA JC ADR     ",
+    "DB IN D8      ",
+    "DC CC ADR     ",
+    "DD UNIMPLEMENTED",
+    "DE SBI D8     ",
+    "DF RST 3      ",
+    "E0 RPO        ",
+    "E1 POP H      ",
+    "E2 JPO ADR    ",
+    "E3 XTHL       ",
+    "E4 CPO ADR    ",
+    "E5 PUSH H     ",
+    "E6 ANI D8     ",
+    "E7 RST 4      ",
+    "E8 RPE        ",
+    "E9 PCHL       ",
+    "EA JPE ADR    ",
+    "EB XCHG       ",
+    "EC CPE ADR    ",
+    "ED UNIMPLEMENTED",
+    "EE XRI D8     ",
+    "EF RST 5      ",
+    "F0 RP         ",
+    "F1 POP PSW    ",
+    "F2 JP ADR     ",
+    "F3 DI         ",
+    "F4 CP ADR     ",
+    "F5 PUSH PSW   ",
+    "F6 ORI D8     ",
+    "F7 RST 6      ",
+    "F8 RM         ",
+    "F9 SPHL       ",
+    "FA JM ADR     ",
+    "FB EI         ",
+    "FC CM ADR     ",
+    "FD UNIMPLEMENTED",
+    "FE CPI D8     ",
+    "FF RST 7      "
+};

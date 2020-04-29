@@ -3,5 +3,5 @@ target_link_libraries(disassembler cpulib ramlib)
 add_dependencies(disassembler cpulib ramlib)
 
 add_executable(emulator emulator.cpp)
-target_link_libraries(emulator cpulib ramlib)
-add_dependencies(emulator cpulib ramlib)
+target_link_libraries(emulator cpulib videolib ramlib)
+add_dependencies(emulator cpulib videolib ramlib)
