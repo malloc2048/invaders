@@ -4,8 +4,8 @@
 #include <memory>
 #include <string>
 #include "flags.h"
-#include "ram/ram.h"
 #include "registers.h"
+#include "machine/ram/ram.h"
 
 class OpCode {
 public:

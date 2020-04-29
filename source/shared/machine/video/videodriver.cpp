@@ -2,7 +2,7 @@
 #include <iostream>
 #include "videodriver.h"
 
-VideoDriver::VideoDriver(RAM* mem): memory(mem), window(sf::VideoMode(256, 224), "Space Invaders") {
+VideoDriver::VideoDriver(RAM* mem): memory(mem), window(sf::VideoMode(512, 448), "Space Invaders") {
 
 }
 
@@ -12,10 +12,6 @@ void VideoDriver::draw() {
     sf::CircleShape circle(200);
     circle.setFillColor(sf::Color::Cyan);
 
-//    screen.create(256, 224, pixels);
-//    texture.loadFromImage(screen);
-//    sprite.setTexture(texture);
-
     while(window.isOpen()) {
         while(window.pollEvent(event)) {
             switch(event.type) {
@@ -23,12 +19,11 @@ void VideoDriver::draw() {
                 default: break;
             }
         }
-        updateScreenBuffer();
 
-//        if(clock.getElapsedTime().asSeconds() >= 5) {
-//            clock.restart();
-//            updateScreenBuffer();
-//        }
+        if(clock.getElapsedTime().asMicroseconds() >= (1.0 / 60.0)) {
+            clock.restart();
+            updateScreenBuffer();
+        }
 
         window.clear();
         window.draw(sprite);
@@ -51,4 +46,9 @@ void VideoDriver::updateScreenBuffer() {
     screen.create(256, 224, (uint8_t*)pixels);
     texture.loadFromImage(screen);
     sprite.setTexture(texture);
+
+    sprite.setRotation(-90.0f);
+    sprite.setOrigin(256.0f, 112.0f);
+    sprite.setPosition(256.0f, 112.0f);
+
 }

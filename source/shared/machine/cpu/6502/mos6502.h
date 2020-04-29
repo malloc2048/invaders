@@ -4,8 +4,8 @@
 #include <memory>
 #include "flags.h"
 #include "opcode.h"
-#include "ram/ram.h"
 #include "registers.h"
+#include "machine/ram/ram.h"
 
 class MOS6502 {
 public:
