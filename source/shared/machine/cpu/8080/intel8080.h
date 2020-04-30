@@ -19,6 +19,7 @@ public:
     void Disassemble();
     void Run(bool showStatus);
     void tick(bool showStatus = false);
+    void interrupt(uint8_t interruptNumber);
 
 private:
     std::ostream& out;

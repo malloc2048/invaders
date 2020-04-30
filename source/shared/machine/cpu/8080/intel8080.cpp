@@ -54,6 +54,17 @@ void Intel8080::tick(bool showStatus) {
     }
 }
 
+void Intel8080::interrupt(uint8_t interruptNumber) {
+    if(registers->intEnabled) {
+        std::cout << "interrupt: " << (unsigned) interruptNumber << std::endl;
+
+        memory->write(registers->sp.d16 - 1, registers->pc.bytes.high);
+        memory->write(registers->sp.d16 - 2, registers->pc.bytes.low);
+
+        registers->pc.d16 = interruptNumber * 8;
+    }
+}
+
 Intel8080::Intel8080(RAM* memory, Flags* flags, Registers* registers, std::ostream& outputStream):
     out(outputStream), opcodes(), memory(memory), flags(flags), registers(registers) {
     opcodes[0x00] = new NOP(memory, flags, registers);

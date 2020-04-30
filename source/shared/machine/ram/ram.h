@@ -19,7 +19,7 @@ public:
     static const uint16_t ROM_MAX_ADDR = 0x2000;
 
 private:
-    uint8_t ram[0xffff];
+    uint8_t ram[0x10000];
     bool writeProtected = true;
 };
 #endif

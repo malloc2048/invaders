@@ -26,6 +26,7 @@ int main(int argc, char** argv) {
     std::thread cpuThread(&Intel8080::Run, &cpu, true);
 
     VideoDriver vd(&memory);
+    vd.setInterruptGenerateFunction(std::bind(&Intel8080::interrupt, &cpu, std::placeholders::_1 ));    // TODO: lambda?
     vd.draw();
 
     cpu.stop();

@@ -9,3 +9,4 @@ add_library(cpulib ${CPULIB_SRC})
 file(GLOB_RECURSE VIDEOLIB_SRC ${CMAKE_CURRENT_LIST_DIR}/video/*.h ${CMAKE_CURRENT_LIST_DIR}/video/*.cpp)
 add_library(videolib ${VIDEOLIB_SRC})
 target_link_libraries(videolib sfml-graphics-s-d sfml-window-s-d sfml-system-s-d opengl32 winmm gdi32)
+
