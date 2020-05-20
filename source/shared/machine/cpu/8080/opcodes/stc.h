@@ -1,14 +1,14 @@
-#ifndef NESEMU_STC_H
-#define NESEMU_STC_H
+#ifndef EMULATOR_STC_H
+#define EMULATOR_STC_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class STC: public OpCode {
 public:
     STC() = delete;
     ~STC() = default;
 
-    STC(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    STC(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

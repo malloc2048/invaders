@@ -1,13 +1,13 @@
-#ifndef NESEMU_ORA_H
-#define NESEMU_ORA_H
+#ifndef EMULATOR_ORA_H
+#define EMULATOR_ORA_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class ORA: public OpCode {
 public:
     ORA() = delete;
     ~ORA() = default;
-    ORA(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    ORA(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -46,7 +46,7 @@ public:
         }
         updateFlags(result);
         flags->carry = 0;
-        flags->auxiliary = 0;
+        flags->halfCarry = 0;
         registers->a = result & 0x00ffu;
 
         return 1;

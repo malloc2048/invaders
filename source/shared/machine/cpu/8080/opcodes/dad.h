@@ -1,13 +1,13 @@
-#ifndef NESEMU_DAD_H
-#define NESEMU_DAD_H
+#ifndef EMULATOR_DAD_H
+#define EMULATOR_DAD_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class DAD: public OpCode {
 public:
     DAD() = default;
     ~DAD() = default;
-    DAD(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    DAD(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

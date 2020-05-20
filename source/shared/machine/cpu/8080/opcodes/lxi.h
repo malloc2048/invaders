@@ -1,14 +1,14 @@
-#ifndef NESEMU_LXI_H
-#define NESEMU_LXI_H
+#ifndef EMULATOR_LXI_H
+#define EMULATOR_LXI_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class LXI: public OpCode {
 public:
     LXI() = delete;
     ~LXI() = default;
 
-    LXI(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    LXI(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

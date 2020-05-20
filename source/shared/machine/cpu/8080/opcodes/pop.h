@@ -1,14 +1,14 @@
-#ifndef NESEMU_POP_H
-#define NESEMU_POP_H
+#ifndef EMULATOR_POP_H
+#define EMULATOR_POP_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class POP: public OpCode {
 public:
     POP() = delete;
     ~POP() = default;
 
-    POP(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    POP(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

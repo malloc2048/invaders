@@ -1,14 +1,14 @@
-#ifndef NESEMU_STA_H
-#define NESEMU_STA_H
+#ifndef EMULATOR_STA_H
+#define EMULATOR_STA_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class STA: public OpCode {
 public:
     STA() = delete;
     ~STA() = default;
 
-    STA(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    STA(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

@@ -2,7 +2,7 @@
 #include <iostream>
 #include "videodriver.h"
 
-VideoDriver::VideoDriver(RAM* mem): memory(mem), window(sf::VideoMode(512, 448), "Space Invaders") {
+VideoDriver::VideoDriver(Memory* mem): memory(mem), window(sf::VideoMode(512, 448), "Space Invaders") {
 
 }
 

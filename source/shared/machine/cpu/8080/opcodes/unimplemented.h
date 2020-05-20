@@ -1,13 +1,13 @@
-#ifndef NESEMU_Unimplemented_H
-#define NESEMU_Unimplemented_H
+#ifndef EMULATOR_Unimplemented_H
+#define EMULATOR_Unimplemented_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class Unimplemented: public OpCode {
 public:
     Unimplemented() = delete;
     ~Unimplemented() = default;
-    Unimplemented(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    Unimplemented(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

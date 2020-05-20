@@ -1,13 +1,13 @@
-#ifndef NESEMU_SHLD_H
-#define NESEMU_SHLD_H
+#ifndef EMULATOR_SHLD_H
+#define EMULATOR_SHLD_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class SHLD: public OpCode {
 public:
     SHLD() = delete;
     ~SHLD() = default;
-    SHLD(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    SHLD(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

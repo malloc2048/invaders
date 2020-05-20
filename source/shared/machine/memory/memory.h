@@ -1,13 +1,13 @@
-#ifndef NESEMU_RAM_H
-#define NESEMU_RAM_H
+#ifndef EMULATOR_MEMORY_H
+#define EMULATOR_MEMORY_H
 
 #include <cstdint>
 #include <istream>
 
-class RAM {
+class Memory {
 public:
-    RAM() = default;
-    ~RAM() = default;
+    Memory() = default;
+    ~Memory() = default;
 
     void lockRom();
     void loadRom();

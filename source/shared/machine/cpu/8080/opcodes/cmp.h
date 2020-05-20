@@ -1,13 +1,13 @@
-#ifndef NESEMU_CMP_H
-#define NESEMU_CMP_H
+#ifndef EMULATOR_CMP_H
+#define EMULATOR_CMP_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class CMP: public OpCode {
 public:
     CMP() = delete;
     ~CMP() = default;
-    CMP(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    CMP(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -47,7 +47,7 @@ public:
                 break;
         }
         updateFlags(result);
-        updateAuxiliaryCarry(registers->a, result);
+        updateCarry(registers->a, result);
         flags->carry = result < 0 ? 1 : 0;
         registers->a = result & 0x00ffu;
 

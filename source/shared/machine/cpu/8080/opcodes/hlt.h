@@ -1,21 +1,22 @@
-#ifndef NESEMU_HLT_H
-#define NESEMU_HLT_H
+#ifndef EMULATOR_HLT_H
+#define EMULATOR_HLT_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class HLT: public OpCode {
 public:
     HLT() = delete;
     ~HLT() = default;
 
-    HLT(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    HLT(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
     }
 
     int8_t Execute(uint8_t opcode,std::ostream& debug) override {
-        exit(0);
+        registers->halted = true;
+        return 1;
     }
 
     void Disassemble(std::ostream& out) override {

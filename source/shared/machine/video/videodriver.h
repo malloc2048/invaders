@@ -1,13 +1,13 @@
-#ifndef NESEMU_VIDEODRIVER_H
-#define NESEMU_VIDEODRIVER_H
+#ifndef EMULATOR_VIDEODRIVER_H
+#define EMULATOR_VIDEODRIVER_H
 
 #include <functional>
 #include <SFML/Graphics.hpp>
-#include "machine/ram/ram.h"
+#include "machine/memory/memory.h"
 
 class VideoDriver {
 public:
-    explicit VideoDriver(RAM* mem);
+    explicit VideoDriver(Memory* mem);
     ~VideoDriver() = default;
 
     void draw();
@@ -22,7 +22,7 @@ protected:
     void handleKeyPress(sf::Event& event);
 
 private:
-    RAM* memory;
+    Memory* memory;
     sf::Image screen;
     sf::Sprite sprite;
     sf::Texture texture;

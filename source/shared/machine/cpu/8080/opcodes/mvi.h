@@ -1,14 +1,14 @@
-#ifndef NESEMU_MVI_H
-#define NESEMU_MVI_H
+#ifndef EMULATOR_MVI_H
+#define EMULATOR_MVI_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class MVI: public OpCode {
 public:
     MVI() = delete;
     ~MVI() = default;
 
-    MVI(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    MVI(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

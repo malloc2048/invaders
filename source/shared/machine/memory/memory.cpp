@@ -1,12 +1,12 @@
-#include "ram.h"
+#include "memory.h"
 #include <iomanip>
 #include <iostream>
 
-uint8_t RAM::read(uint16_t address) const {
+uint8_t Memory::read(uint16_t address) const {
     return ram[address];
 }
 
-bool RAM::write(uint16_t address, uint8_t value) {
+bool Memory::write(uint16_t address, uint8_t value) {
     if(writeProtected && address < ROM_MAX_ADDR) {
         std::cout << std::setw(4) << std::hex << std::setfill('0');
         std::cout << "attempt to write to ROM address 0x" << address << std::endl;
@@ -17,15 +17,15 @@ bool RAM::write(uint16_t address, uint8_t value) {
     return true;
 }
 
-void RAM::loadRom() {
+void Memory::loadRom() {
     writeProtected = false;
 }
 
-void RAM::lockRom() {
+void Memory::lockRom() {
     writeProtected = true;
 }
 
-void RAM::loadRom(FILE* romFile) {
+void Memory::loadRom(FILE* romFile) {
     fseek(romFile, 0L, SEEK_END);
     auto fileLength = ftell(romFile);
     fseek(romFile, 0L, SEEK_SET);

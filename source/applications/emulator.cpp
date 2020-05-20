@@ -5,7 +5,7 @@
 #include "machine/cpu/8080/intel8080.h"
 
 int main(int argc, char** argv) {
-    RAM memory;
+    Memory memory;
     Flags flags { .d8 = 0 };
     Registers regs { .a = 0, .pc = {.d16 = 0 }, .sp = {.d16 = 0 },
         .bc = {.d16 = 0 }, .de = {.d16 = 0 }, .hl = {.d16 = 0 },
@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     std::thread cpuThread(&Intel8080::Run, &cpu, true);
 
     VideoDriver vd(&memory);
-    vd.setInterruptGenerateFunction(std::bind(&Intel8080::interrupt, &cpu, std::placeholders::_1 ));    // TODO: lambda?
+    vd.setInterruptGenerateFunction(std::bind(&Intel8080::interrupt, &cpu, std::placeholders::_1 ));
     vd.draw();
 
     cpu.stop();

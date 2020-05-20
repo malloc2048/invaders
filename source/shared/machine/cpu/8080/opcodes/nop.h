@@ -1,13 +1,13 @@
-#ifndef NESEMU_NOP_H
-#define NESEMU_NOP_H
+#ifndef EMULATOR_NOP_H
+#define EMULATOR_NOP_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class NOP: public OpCode {
 public:
     NOP() = delete;
     ~NOP() = default;
-    NOP(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    NOP(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

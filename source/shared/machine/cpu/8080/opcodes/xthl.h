@@ -1,13 +1,13 @@
-#ifndef NESEMU_XTHL_H
-#define NESEMU_XTHL_H
+#ifndef EMULATOR_XTHL_H
+#define EMULATOR_XTHL_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class XTHL: public OpCode {
 public:
     XTHL() = delete;
     ~XTHL() = default;
-    XTHL(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    XTHL(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

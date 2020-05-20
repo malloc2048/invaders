@@ -1,13 +1,13 @@
-#ifndef NESEMU_CMA_H
-#define NESEMU_CMA_H
+#ifndef EMULATOR_CMA_H
+#define EMULATOR_CMA_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class CMA: public OpCode {
 public:
     CMA() = delete;
     ~CMA() = default;
-    CMA(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    CMA(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

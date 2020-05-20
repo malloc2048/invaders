@@ -1,13 +1,13 @@
-#ifndef NESEMU_EI_H
-#define NESEMU_EI_H
+#ifndef EMULATOR_EI_H
+#define EMULATOR_EI_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class EI: public OpCode {
 public:
     EI() = delete;
     ~EI() = default;
-    EI(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    EI(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -15,6 +15,7 @@ public:
 
     int8_t Execute(uint8_t opcode,std::ostream& debug) override {
         registers->intEnabled = 1;
+        registers->interruptDelay = 1;
         return 1;
     }
 

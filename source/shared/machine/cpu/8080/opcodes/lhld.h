@@ -1,14 +1,14 @@
-#ifndef NESEMU_LHLD_H
-#define NESEMU_LHLD_H
+#ifndef EMULATOR_LHLD_H
+#define EMULATOR_LHLD_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class LHLD: public OpCode {
 public:
     LHLD() = delete;
     ~LHLD() = default;
 
-    LHLD(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    LHLD(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

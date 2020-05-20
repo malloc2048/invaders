@@ -1,14 +1,14 @@
-#ifndef NESEMU_LDAX_H
-#define NESEMU_LDAX_H
+#ifndef EMULATOR_LDAX_H
+#define EMULATOR_LDAX_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class LDAX: public OpCode {
 public:
     LDAX() = delete;
     ~LDAX() = default;
 
-    LDAX(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    LDAX(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

@@ -1,13 +1,13 @@
-#ifndef NESEMU_SUI_H
-#define NESEMU_SUI_H
+#ifndef EMULATOR_SUI_H
+#define EMULATOR_SUI_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class SUI: public OpCode {
 public:
     SUI() = delete;
     ~SUI() = default;
-    SUI(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    SUI(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -17,7 +17,7 @@ public:
         uint16_t result = registers->a - ram->read(registers->pc.d16 + 1);
 
         updateFlags(result);
-        updateAuxiliaryCarry(registers->a, result);
+        updateCarry(registers->a, result);
         flags->carry = (result & 0xff00u) > 0 ? 1 : 0;
         registers->a = result & 0x00ffu;
 

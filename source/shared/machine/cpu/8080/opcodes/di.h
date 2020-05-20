@@ -1,13 +1,13 @@
-#ifndef NESEMU_DI_H
-#define NESEMU_DI_H
+#ifndef EMULATOR_DI_H
+#define EMULATOR_DI_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class DI: public OpCode {
 public:
     DI() = delete;
     ~DI() = default;
-    DI(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    DI(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

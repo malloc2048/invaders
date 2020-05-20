@@ -1,10 +1,14 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "hicpp-signed-bitwise"
 #include <bitset>
 #include <fstream>
+#include "constants.h"
 #include "intel8080.h"
 #include "machine/cpu/8080/opcodes/opcodes.h"
 
 void Intel8080::Disassemble() {
     auto opcode = memory->read(registers->pc.d16);
+
     out << std::hex << std::setw(4) << std::setfill('0') << registers->pc.d16 << "\t";
     opcodes[opcode]->Disassemble(out);
     out << std::endl;
@@ -24,48 +28,25 @@ void Intel8080::Run(bool showStatus) {
 }
 
 void Intel8080::tick(bool showStatus) {
-    if(registers->intEnabled == 1)
-        registers->intEnabled = 2;
+    if(registers->interruptPending && registers->intEnabled && registers->interruptDelay == 0) {
+        registers->interruptPending = false;
+        registers->intEnabled = 0;
+        registers->halted = false;
+        registers->pc.d16 += opcodes[registers->interruptVector]->Execute(registers->interruptVector, out);
 
-    auto opcode = memory->read(registers->pc.d16);
-
-    if(showStatus) {
-        debug_output << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->pc.d16 << "\t";
-        debug_output << Nemonics[opcode] << "\t";
-
-        debug_output << "\tregisters:\t";
-        debug_output << "A: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)registers->a << "\t";
-        debug_output << "BC: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->bc.d16 << "\t";
-        debug_output << "DE: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->de.d16 << "\t";
-        debug_output << "HL: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->hl.d16 << "\t";
-        debug_output << "SP: " << std::hex << std::setfill('0') << std::setw(4) << (unsigned)registers->sp.d16 << "\t";
-
-        debug_output << "memory:\t";
-        debug_output << "byte 2: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)memory->read(registers->pc.d16 + 1) << "\t";
-        debug_output << "byte 3: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)memory->read(registers->pc.d16 + 2) << "\t";
-        debug_output << "SP: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)memory->read(registers->sp.d16) << "\t";
-        debug_output << "SP + 1: " << std::hex << std::setfill('0') << std::setw(2) << (unsigned)memory->read(registers->sp.d16 + 1);
-        debug_output << std::endl;
-    }
-    registers->pc.d16 += opcodes[opcode]->Execute(opcode, out);
-
-    if(registers->intEnabled == 2){
-        // TODO: ?????????
+    } else {
+        auto opcode = memory->read(registers->pc.d16);
+        cycles += OPCODES_CYCLES[opcode];
+        registers->pc.d16 += opcodes[opcode]->Execute(opcode, out);
     }
 }
 
 void Intel8080::interrupt(uint8_t interruptNumber) {
-    if(registers->intEnabled) {
-        std::cout << "interrupt: " << (unsigned) interruptNumber << std::endl;
-
-        memory->write(registers->sp.d16 - 1, registers->pc.bytes.high);
-        memory->write(registers->sp.d16 - 2, registers->pc.bytes.low);
-
-        registers->pc.d16 = interruptNumber * 8;
-    }
+    registers->interruptPending = true;
+    registers->interruptVector = interruptNumber << 3 & 0xffu;
 }
 
-Intel8080::Intel8080(RAM* memory, Flags* flags, Registers* registers, std::ostream& outputStream):
+Intel8080::Intel8080(Memory* memory, Flags* flags, Registers* registers, std::ostream& outputStream):
     out(outputStream), opcodes(), memory(memory), flags(flags), registers(registers) {
     opcodes[0x00] = new NOP(memory, flags, registers);
 
@@ -654,3 +635,5 @@ const std::string Intel8080::Nemonics[256] = {
     "FE CPI D8     ",
     "FF RST 7      "
 };
+
+#pragma clang diagnostic pop

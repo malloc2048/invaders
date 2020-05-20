@@ -1,13 +1,13 @@
-#ifndef NESEMU_CALL_H
-#define NESEMU_CALL_H
+#ifndef EMULATOR_CALL_H
+#define EMULATOR_CALL_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class CALL: public OpCode {
 public:
     CALL() = delete;
     ~CALL() = default;
-    CALL(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    CALL(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

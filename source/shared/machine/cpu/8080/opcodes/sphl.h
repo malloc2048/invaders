@@ -1,13 +1,13 @@
-#ifndef NESEMU_SPHL_H
-#define NESEMU_SPHL_H
+#ifndef EMULATOR_SPHL_H
+#define EMULATOR_SPHL_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class SPHL: public OpCode {
 public:
     SPHL() = delete;
     ~SPHL() = default;
-    SPHL(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    SPHL(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

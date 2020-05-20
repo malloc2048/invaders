@@ -1,14 +1,14 @@
-#ifndef NESEMU_DCX_H
-#define NESEMU_DCX_H
+#ifndef EMULATOR_DCX_H
+#define EMULATOR_DCX_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class DCX: public OpCode {
 public:
     DCX() = delete;
     ~DCX() = default;
 
-    DCX(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    DCX(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

@@ -1,13 +1,13 @@
-#ifndef NESEMU_MOV_H
-#define NESEMU_MOV_H
+#ifndef EMULATOR_MOV_H
+#define EMULATOR_MOV_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class MOV: public OpCode {
 public:
     MOV() = delete;
     ~MOV() = default;
-    MOV(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    MOV(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

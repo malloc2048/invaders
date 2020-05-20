@@ -1,6 +1,6 @@
 include_directories(${CMAKE_CURRENT_LIST_DIR})
 
-file(GLOB_RECURSE RAMLIB_SRC ${CMAKE_CURRENT_LIST_DIR}/ram/*.h ${CMAKE_CURRENT_LIST_DIR}/ram/*.cpp)
+file(GLOB_RECURSE RAMLIB_SRC ${CMAKE_CURRENT_LIST_DIR}/memory/*.h ${CMAKE_CURRENT_LIST_DIR}/memory/*.cpp)
 add_library(ramlib ${RAMLIB_SRC})
 
 file(GLOB_RECURSE CPULIB_SRC ${CMAKE_CURRENT_LIST_DIR}/cpu/*.h ${CMAKE_CURRENT_LIST_DIR}/cpu/*.cpp)

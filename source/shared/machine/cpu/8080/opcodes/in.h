@@ -1,13 +1,13 @@
-#ifndef NESEMU_IN_H
-#define NESEMU_IN_H
+#ifndef EMULATOR_IN_H
+#define EMULATOR_IN_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class IN: public OpCode {
 public:
     IN() = delete;
     ~IN() = default;
-    IN(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    IN(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

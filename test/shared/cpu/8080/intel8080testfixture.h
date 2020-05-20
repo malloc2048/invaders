@@ -1,5 +1,5 @@
-#ifndef NESEMU_INTEL8080TESTFIXTURE_H
-#define NESEMU_INTEL8080TESTFIXTURE_H
+#ifndef EMULATOR_INTEL8080TESTFIXTURE_H
+#define EMULATOR_INTEL8080TESTFIXTURE_H
 
 #include <sstream>
 #include <gtest/gtest.h>
@@ -14,7 +14,7 @@ public:
     void loadTestMemory(std::vector<uint8_t>& values);
 
 protected:
-    RAM ram;
+    Memory ram;
     Flags flags;
     Registers regs;
     Intel8080 cpu;

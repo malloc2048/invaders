@@ -1,13 +1,13 @@
-#ifndef NESEMU_DAA_H
-#define NESEMU_DAA_H
+#ifndef EMULATOR_DAA_H
+#define EMULATOR_DAA_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class DAA: public OpCode {
 public:
     DAA() = default;
     ~DAA() = default;
-    DAA(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    DAA(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -31,7 +31,7 @@ public:
             byte.bits.high += 6;
 
         updateFlags(registers->a);
-        updateAuxiliaryCarry(registers->a, byte.d8);
+        updateCarry(registers->a, byte.d8);
         flags->carry = byte.d8 < registers->a ? 1 : 0;
         return 1;
     }

@@ -1,14 +1,14 @@
-#ifndef NESEMU_ROTATE_H
-#define NESEMU_ROTATE_H
+#ifndef EMULATOR_ROTATE_H
+#define EMULATOR_ROTATE_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class Rotate: public OpCode {
 public:
     Rotate() = delete;
     ~Rotate() = default;
 
-    Rotate(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    Rotate(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

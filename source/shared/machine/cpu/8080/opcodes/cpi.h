@@ -1,13 +1,13 @@
-#ifndef NESEMU_CPI_H
-#define NESEMU_CPI_H
+#ifndef EMULATOR_CPI_H
+#define EMULATOR_CPI_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class CPI: public OpCode {
 public:
     CPI() = delete;
     ~CPI() = default;
-    CPI(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    CPI(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -18,7 +18,7 @@ public:
 
         uint16_t result = registers->a - ram->read(registers->pc.d16 + 1);
         updateFlags(result);
-        updateAuxiliaryCarry(registers->a, result);
+        updateCarry(registers->a, result);
         flags->carry = registers->a < ram->read(registers->pc.d16 + 1) ? 1 : 0;
         registers->a = result & 0x00ffu;
 

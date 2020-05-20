@@ -1,14 +1,14 @@
-#ifndef NESEMU_JUMP_H
-#define NESEMU_JUMP_H
+#ifndef EMULATOR_JUMP_H
+#define EMULATOR_JUMP_H
 
 #include <map>
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class Jump: public OpCode {
 public:
     Jump() = delete;
     ~Jump() = default;
-    Jump(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    Jump(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

@@ -1,5 +1,5 @@
-#ifndef NESEMU_REGISTERS_H
-#define NESEMU_REGISTERS_H
+#ifndef EMULATOR_REGISTERS_H
+#define EMULATOR_REGISTERS_H
 
 #include <cstdint>
 
@@ -45,12 +45,17 @@ public:
     Registers() = default;
     ~Registers() = default;
 
-    uint8_t a;
-    RegisterPair pc;
-    RegisterPair sp;
-    RegisterPair bc;
-    RegisterPair de;
-    RegisterPair hl;
-    uint8_t intEnabled;
+    uint8_t a = 0x00;
+    RegisterPair pc = { 0x0000 };
+    RegisterPair sp = { 0x0000 };
+    RegisterPair bc = { 0x0000 };
+    RegisterPair de = { 0x0000 };
+    RegisterPair hl = { 0x0000 };
+
+    bool halted = false;
+    uint8_t intEnabled = 0x00;
+    uint8_t interruptDelay = 0;
+    bool interruptPending = false;
+    uint8_t interruptVector = 0x00;
 };
 #endif

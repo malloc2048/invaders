@@ -1,14 +1,14 @@
-#ifndef NESEMU_STAX_H
-#define NESEMU_STAX_H
+#ifndef EMULATOR_STAX_H
+#define EMULATOR_STAX_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class STAX: public OpCode {
 public:
     STAX() = delete;
     ~STAX() = default;
 
-    STAX(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    STAX(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

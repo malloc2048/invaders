@@ -1,14 +1,14 @@
-#ifndef NESEMU_LDA_H
-#define NESEMU_LDA_H
+#ifndef EMULATOR_LDA_H
+#define EMULATOR_LDA_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class LDA: public OpCode {
 public:
     LDA() = delete;
     ~LDA() = default;
 
-    LDA(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    LDA(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

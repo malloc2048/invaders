@@ -1,14 +1,14 @@
-#ifndef NESEMU_INX_H
-#define NESEMU_INX_H
+#ifndef EMULATOR_INX_H
+#define EMULATOR_INX_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class INX: public OpCode {
 public:
     INX() = delete;
     ~INX() = default;
 
-    INX(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    INX(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

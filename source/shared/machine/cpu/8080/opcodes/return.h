@@ -1,13 +1,13 @@
-#ifndef NESEMU_Return_H
-#define NESEMU_Return_H
+#ifndef EMULATOR_Return_H
+#define EMULATOR_Return_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class Return: public OpCode {
 public:
     Return() = delete;
     ~Return() = default;
-    Return(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    Return(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

@@ -1,13 +1,13 @@
-#ifndef NESEMU_XRA_H
-#define NESEMU_XRA_H
+#ifndef EMULATOR_XRA_H
+#define EMULATOR_XRA_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class XRA: public OpCode {
 public:
     XRA() = delete;
     ~XRA() = default;
-    XRA(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    XRA(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -46,7 +46,7 @@ public:
         }
         updateFlags(result);
         flags->carry = 0;
-        flags->auxiliary = 0;
+        flags->halfCarry = 0;
         registers->a = result & 0x00ffu;
 
         return 1;

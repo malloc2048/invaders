@@ -1,5 +1,5 @@
-#ifndef NESEMU_OPCODES_H
-#define NESEMU_OPCODES_H
+#ifndef EMULATOR_OPCODES_H
+#define EMULATOR_OPCODES_H
 
 #include "di.h"
 #include "ei.h"

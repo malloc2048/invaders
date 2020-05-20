@@ -1,5 +1,5 @@
-#ifndef NESEMU_OPCODE_H
-#define NESEMU_OPCODE_H
+#ifndef EMULATOR_OPCODE_H
+#define EMULATOR_OPCODE_H
 
 #include <memory>
 #include <iomanip>
@@ -7,7 +7,7 @@
 
 #include "flags.h"
 #include "registers.h"
-#include "machine/ram/ram.h"
+#include "machine/memory/memory.h"
 
 class OpCode {
 public:
@@ -18,12 +18,12 @@ public:
     virtual int8_t Execute(uint8_t opcode, std::ostream& debug) = 0;
     virtual void Disassemble(std::ostream& out) = 0;
 
-protected:
     void updateFlags(uint8_t value) ;
     static uint8_t calculateParity(uint8_t value);
-    void updateAuxiliaryCarry(uint8_t original, uint8_t updated) ;
+    void updateCarry(uint8_t original, uint8_t updated) ;
 
-    RAM* ram = nullptr;
+protected:
+    Memory* ram = nullptr;
     Flags* flags = nullptr;
     Registers* registers = nullptr;
 

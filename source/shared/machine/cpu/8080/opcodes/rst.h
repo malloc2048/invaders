@@ -1,13 +1,13 @@
-#ifndef NESEMU_RST_H
-#define NESEMU_RST_H
+#ifndef EMULATOR_RST_H
+#define EMULATOR_RST_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class RST: public OpCode {
 public:
     RST() = delete;
     ~RST() = default;
-    RST(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    RST(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

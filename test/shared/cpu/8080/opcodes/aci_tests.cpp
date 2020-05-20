@@ -1,23 +1,68 @@
-#include "../intel8080testfixture.h"
+#include "OpCodeTestFixture.h"
+#include "machine/cpu/8080/opcodes/aci.h"
 
-TEST_F(Intel8080TestFixture, ACI_Test) {
-    std::vector<uint8_t> testMemory = {
-        0xce, 0xff, 0xce, 0x01, 0xce, 0x01
-    };
-    loadTestMemory(testMemory);
+TEST_F(OpCodeTestFixture, ACI_Disassemble) {
+    ACI aci(memory, flags, registers);
 
-    cpu.tick();
-    ASSERT_EQ(regs.a, 0xff);
-    ASSERT_EQ(flags.d8, 0x16);
-    ASSERT_EQ(regs.pc.d16, 0x0002);
+    memory->loadRom();
+    ASSERT_TRUE(memory->write(0x0000, 0xCE));
+    ASSERT_TRUE(memory->write(0x0001, 0x01));
 
-    cpu.tick();
-    ASSERT_EQ(regs.a, 0x00);
-    ASSERT_EQ(flags.d8, 0x1d);
-    ASSERT_EQ(regs.pc.d16, 0x0004);
+    aci.Disassemble(out);
+    ASSERT_EQ(registers->pc.d16, 0x0002);
+    ASSERT_EQ(out.str(), "ce\tACI 1");
+}
 
-    cpu.tick();
-    ASSERT_EQ(regs.a, 0x02);
-    ASSERT_EQ(flags.d8, 0x00);
-    ASSERT_EQ(regs.pc.d16, 0x0006);
+TEST_F(OpCodeTestFixture, ACI_Execute_CarryZero) {
+    ACI aci(memory, flags, registers);
+
+    memory->loadRom();
+    ASSERT_TRUE(memory->write(0x0000, 0xCE));
+    ASSERT_TRUE(memory->write(0x0001, 0x01));
+
+    auto instructionSize = aci.Execute(0xCE, out);
+    ASSERT_EQ(0x02, instructionSize);
+    ASSERT_EQ(registers->a, 0x01);
+}
+
+TEST_F(OpCodeTestFixture, ACI_Execute_CarrySet) {
+    ACI aci(memory, flags, registers);
+
+    memory->loadRom();
+    ASSERT_TRUE(memory->write(0x0000, 0xCE));
+    ASSERT_TRUE(memory->write(0x0001, 0x01));
+
+    flags->carry = 1;
+
+    auto instructionSize = aci.Execute(0xCE, out);
+    ASSERT_EQ(0x02, instructionSize);
+    ASSERT_EQ(registers->a, 0x02);
+}
+
+TEST_F(OpCodeTestFixture, ACI_Execute_CarryFlagSet) {
+    ACI aci(memory, flags, registers);
+
+    registers->a = 0x01;
+
+    memory->loadRom();
+    ASSERT_TRUE(memory->write(0x0000, 0xCE));
+    ASSERT_TRUE(memory->write(0x0001, 0xff));
+
+    auto instructionSize = aci.Execute(0xCE, out);
+    ASSERT_EQ(0x02, instructionSize);
+    ASSERT_EQ(registers->a, 0x00);
+}
+
+TEST_F(OpCodeTestFixture, ACI_Execute_SignFlagSet) {
+    ACI aci(memory, flags, registers);
+
+    registers->a = 0x70;
+
+    memory->loadRom();
+    ASSERT_TRUE(memory->write(0x0000, 0xCE));
+    ASSERT_TRUE(memory->write(0x0001, 0x80));
+
+    auto instructionSize = aci.Execute(0xCE, out);
+    ASSERT_EQ(0x02, instructionSize);
+    ASSERT_EQ(registers->a, 0xf0);
 }

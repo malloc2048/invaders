@@ -1,14 +1,14 @@
-#ifndef NESEMU_PUSH_H
-#define NESEMU_PUSH_H
+#ifndef EMULATOR_PUSH_H
+#define EMULATOR_PUSH_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class PUSH: public OpCode {
 public:
     PUSH() = delete;
     ~PUSH() = default;
 
-    PUSH(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    PUSH(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

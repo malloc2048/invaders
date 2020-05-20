@@ -3,7 +3,7 @@
 #include "machine/cpu/8080/intel8080.h"
 
 int main(int argc, char** argv) {
-    RAM memory;
+    Memory memory;
     Flags flags { .d8 = 0 };
     Registers regs { .a = 0, .pc = {.d16 = 0 }, .sp = {.d16 = 0 },
                      .bc = {.d16 = 0 }, .de = {.d16 = 0 }, .hl = {.d16 = 0 },
@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 
     std::ofstream disassemblyFile("../../../roms/invaders.dis");
     Intel8080 cpu(&memory, &flags, &regs, disassemblyFile);
-    while(regs.pc.d16 < RAM::ROM_MAX_ADDR) {
+    while(regs.pc.d16 < Memory::ROM_MAX_ADDR) {
         cpu.Disassemble();
     }
     return 0;

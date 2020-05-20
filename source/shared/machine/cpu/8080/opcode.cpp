@@ -21,6 +21,10 @@ uint8_t OpCode::calculateParity(uint8_t value) {
 }
 
 // auxiliary carry flag is set when the upper 4 bits change after an addition (carry) or subtraction (borrow)
-void OpCode::updateAuxiliaryCarry(uint8_t original, uint8_t updated) {
-    flags->auxiliary = (original & 0xf0u) != (updated & 0xf0u) ? 1 : 0;
+void OpCode::updateCarry(uint8_t original, uint8_t updated) {
+    uint16_t result = original + updated;
+    uint16_t carry = result ^ original ^ updated;
+
+    flags->halfCarry = (carry & 0x0010) >> 4;
+    flags->carry = (carry & 0x0100) >> 8;
 }

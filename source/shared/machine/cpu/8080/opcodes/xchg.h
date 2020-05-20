@@ -1,13 +1,13 @@
-#ifndef NESEMU_XCHG_H
-#define NESEMU_XCHG_H
+#ifndef EMULATOR_XCHG_H
+#define EMULATOR_XCHG_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class XCHG: public OpCode {
 public:
     XCHG() = delete;
     ~XCHG() = default;
-    XCHG(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    XCHG(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

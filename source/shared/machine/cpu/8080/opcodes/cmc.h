@@ -1,13 +1,13 @@
-#ifndef NESEMU_CMC_H
-#define NESEMU_CMC_H
+#ifndef EMULATOR_CMC_H
+#define EMULATOR_CMC_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class CMC: public OpCode {
 public:
     CMC() = delete;
     ~CMC() = default;
-    CMC(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    CMC(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

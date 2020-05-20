@@ -1,14 +1,14 @@
-#ifndef NESEMU_DCR_H
-#define NESEMU_DCR_H
+#ifndef EMULATOR_DCR_H
+#define EMULATOR_DCR_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class DCR: public OpCode {
 public:
     DCR() = delete;
     ~DCR() = default;
 
-    DCR(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    DCR(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -56,7 +56,7 @@ public:
         }
 
         updateFlags(value - 1);
-        updateAuxiliaryCarry(value, value - 1);
+        updateCarry(value, value - 1);
 
         std::bitset<8>psw(flags->d8);
         debug << "decrement register " << registerNames[r] << ": ";

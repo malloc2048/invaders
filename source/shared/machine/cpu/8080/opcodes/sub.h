@@ -1,13 +1,13 @@
-#ifndef NESEMU_SUB_H
-#define NESEMU_SUB_H
+#ifndef EMULATOR_SUB_H
+#define EMULATOR_SUB_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class SUB: public OpCode {
 public:
     SUB() = delete;
     ~SUB() = default;
-    SUB(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    SUB(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -47,7 +47,7 @@ public:
                 break;
         }
         updateFlags(sum);
-        updateAuxiliaryCarry(registers->a, sum);
+        updateCarry(registers->a, sum);
         flags->carry = (sum & 0xff00u) != 0 ? 1 : 0;
         registers->a = sum & 0x00ffu;
 

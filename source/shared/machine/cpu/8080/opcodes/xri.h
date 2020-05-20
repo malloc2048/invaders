@@ -1,13 +1,13 @@
-#ifndef NESEMU_XRI_H
-#define NESEMU_XRI_H
+#ifndef EMULATOR_XRI_H
+#define EMULATOR_XRI_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class XRI: public OpCode {
 public:
     XRI() = delete;
     ~XRI() = default;
-    XRI(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    XRI(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -17,7 +17,7 @@ public:
         uint16_t result = registers->a ^ ram->read(registers->pc.d16 + 1);
         updateFlags(result);
         flags->carry = 0;
-        flags->auxiliary = 0;
+        flags->halfCarry = 0;
         registers->a = result & 0x00ffu;
 
         return 2;

@@ -1,13 +1,13 @@
-#ifndef NESEMU_OUT_H
-#define NESEMU_OUT_H
+#ifndef EMULATOR_OUT_H
+#define EMULATOR_OUT_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class OUT: public OpCode {
 public:
     OUT() = delete;
     ~OUT() = default;
-    OUT(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    OUT(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;

@@ -1,13 +1,13 @@
-#ifndef NESEMU_ANA_H
-#define NESEMU_ANA_H
+#ifndef EMULATOR_ANA_H
+#define EMULATOR_ANA_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class ANA: public OpCode {
 public:
     ANA() = delete;
     ~ANA() = default;
-    ANA(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    ANA(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
@@ -45,7 +45,7 @@ public:
                 break;
         }
         updateFlags(result);
-        updateAuxiliaryCarry(registers->a, result);
+        updateCarry(registers->a, result);
         flags->carry = 0;
         registers->a = result & 0x00ffu;
 

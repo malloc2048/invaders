@@ -1,13 +1,13 @@
-#ifndef NESEMU_PCHL_H
-#define NESEMU_PCHL_H
+#ifndef EMULATOR_PCHL_H
+#define EMULATOR_PCHL_H
 
-#include "cpu/8080/opcode.h"
+#include "machine/cpu/8080/opcode.h"
 
 class PCHL: public OpCode {
 public:
     PCHL() = delete;
     ~PCHL() = default;
-    PCHL(RAM* ramIn, Flags* flagsIn, Registers* registersIn) {
+    PCHL(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
         ram = ramIn;
         flags = flagsIn;
         registers = registersIn;
