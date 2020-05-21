@@ -21,10 +21,9 @@ public:
     }
 
     void Disassemble(std::ostream& out) override {
-        out << "CMA";
+        out << std::hex << std::setw(2) << std::setfill('0');
+        out << (unsigned)ram->read(registers->pc.d16) << "\tCMA";
         registers->pc.d16 += 1;
-
-
     }
 };
 #endif

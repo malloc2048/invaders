@@ -19,10 +19,8 @@ public:
     }
 
     void Disassemble(std::ostream& out) override {
-        out << (unsigned)ram->read(registers->pc.d16) << "\tCMC";
+        out << std::hex << (unsigned)ram->read(registers->pc.d16) << "\tCMC";
         registers->pc.d16 += 1;
-
-
     }
 };
 #endif

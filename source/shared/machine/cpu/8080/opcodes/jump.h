@@ -2,6 +2,7 @@
 #define EMULATOR_JUMP_H
 
 #include <map>
+#include <bitset>
 #include "machine/cpu/8080/opcode.h"
 
 class Jump: public OpCode {
@@ -56,7 +57,8 @@ public:
         } else {
             out << "MP ";
         }
-        out << (unsigned)ram->read(registers->pc.d16 + 2) << (unsigned)ram->read(registers->pc.d16 + 1);
+        out << std::hex << std::setw(2) << std::setfill('0') << (unsigned)ram->read(registers->pc.d16 + 2)
+            << std::hex << std::setw(2) << std::setfill('0') << (unsigned)ram->read(registers->pc.d16 + 1);
         registers->pc.d16 += 3;
     }
 

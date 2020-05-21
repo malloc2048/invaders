@@ -47,7 +47,7 @@ public:
         updateFlags(result);
         updateCarry(registers->a, result);
         flags->carry = 0;
-        registers->a = result & 0x00ffu;
+        registers->a = result;
 
         return 1;
     }

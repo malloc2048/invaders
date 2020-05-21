@@ -25,7 +25,8 @@ public:
     }
 
     void Disassemble(std::ostream& out) override {
-        out << (unsigned)ram->read(registers->pc.d16) << "\tANI " << std::hex << std::setw(2) << std::setfill('0') << (unsigned)ram->read(registers->pc.d16 + 1);
+        out << std::hex << std::setw(2) << std::setfill('0') << (unsigned)ram->read(registers->pc.d16) << "\tANI "
+            << std::hex << std::setw(2) << std::setfill('0') << (unsigned)ram->read(registers->pc.d16 + 1);
         registers->pc.d16 += 2;
     }
 };
