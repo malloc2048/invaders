@@ -49,14 +49,14 @@ public:
         updateFlags(result);
         updateCarry(registers->a, result);
         flags->carry = result < 0 ? 1 : 0;
-        registers->a = result & 0x00ffu;
+//        registers->a = result & 0x00ffu;
 
         return 1;
     }
 
     void Disassemble(std::ostream& out) override {
         auto src = ram->read(registers->pc.d16) & 0x07u;
-        out << (unsigned)ram->read(registers->pc.d16) << "\tCMP ";// << registerNames[src];
+        out << std::hex << (unsigned)ram->read(registers->pc.d16) << "\tCMP " << registerNames[src];
         registers->pc.d16 += 1;
     }
 };

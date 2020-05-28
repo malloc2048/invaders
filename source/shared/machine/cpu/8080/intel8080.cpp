@@ -19,7 +19,7 @@ void Intel8080::stop() {
 }
 
 void Intel8080::Run(bool showStatus) {
-    debug_output.open("../../../roms/debug.out");;
+    debug_output.open("../../../roms/debug.out");
 
     halted = false;
     while(!halted) {
