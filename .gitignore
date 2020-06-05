@@ -2,3 +2,4 @@
 cmake-build-debug
 /config/trace.dis
 /roms/debug.out
+/roms/invaders.log
