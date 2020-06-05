@@ -1,17 +1,15 @@
 cmake_minimum_required(VERSION 3.15)
-project(emulator)
+project(invaders)
 
 set(CMAKE_CXX_STANDARD 14)
+include_directories(/usr/include/SDL2)
+include_directories(${CMAKE_CURRENT_LIST_DIR}/source)
 
-add_definitions(-DSFML_STATIC)
+file(GLOB_RECURSE I8080_SRC ${CMAKE_CURRENT_LIST_DIR}/source/i8080/*)
+file(GLOB_RECURSE MEMORY_SRC ${CMAKE_CURRENT_LIST_DIR}/source/memory/*)
+file(GLOB_RECURSE INVADERS_SRC ${CMAKE_CURRENT_LIST_DIR}/source/invaders/*)
 
-#include_directories(${CMAKE_CURRENT_LIST_DIR}/include/shared)
-include_directories(${CMAKE_CURRENT_LIST_DIR}/source/shared)
+add_executable(invaders ${I8080_SRC} ${MEMORY_SRC} ${INVADERS_SRC} source/invaders.cpp)
+target_link_libraries(invaders SDL2)
 
-set(PROJECT_ROOT ${CMAKE_CURRENT_LIST_DIR})
-set(SHARED_INC_ROOT ${PROJECT_ROOT}/include/shared)
-
-add_subdirectory(source/shared)
-add_subdirectory(source/applications)
-
-add_subdirectory(test)
+add_executable(disassembler ${MEMORY_SRC} source/disassembler.cpp)

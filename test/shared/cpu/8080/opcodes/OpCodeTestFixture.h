@@ -1,5 +1,5 @@
-#ifndef EMULATOR_OPCODETESTFIXTURE_H
-#define EMULATOR_OPCODETESTFIXTURE_H
+#ifndef INVADERS_OPCODETESTFIXTURE_H
+#define INVADERS_OPCODETESTFIXTURE_H
 
 #include <gtest/gtest.h>
 #include "machine/memory/memory.h"

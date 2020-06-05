@@ -1,15 +1,11 @@
 #include "OpCodeTestFixture.h"
-#include "machine/cpu/8080/opcode.h"
+#include "i8080/opcode.h"
 
 //    void updateCarry(uint8_t original, uint8_t updated) ;
 
 class OpCodeTestImpl : public OpCode {
 public:
-    OpCodeTestImpl(Memory* ramIn, Flags* flagsIn, Registers* registersIn) {
-        ram = ramIn;
-        flags = flagsIn;
-        registers = registersIn;
-    }
+    OpCodeTestImpl(Flags& flags, Memory& memory, Registers& registers): OpCode(flags, memory, registers){}
 
     int8_t Execute(uint8_t opcode, std::ostream& debug) override { return 1; };
     void Disassemble(std::ostream& out) override {}
