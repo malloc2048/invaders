@@ -9,7 +9,7 @@ void Memory::loadRom(FILE* romFile) {
     fseek(romFile, 0L, SEEK_END);
     auto fileLength = ftell(romFile);
     fseek(romFile, 0L, SEEK_SET);
-    fread(memory + ROM_MIN_ADDR, sizeof(char), fileLength, romFile);
+    fread(memory, sizeof(char), fileLength, romFile);
 }
 
 uint8_t Memory::readByte(uint16_t address) const {
@@ -23,7 +23,7 @@ uint16_t Memory::readWord(uint16_t address) const {
 }
 
 void Memory::write(uint16_t address, uint8_t value) {
-    if(address >= ROM_MAX_ADDR) {
+    if(address >= ROM_SIZE) {
         memory[address] = value;
     } else {
         fprintf(stdout, "attepmt to write to ROM %04x\n", address);

@@ -10,16 +10,13 @@ public:
     ~Memory() = default;
 
     void loadRom(FILE* romFile);
-
     uint8_t readByte(uint16_t address) const;
     uint16_t readWord(uint16_t address) const;
-
     void write(uint16_t address, uint8_t value);
 
-private:
-    uint8_t memory[0x10000];
+    static const uint16_t ROM_SIZE = 0x2000;
 
-    static const uint16_t ROM_MIN_ADDR = 0x0000;
-    static const uint16_t ROM_MAX_ADDR = 0x2000;
+private:
+    uint8_t memory[0x10000] = {0};
 };
 #endif

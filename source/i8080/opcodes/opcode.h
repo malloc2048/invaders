@@ -1,10 +1,7 @@
 #ifndef INVADERS_OPCODE_H
 #define INVADERS_OPCODE_H
 
-#include <memory>
-#include <iomanip>
-#include <sstream>
-
+#include "constants.h"
 #include "i8080/flags.h"
 #include "memory/memory.h"
 #include "i8080/registers.h"

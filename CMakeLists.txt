@@ -13,3 +13,11 @@ add_executable(invaders ${I8080_SRC} ${MEMORY_SRC} ${INVADERS_SRC} source/invade
 target_link_libraries(invaders SDL2)
 
 add_executable(disassembler ${MEMORY_SRC} source/disassembler.cpp)
+
+# Test executable
+file(GLOB_RECURSE TESTS ${CMAKE_CURRENT_LIST_DIR}/test/*)
+add_executable(unittests ${TESTS} ${I8080_SRC} ${MEMORY_SRC})
+target_link_libraries(unittests gtest_main gtest pthread)
+
+target_compile_options(unittests PUBLIC --coverage)
+target_link_libraries(unittests gcov)
