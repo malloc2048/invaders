@@ -14,7 +14,7 @@ Invaders::~Invaders() {
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    SD:SDL_Quit();
+    SDL_Quit();
 }
 
 bool Invaders::windowInit() {
@@ -49,7 +49,7 @@ bool Invaders::windowInit() {
 
     // create a texture to display
     texture = SDL_CreateTexture(renderer,
-                                SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
+        SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
     if (texture == nullptr) {
         SDL_Log("unable to create texture: %s", SDL_GetError());
         return false;
@@ -84,63 +84,26 @@ void Invaders::mainLoop() {
 void Invaders::pollEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            shouldQuit = true;
-        } else if (event.type == SDL_KEYDOWN) {
-            switch (event.key.keysym.scancode) {
-                case SDL_SCANCODE_ESCAPE:
-                    shouldQuit = true;
-                    break;
-                case SDL_SCANCODE_C:        // insert a coin
-                    cabinet.port1 |= 0x01;
-                    break;
-                case SDL_SCANCODE_RETURN:   // start 1 player game
-                    cabinet.port1 |= 0x04;
-                    break;
-                case SDL_SCANCODE_SPACE:    // FIRE!!!!!!!
-                    cabinet.port1 |= 0x10;
-                    break;
-                case SDL_SCANCODE_A:        // move left
-                    cabinet.port1 |= 0x20;
-                    break;
-                case SDL_SCANCODE_D:        // move right
-                    cabinet.port1 |= 0x40;
-                    break;
-                case SDL_SCANCODE_T:        // tilt
-                    cabinet.port2 |= 0x04;
-                    break;
-                default:
-                    break;
-            }
-        } else if (event.type == SDL_KEYUP) {
-            switch (event.key.keysym.scancode) {
-                case SDL_SCANCODE_C:        // insert a coin
-                    cabinet.port1 &= 0xfe;
-                    break;
-                case SDL_SCANCODE_RETURN:   // start 1 player game
-                    cabinet.port1 &= 0xfb;
-                    break;
-                case SDL_SCANCODE_SPACE:    // FIRE!!!!!!!
-                    cabinet.port1 &= 0xef;
-                    break;
-                case SDL_SCANCODE_A:        // move left
-                    cabinet.port1 &= 0xdf;
-                    break;
-                case SDL_SCANCODE_D:        // move right
-                    cabinet.port1 &= 0xbf;
-                    break;
-                case SDL_SCANCODE_T:        // tilt
-                    cabinet.port2 &= 0xfb;
-                    break;
-                default:
-                    break;
-            }
+        switch (event.type) {
+            case SDL_QUIT:
+                shouldQuit = true;
+                break;
+            case SDL_KEYDOWN:
+                handleKeyDown(event.key.keysym.scancode);
+                break;
+            case SDL_KEYUP:
+                handleKeyUp(event.key.keysym.scancode);
+                break;
+            default:
+                break;
         }
+
     }
 }
 
 void Invaders::run() {
     // game loop
+
     timer = SDL_GetTicks();
     while(!shouldQuit) {
         mainLoop();
@@ -148,9 +111,6 @@ void Invaders::run() {
 }
 
 void Invaders::gameUpdate() {
-    uint32_t cyclesPerFrame = CYCLES_PER_FRAME;
-    uint32_t halfCyclesPerFrame = HALF_CYCLES_PER_FRAME;
-
     uint32_t cycleCount = 0;
     while(cycleCount <= CYCLES_PER_FRAME) {
         const uint32_t start_cyc = cabinet.cpu.getCycleCount();
@@ -183,16 +143,15 @@ void Invaders::gameUpdate() {
 }
 
 void Invaders::gpuUpdate() {
-//    printf("gpuUpdate\n");
     // one byte of VRAM contains data for 8 pixels
     for(size_t i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT / 8; i++) {
-        const uint y = i * 8 / SCREEN_HEIGHT;
-        const uint base_x = (i * 8) % SCREEN_HEIGHT;
+        const uint32_t y = i * 8 / SCREEN_HEIGHT;
+        const uint32_t base_x = (i * 8) % SCREEN_HEIGHT;
         const uint8_t currentByte = cabinet.memory.readByte(VRAM_ADDRESS + i);
 
         for(uint8_t bit = 0; bit < 8; bit++) {
-            uint px = base_x + bit;
-            uint py = y;
+            uint32_t px = base_x + bit;
+            uint32_t py = y;
             const bool isLit = (currentByte >> bit) & 1u;
             uint8_t red = 0, green = 0, blue = 0;
             if(isLit) {
@@ -200,7 +159,7 @@ void Invaders::gpuUpdate() {
             }
 
             // screen is rotated 90 degrees counter clockwise so compensate the pixels
-            const uint temp_x = px;
+            const uint32_t temp_x = px;
             px = py;
             py = -temp_x + SCREEN_HEIGHT - 1;
 
@@ -252,6 +211,64 @@ void Invaders::handleOut() {
             cabinet.shift1 = value;
         case 5: // this one is for sound
         case 6: // watchdog?
+        default:
+            break;
+    }
+}
+
+void Invaders::handleKeyUp(SDL_Scancode keyCode) {
+    switch (keyCode) {
+        case SDL_SCANCODE_ESCAPE:
+            shouldQuit = true;
+        case SDL_SCANCODE_T:       // TILT
+            cabinet.port2 &= 0xfb;
+            break;
+        case SDL_SCANCODE_C:       // COIN
+            cabinet.port1 &= 0xfe;
+            break;
+        case SDL_SCANCODE_A:       // player 1 LEFT
+        case SDL_SCANCODE_LEFT:    // player 1 LEFT
+            cabinet.port1 &= 0xdf;
+            break;
+        case SDL_SCANCODE_D:       // player 1 RIGHT
+        case SDL_SCANCODE_RIGHT:   // player 1 RIGHT
+            cabinet.port1 &= 0xbf;
+            break;
+        case SDL_SCANCODE_W:       // player 1 FIRE
+        case SDL_SCANCODE_SPACE:   // player 1 FIRE
+            cabinet.port1 &= 0xef;
+            break;
+        case SDL_SCANCODE_RETURN:  // START
+            cabinet.port1 &= 0xfb;
+        default:
+            break;
+    }
+}
+
+void Invaders::handleKeyDown(SDL_Scancode keyCode) {
+    switch (keyCode) {
+        case SDL_SCANCODE_ESCAPE:
+            shouldQuit = true;
+        case SDL_SCANCODE_T:       // TILT
+            cabinet.port2 |= 0x04;
+            break;
+        case SDL_SCANCODE_C:       // COIN
+            cabinet.port1 |= 0x01;
+            break;
+        case SDL_SCANCODE_A:       // player 1 LEFT
+        case SDL_SCANCODE_LEFT:    // player 1 LEFT
+            cabinet.port1 |= 0x20;
+            break;
+        case SDL_SCANCODE_D:       // player 1 RIGHT
+        case SDL_SCANCODE_RIGHT:   // player 1 RIGHT
+            cabinet.port1 |= 0x40;
+            break;
+        case SDL_SCANCODE_W:       // player 1 FIRE
+        case SDL_SCANCODE_SPACE:   // player 1 FIRE
+            cabinet.port1 |= 0x10;
+            break;
+        case SDL_SCANCODE_RETURN:  // START
+            cabinet.port1 |= 0x04;
         default:
             break;
     }

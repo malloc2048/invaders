@@ -2,7 +2,16 @@ cmake_minimum_required(VERSION 3.15)
 project(invaders)
 
 set(CMAKE_CXX_STANDARD 14)
-include_directories(/usr/include/SDL2)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/bin)
+
+if(WIN32)
+    include_directories(${CMAKE_CURRENT_LIST_DIR}/sdl/include)
+    include_directories(${CMAKE_CURRENT_LIST_DIR}/sdl/include/SDL2)
+    link_directories(${CMAKE_CURRENT_LIST_DIR}/sdl/lib)
+else()
+    include_directories(/usr/include/SDL2)
+endif()
+
 include_directories(${CMAKE_CURRENT_LIST_DIR}/source)
 
 file(GLOB_RECURSE I8080_SRC ${CMAKE_CURRENT_LIST_DIR}/source/i8080/*)

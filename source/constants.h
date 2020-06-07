@@ -7,6 +7,7 @@
 #define SCREEN_WIDTH 224
 #define SCREEN_HEIGHT 256
 #define VRAM_ADDRESS 0x2400
+#define VRAM_ADDRESS_END 0x4000
 #define CYCLES_PER_FRAME 2000000 / FPS  // 2Mhz at 60 fps
 #define ROM_FILENAME "../roms/invaders"
 #define LOG_FILENAME "../roms/invaders.log"
