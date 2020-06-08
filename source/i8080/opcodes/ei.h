@@ -11,7 +11,6 @@ public:
 
     void Execute(uint8_t opcode) override {
         registers.interruptEnabled = true;
-        registers.interruptDelay = 1;
         registers.pc.d16 += OPCODES_LENGTH[opcode] - 1;
     }
 };

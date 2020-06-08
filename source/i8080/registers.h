@@ -53,7 +53,6 @@ public:
     RegisterPair hl = { 0x0000 };
 
     bool halted = false;
-    uint8_t interruptDelay = 0;
     bool interruptEnabled = false;
 };
 #endif
