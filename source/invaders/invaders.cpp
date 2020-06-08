@@ -159,9 +159,9 @@ void Invaders::gpuUpdate() {
             }
 
             // screen is rotated 90 degrees counter clockwise so compensate the pixels
-            const uint32_t temp_x = px;
+            const uint32_t tempX = px;
             px = py;
-            py = -temp_x + SCREEN_HEIGHT - 1;
+            py = -tempX + SCREEN_HEIGHT - 1;
 
             cabinet.screenBuffer[py][px][0] = red;
             cabinet.screenBuffer[py][px][1] = green;
