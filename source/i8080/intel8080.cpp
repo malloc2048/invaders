@@ -10,6 +10,7 @@ Intel8080::Intel8080(Memory &memoryIn) : memory(memoryIn) {
 }
 
 void Intel8080::step(bool showStatus) {
+    // TODO: this still needed?
     if(interruptPending && registers.interruptEnabled) {
         interruptPending = false;
         registers.interruptEnabled = false;
