@@ -13,7 +13,7 @@ public:
     Intel8080() = delete;
     ~Intel8080() = default;
 
-    void step(bool showStatus = false);
+    void step();
     void interrupt(uint16_t address);
 
     uint16_t getPC() const;

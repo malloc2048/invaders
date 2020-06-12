@@ -9,23 +9,10 @@ Intel8080::Intel8080(Memory &memoryIn) : memory(memoryIn) {
     initializeInstructions();
 }
 
-void Intel8080::step(bool showStatus) {
-    // TODO: this still needed?
-    if(interruptPending && registers.interruptEnabled) {
-        interruptPending = false;
-        registers.interruptEnabled = false;
-        halted = false;
-        opcodes[interruptVector]->Execute(interruptVector);
-
-    } else {
-        auto opcode = nextByte();
-        cycles += OPCODES_CYCLES[opcode];
-
-        if(registers.pc.d16 == 0x002e) {
-            printf("OK\n");
-        }
-        opcodes[opcode]->Execute(opcode);
-    }
+void Intel8080::step() {
+    auto opcode = nextByte();
+    cycles += OPCODES_CYCLES[opcode];
+    opcodes[opcode]->Execute(opcode);
 }
 
 void Intel8080::interrupt(uint16_t address) {
