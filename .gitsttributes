@@ -1,2 +1,4 @@
+bin/* linguist-vendored
 sdl/* linguist-vendored
+roms/* linguist-documentation
 documents/* linguist-documentation
