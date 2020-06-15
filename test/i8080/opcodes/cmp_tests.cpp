@@ -85,3 +85,53 @@ TEST_F(OpCodeTestFixture, CMP_H) {
     ASSERT_EQ(flags.parity, 0x00);
     ASSERT_EQ(flags.halfCarry, 0x01);
 }
+
+TEST_F(OpCodeTestFixture, CMP_L) {
+    CMP instruction(flags, memory, registers);
+
+    registers.a = 0xaa;
+    registers.hl.bytes.low = 0xff;
+    instruction.Execute(0xbd);
+
+
+    ASSERT_EQ(0xaa, registers.a);
+
+    ASSERT_EQ(flags.sign, 0x01);
+    ASSERT_EQ(flags.zero, 0x00);
+    ASSERT_EQ(flags.carry, 0x01);
+    ASSERT_EQ(flags.parity, 0x00);
+    ASSERT_EQ(flags.halfCarry, 0x01);
+}
+
+TEST_F(OpCodeTestFixture, CMP_M) {
+    CMP instruction(flags, memory, registers);
+
+    registers.a = 0xaa;
+    registers.hl.d16 = 0x2000;
+    memory.write(0x2000, 0xff);
+    instruction.Execute(0xbe);
+
+    ASSERT_EQ(0xaa, registers.a);
+
+    ASSERT_EQ(flags.sign, 0x01);
+    ASSERT_EQ(flags.zero, 0x00);
+    ASSERT_EQ(flags.carry, 0x01);
+    ASSERT_EQ(flags.parity, 0x00);
+    ASSERT_EQ(flags.halfCarry, 0x01);
+}
+
+TEST_F(OpCodeTestFixture, CMP_A) {
+    CMP instruction(flags, memory, registers);
+
+    registers.a = 0xaa;
+    instruction.Execute(0xbf);
+
+
+    ASSERT_EQ(0xaa, registers.a);
+
+    ASSERT_EQ(flags.sign, 0x00);
+    ASSERT_EQ(flags.zero, 0x01);
+    ASSERT_EQ(flags.carry, 0x00);
+    ASSERT_EQ(flags.parity, 0x01);
+    ASSERT_EQ(flags.halfCarry, 0x00);
+}
