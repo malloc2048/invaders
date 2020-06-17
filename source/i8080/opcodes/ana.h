@@ -47,7 +47,7 @@ public:
 
         updateFlags(result);
         flags.carry = 0;
-        flags.halfCarry = ((registers.a | value) & 0x08) != 0;
+        flags.halfCarry = ((registers.a | value) & 0x08u) != 0;
         registers.a = result;
 
         registers.pc.d16 += OPCODES_LENGTH[opcode] - 1;
