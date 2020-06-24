@@ -39,8 +39,8 @@ public:
 protected:
     void jump() {
         RegisterPair address{};
-        address.bytes.low = memory.readByte(registers.pc.d16);
-        address.bytes.high = memory.readByte(registers.pc.d16 + 1);
+        address.bytes.low = memory.read_byte(registers.pc.d16);
+        address.bytes.high = memory.read_byte(registers.pc.d16 + 1);
         registers.pc.d16 = address.d16;
     }
 };

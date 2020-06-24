@@ -33,7 +33,7 @@ public:
                 diff = registers.a - registers.hl.bytes.low;
                 break;
             case M:
-                diff = registers.a - memory.readByte(registers.hl.d16);
+                diff = registers.a - memory.read_byte(registers.hl.d16);
                 break;
             case A:
                 diff = registers.a - registers.a;

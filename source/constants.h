@@ -1,18 +1,32 @@
 #ifndef INVADERS_CONSTANTS_H
 #define INVADERS_CONSTANTS_H
 
+#include <string>
 #include <cstdint>
 
-#define FPS 60
-#define SCREEN_WIDTH 224
-#define SCREEN_HEIGHT 256
-#define VRAM_ADDRESS 0x2400
-#define VRAM_ADDRESS_END 0x4000
-#define CYCLES_PER_FRAME 2000000 / FPS  // 2Mhz at 60 fps
-#define ROM_FILENAME "../roms/invaders"
-#define LOG_FILENAME "../roms/invaders.log"
-#define HALF_CYCLES_PER_FRAME CYCLES_PER_FRAME / 2
-#define DISASSEMBLY_FILENAME "../roms/invaders.dis"
+namespace {
+    std::string ROM_FILENAME() { return "../roms/invaders"; }
+    std::string LOG_FILENAME() { return "../roms/invaders.log"; }
+    std::string DISASSEMBLY_FILENAME() { return "../roms/invaders.dis"; }
+
+    int FPS() { return 60; }
+    int SCREEN_WIDTH() { return 224; }
+    int SCREEN_HEIGHT() { return 256; }
+    uint16_t VRAM_ADDRESS() { return 0x2400; }
+    uint32_t CYCLES_PER_FRAME() { return 2000000 / FPS(); }
+    uint32_t HALF_CYCLES_PER_FRAME() { return CYCLES_PER_FRAME() / 2; }
+}
+
+//#define FPS 60
+//#define SCREEN_WIDTH 224
+//#define SCREEN_HEIGHT 256
+//#define VRAM_ADDRESS 0x2400
+//#define VRAM_ADDRESS_END 0x4000
+//#define CYCLES_PER_FRAME 2000000 / FPS  // 2Mhz at 60 fps
+//#define ROM_FILENAME "../roms/invaders"
+//#define LOG_FILENAME "../roms/invaders.log"
+//#define HALF_CYCLES_PER_FRAME CYCLES_PER_FRAME / 2
+//#define DISASSEMBLY_FILENAME "../roms/invaders.dis"
 
 static const uint8_t OPCODES_CYCLES[] = {
 //  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F

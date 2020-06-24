@@ -33,7 +33,7 @@ public:
                 sum = registers.a + registers.hl.bytes.low;
                 break;
             case M:
-                sum = registers.a + memory.readByte(registers.hl.d16);
+                sum = registers.a + memory.read_byte(registers.hl.d16);
                 break;
             case A:
                 sum = registers.a + registers.a;

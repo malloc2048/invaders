@@ -2,23 +2,22 @@
 #pragma ide diagnostic ignored "hicpp-signed-bitwise"
 
 #include <iomanip>
-#include <iostream>
+#include <fstream>
 #include "memory.h"
 
-void Memory::loadRom(FILE* romFile) {
-    fseek(romFile, 0L, SEEK_END);
-    auto fileLength = ftell(romFile);
-    fseek(romFile, 0L, SEEK_SET);
-    fread(memory, sizeof(char), fileLength, romFile);
+void Memory::load_rom(std::ifstream& rom_file) {
+    if(rom_file.is_open()) {
+        rom_file.read((char*)memory, ROM_SIZE);
+    }
 }
 
-uint8_t Memory::readByte(uint16_t address) const {
+uint8_t Memory::read_byte(uint16_t address) const {
     return memory[address];
 }
 
-uint16_t Memory::readWord(uint16_t address) const {
-    uint16_t word = readByte(address);
-    word |= readByte(address + 1) << 8u;
+uint16_t Memory::read_word(uint16_t address) const {
+    uint16_t word = read_byte(address);
+    word |= read_byte(address + 1) << 8u;
     return word;
 }
 

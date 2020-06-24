@@ -36,8 +36,8 @@ public:
 protected:
     void ret() {
         RegisterPair address{};
-        address.bytes.low = memory.readByte(registers.sp.d16);
-        address.bytes.high = memory.readByte(registers.sp.d16 + 1);
+        address.bytes.low = memory.read_byte(registers.sp.d16);
+        address.bytes.high = memory.read_byte(registers.sp.d16 + 1);
         registers.pc.d16 = address.d16;
         registers.sp.d16 += 2;
     }

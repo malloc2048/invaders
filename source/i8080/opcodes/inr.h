@@ -40,7 +40,7 @@ public:
                 registers.hl.bytes.low = value;
                 break;
             case M:
-                value = memory.readByte(registers.hl.d16) + 1;
+                value = memory.read_byte(registers.hl.d16) + 1;
                 memory.write(registers.hl.d16, value);
                 break;
             case A:

@@ -8,7 +8,7 @@ TEST_F(OpCodeTestFixture, CALL_Execute) {
     instruction.Execute(0xcd);
     ASSERT_EQ(0x23fe, registers.sp.d16);
     ASSERT_EQ(0x0201, registers.pc.d16);
-    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.readWord(registers.sp.d16));
+    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.read_word(registers.sp.d16));
 }
 
 TEST_F(OpCodeTestFixture, CALLNotZero) {
@@ -19,7 +19,7 @@ TEST_F(OpCodeTestFixture, CALLNotZero) {
     instruction.Execute(0xc4);
     ASSERT_EQ(0x23fe, registers.sp.d16);
     ASSERT_EQ(0x0201, registers.pc.d16);
-    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.readWord(registers.sp.d16));
+    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.read_word(registers.sp.d16));
 
     flags.zero = 0x01;
     instruction.Execute(0xc4);
@@ -35,7 +35,7 @@ TEST_F(OpCodeTestFixture, CALLZero) {
     instruction.Execute(0xcc);
     ASSERT_EQ(0x23fe, registers.sp.d16);
     ASSERT_EQ(0x0201, registers.pc.d16);
-    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.readWord(registers.sp.d16));
+    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.read_word(registers.sp.d16));
 
     flags.zero = 0x00;
     instruction.Execute(0xcc);
@@ -51,7 +51,7 @@ TEST_F(OpCodeTestFixture, CALLNoCarry) {
     instruction.Execute(0xd4);
     ASSERT_EQ(0x23fe, registers.sp.d16);
     ASSERT_EQ(0x0201, registers.pc.d16);
-    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.readWord(registers.sp.d16));
+    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.read_word(registers.sp.d16));
 
     flags.carry = 0x01;
     instruction.Execute(0xd4);
@@ -67,7 +67,7 @@ TEST_F(OpCodeTestFixture, CALLCarry) {
     instruction.Execute(0xdc);
     ASSERT_EQ(0x23fe, registers.sp.d16);
     ASSERT_EQ(0x0201, registers.pc.d16);
-    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.readWord(registers.sp.d16));
+    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.read_word(registers.sp.d16));
 
     flags.carry = 0x00;
     instruction.Execute(0xdc);
@@ -83,7 +83,7 @@ TEST_F(OpCodeTestFixture, CALLParityOdd) {
     instruction.Execute(0xe4);
     ASSERT_EQ(0x23fe, registers.sp.d16);
     ASSERT_EQ(0x0201, registers.pc.d16);
-    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.readWord(registers.sp.d16));
+    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.read_word(registers.sp.d16));
 
     flags.parity = 0x01;
     instruction.Execute(0xe4);
@@ -99,7 +99,7 @@ TEST_F(OpCodeTestFixture, CALLParityEven) {
     instruction.Execute(0xec);
     ASSERT_EQ(0x23fe, registers.sp.d16);
     ASSERT_EQ(0x0201, registers.pc.d16);
-    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.readWord(registers.sp.d16));
+    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.read_word(registers.sp.d16));
 
     flags.parity = 0x00;
     instruction.Execute(0xec);
@@ -115,7 +115,7 @@ TEST_F(OpCodeTestFixture, CALLPlus) {
     instruction.Execute(0xf4);
     ASSERT_EQ(0x23fe, registers.sp.d16);
     ASSERT_EQ(0x0201, registers.pc.d16);
-    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.readWord(registers.sp.d16));
+    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.read_word(registers.sp.d16));
 
     flags.sign = 0x01;
     instruction.Execute(0xf4);
@@ -131,7 +131,7 @@ TEST_F(OpCodeTestFixture, CALLMinus) {
     instruction.Execute(0xfc);
     ASSERT_EQ(0x23fe, registers.sp.d16);
     ASSERT_EQ(0x0201, registers.pc.d16);
-    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.readWord(registers.sp.d16));
+    ASSERT_EQ(Memory::ROM_SIZE + 2, memory.read_word(registers.sp.d16));
 
     flags.sign = 0x00;
     instruction.Execute(0xfc);

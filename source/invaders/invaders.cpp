@@ -26,12 +26,12 @@ bool Invaders::windowInit() {
 
     // create SDL window and set some intial properties
     window = SDL_CreateWindow("Space Invaders", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SDL_WINDOW_RESIZABLE);
+                              SCREEN_WIDTH() * 2, SCREEN_HEIGHT() * 2, SDL_WINDOW_RESIZABLE);
     if(window == nullptr) {
         SDL_Log("unable to create game window: %s", SDL_GetError());
         return false;
     }
-    SDL_SetWindowMinimumSize(window, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_SetWindowMinimumSize(window, SCREEN_WIDTH(), SCREEN_HEIGHT());
     SDL_ShowCursor(SDL_DISABLE);
 
     // create a renderer for the game graphics
@@ -40,7 +40,7 @@ bool Invaders::windowInit() {
         SDL_Log("unable to create render: %s", SDL_GetError());
         return false;
     }
-    SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+    SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH(), SCREEN_HEIGHT());
 
     // log info about the selected renderer
     SDL_RendererInfo rendererInfo;
@@ -49,7 +49,7 @@ bool Invaders::windowInit() {
 
     // create a texture to display
     texture = SDL_CreateTexture(renderer,
-        SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
+        SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH(), SCREEN_HEIGHT());
     if (texture == nullptr) {
         SDL_Log("unable to create texture: %s", SDL_GetError());
         return false;
@@ -70,7 +70,7 @@ void Invaders::mainLoop() {
     pollEvents();
 
     // update the game for each frame (every 1/60 second)
-    if(SDL_GetTicks() - timer > (1.0f / FPS) * 1000) {
+    if(SDL_GetTicks() - timer > (1.0f / FPS()) * 1000) {
         timer = SDL_GetTicks();
         gameUpdate();
         gpuUpdate();
@@ -112,12 +112,12 @@ void Invaders::run() {
 
 void Invaders::gameUpdate() {
     uint32_t cycleCount = 0;
-    while(cycleCount <= CYCLES_PER_FRAME) {
+    while(cycleCount <= CYCLES_PER_FRAME()) {
         const uint32_t start_cyc = cabinet.cpu.getCycleCount();
 
         // grab the next opcode for later to handle space invader special codes
         // if hte opcode is one of the special codes the cpu will treat as a NOP
-        const uint8_t opcode = cabinet.memory.readByte(cabinet.cpu.getPC());
+        const uint8_t opcode = cabinet.memory.read_byte(cabinet.cpu.getPC());
         cabinet.cpu.step();
         cycleCount += cabinet.cpu.getCycleCount() - start_cyc;
 
@@ -134,9 +134,9 @@ void Invaders::gameUpdate() {
         }
 
         // now we look to see if we are at a half frame so we send an interrupt for the screen
-        if(cabinet.cpu.getCycleCount() >= HALF_CYCLES_PER_FRAME) {
+        if(cabinet.cpu.getCycleCount() >= HALF_CYCLES_PER_FRAME()) {
             cabinet.cpu.interrupt(cabinet.nextInterrupt);
-            cabinet.cpu.setCycleCount(cabinet.cpu.getCycleCount() - HALF_CYCLES_PER_FRAME);
+            cabinet.cpu.setCycleCount(cabinet.cpu.getCycleCount() - HALF_CYCLES_PER_FRAME());
             cabinet.nextInterrupt = cabinet.nextInterrupt == 0x08 ? 0x10 : 0x08;
         }
     }
@@ -144,10 +144,10 @@ void Invaders::gameUpdate() {
 
 void Invaders::gpuUpdate() {
     // one byte of VRAM contains data for 8 pixels
-    for(size_t i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT / 8; i++) {
-        const uint32_t y = i * 8 / SCREEN_HEIGHT;
-        const uint32_t base_x = (i * 8) % SCREEN_HEIGHT;
-        const uint8_t currentByte = cabinet.memory.readByte(VRAM_ADDRESS + i);
+    for(size_t i = 0; i < SCREEN_WIDTH() * SCREEN_HEIGHT() / 8; i++) {
+        const uint32_t y = i * 8 / SCREEN_HEIGHT();
+        const uint32_t base_x = (i * 8) % SCREEN_HEIGHT();
+        const uint8_t currentByte = cabinet.memory.read_byte(VRAM_ADDRESS() + i);
 
         for(uint8_t bit = 0; bit < 8; bit++) {
             uint32_t px = base_x + bit;
@@ -161,7 +161,7 @@ void Invaders::gpuUpdate() {
             // screen is rotated 90 degrees counter clockwise so compensate the pixels
             const uint32_t tempX = px;
             px = py;
-            py = -tempX + SCREEN_HEIGHT - 1;
+            py = -tempX + SCREEN_HEIGHT() - 1;
 
             cabinet.screenBuffer[py][px][0] = red;
             cabinet.screenBuffer[py][px][1] = green;
@@ -172,7 +172,7 @@ void Invaders::gpuUpdate() {
 }
 
 void Invaders::updateScreen() {
-    const uint32_t pitch = sizeof(uint8_t) * 4 * SCREEN_WIDTH;
+    const uint32_t pitch = sizeof(uint8_t) * 4 * SCREEN_WIDTH();
     SDL_UpdateTexture(texture, nullptr, &cabinet.screenBuffer, pitch);
 }
 
@@ -196,7 +196,7 @@ void Invaders::handleIn() {
 }
 
 void Invaders::handleOut() {
-    uint8_t port = cabinet.memory.readByte(cabinet.cpu.getPC());
+    uint8_t port = cabinet.memory.read_byte(cabinet.cpu.getPC());
     cabinet.cpu.incrementPC(1);
     uint8_t value = cabinet.cpu.getAccumulator();
 

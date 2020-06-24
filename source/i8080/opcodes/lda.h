@@ -11,8 +11,8 @@ public:
     LDA(Flags& flags, Memory& memory, Registers& registers): OpCode(flags, memory, registers){}
 
     void Execute(uint8_t opcode) override {
-        auto address = memory.readWord(registers.pc.d16);
-        registers.a = memory.readByte(address);
+        auto address = memory.read_word(registers.pc.d16);
+        registers.a = memory.read_byte(address);
         registers.pc.d16 += OPCODES_LENGTH[opcode] - 1;
     }
 };

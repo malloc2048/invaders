@@ -12,7 +12,7 @@ public:
 
     void Execute(uint8_t opcode) override {
         auto r = (opcode & 0x38u) >> 3u;
-        auto value = memory.readByte(registers.pc.d16);
+        auto value = memory.read_byte(registers.pc.d16);
 
         switch(r) {
             case B:

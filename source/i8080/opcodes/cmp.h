@@ -32,7 +32,7 @@ public:
                 doCompare(registers.hl.bytes.low, opcode);
                 break;
             case M:
-                doCompare(memory.readByte(registers.hl.d16), opcode);
+                doCompare(memory.read_byte(registers.hl.d16), opcode);
                 break;
             case A:
                 doCompare(registers.a, opcode);

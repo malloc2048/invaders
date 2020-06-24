@@ -32,7 +32,7 @@ public:
                 doAnd(registers.hl.bytes.low, opcode);
                 break;
             case M:
-                doAnd(memory.readByte(registers.hl.d16), opcode);
+                doAnd(memory.read_byte(registers.hl.d16), opcode);
                 break;
             case A:
                 doAnd(registers.a, opcode);

@@ -20,7 +20,7 @@ public:
             case E:  move(dst, registers.de.bytes.low); break;
             case H:  move(dst, registers.hl.bytes.high); break;
             case L:  move(dst, registers.hl.bytes.low); break;
-            case M:  move(dst, memory.readByte(registers.hl.d16)); break;
+            case M:  move(dst, memory.read_byte(registers.hl.d16)); break;
             case A:  move(dst, registers.a); break;
             default: break;
         }

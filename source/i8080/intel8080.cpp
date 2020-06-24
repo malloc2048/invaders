@@ -54,7 +54,7 @@ void Intel8080::setCycleCount(uint32_t value) {
 }
 
 uint8_t Intel8080::nextByte() {
-    return memory.readByte(registers.pc.d16++);
+    return memory.read_byte(registers.pc.d16++);
 }
 
 uint16_t Intel8080::nextWord() {
@@ -161,6 +161,25 @@ void Intel8080::debug() const {
         default:
             break;
     }
+}
+
+void Intel8080::init() {
+    instructions.insert(std::pair<uint8_t, Instruction>(0x00, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x01, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x02, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x03, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x04, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x05, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x06, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x07, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x08, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x09, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x0a, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x0b, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x0c, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x0d, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x0e, Instruction()));
+    instructions.insert(std::pair<uint8_t, Instruction>(0x0f, Instruction()));
 }
 
 void Intel8080::initializeInstructions() {

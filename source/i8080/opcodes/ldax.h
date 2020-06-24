@@ -14,10 +14,10 @@ public:
         auto rp = (opcode & 0x30u) >> 4u;
         switch(rp) {
             case BC:
-                registers.a = memory.readByte(registers.bc.d16);
+                registers.a = memory.read_byte(registers.bc.d16);
                 break;
             case DE:
-                registers.a = memory.readByte(registers.de.d16);
+                registers.a = memory.read_byte(registers.de.d16);
                 break;
             default:
                 break;

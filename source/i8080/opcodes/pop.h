@@ -16,23 +16,23 @@ public:
         uint8_t value;
         switch(rp) {
             case BC:
-                registers.bc.bytes.low = memory.readByte(registers.sp.d16);
-                registers.bc.bytes.high = memory.readByte(registers.sp.d16 + 1);
+                registers.bc.bytes.low = memory.read_byte(registers.sp.d16);
+                registers.bc.bytes.high = memory.read_byte(registers.sp.d16 + 1);
                 registers.sp.d16 += 2;
                 break;
             case DE:
-                registers.de.bytes.low = memory.readByte(registers.sp.d16);
-                registers.de.bytes.high = memory.readByte(registers.sp.d16 + 1);
+                registers.de.bytes.low = memory.read_byte(registers.sp.d16);
+                registers.de.bytes.high = memory.read_byte(registers.sp.d16 + 1);
                 registers.sp.d16 += 2;
                 break;
             case HL:
-                registers.hl.bytes.low = memory.readByte(registers.sp.d16);
-                registers.hl.bytes.high = memory.readByte(registers.sp.d16 + 1);
+                registers.hl.bytes.low = memory.read_byte(registers.sp.d16);
+                registers.hl.bytes.high = memory.read_byte(registers.sp.d16 + 1);
                 registers.sp.d16 += 2;
                 break;
             case SP: // POP PSW - restore the PSW
-                flags.d8 = memory.readByte(registers.sp.d16);
-                registers.a = memory.readByte(registers.sp.d16 + 1);
+                flags.d8 = memory.read_byte(registers.sp.d16);
+                registers.a = memory.read_byte(registers.sp.d16 + 1);
                 registers.sp.d16 += 2;
                 break;
             default:

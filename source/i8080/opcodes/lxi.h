@@ -14,20 +14,20 @@ public:
         auto rp = (opcode & 0x30u) >> 4u;
         switch(rp) {
             case BC:
-                registers.bc.bytes.low = memory.readByte(registers.pc.d16);
-                registers.bc.bytes.high = memory.readByte(registers.pc.d16 + 1);
+                registers.bc.bytes.low = memory.read_byte(registers.pc.d16);
+                registers.bc.bytes.high = memory.read_byte(registers.pc.d16 + 1);
                 break;
             case DE:
-                registers.de.bytes.low = memory.readByte(registers.pc.d16);
-                registers.de.bytes.high = memory.readByte(registers.pc.d16 + 1);
+                registers.de.bytes.low = memory.read_byte(registers.pc.d16);
+                registers.de.bytes.high = memory.read_byte(registers.pc.d16 + 1);
                 break;
             case HL:
-                registers.hl.bytes.low = memory.readByte(registers.pc.d16);
-                registers.hl.bytes.high = memory.readByte(registers.pc.d16 + 1);
+                registers.hl.bytes.low = memory.read_byte(registers.pc.d16);
+                registers.hl.bytes.high = memory.read_byte(registers.pc.d16 + 1);
                 break;
             case SP:
-                registers.sp.bytes.low = memory.readByte(registers.pc.d16);
-                registers.sp.bytes.high = memory.readByte(registers.pc.d16 + 1);
+                registers.sp.bytes.low = memory.read_byte(registers.pc.d16);
+                registers.sp.bytes.high = memory.read_byte(registers.pc.d16 + 1);
                 break;
             default:
                 break;

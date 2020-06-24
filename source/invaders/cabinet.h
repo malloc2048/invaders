@@ -14,7 +14,7 @@ public:
     Intel8080 cpu;
 
     uint8_t nextInterrupt = 0x08;
-    uint8_t screenBuffer[SCREEN_HEIGHT][SCREEN_WIDTH][4]{};
+    uint8_t screenBuffer[256][224][4]{};
 
     // space invaders ports and shift registers
     uint8_t port1 = 0x08, port2 = 0x03;

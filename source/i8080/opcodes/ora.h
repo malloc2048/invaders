@@ -33,7 +33,7 @@ public:
                 result = registers.a | registers.hl.bytes.low;
                 break;
             case M:
-                result = registers.a | memory.readByte(registers.hl.d16);
+                result = registers.a | memory.read_byte(registers.hl.d16);
                 break;
             case A:
             default:

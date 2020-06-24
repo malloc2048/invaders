@@ -11,7 +11,7 @@ public:
     STA(Flags& flags, Memory& memory, Registers& registers): OpCode(flags, memory, registers){}
 
     void Execute(uint8_t opcode) override {
-        auto address = memory.readWord(registers.pc.d16);
+        auto address = memory.read_word(registers.pc.d16);
         memory.write(address, registers.a);
         registers.pc.d16 += OPCODES_LENGTH[opcode] - 1;
     }
