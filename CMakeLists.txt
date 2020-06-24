@@ -14,18 +14,17 @@ endif()
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/source)
 
-file(GLOB_RECURSE I8080_SRC ${CMAKE_CURRENT_LIST_DIR}/source/i8080/*)
-file(GLOB_RECURSE MEMORY_SRC ${CMAKE_CURRENT_LIST_DIR}/source/memory/*)
-file(GLOB_RECURSE INVADERS_SRC ${CMAKE_CURRENT_LIST_DIR}/source/invaders/*)
+file(GLOB_RECURSE GAME_SRC ${CMAKE_CURRENT_LIST_DIR}/source/invaders/*)
+file(GLOB_RECURSE CABINET_SRC ${CMAKE_CURRENT_LIST_DIR}/source/cabinet/*)
 
-add_executable(invaders ${I8080_SRC} ${MEMORY_SRC} ${INVADERS_SRC} source/invaders.cpp)
+add_executable(invaders ${GAME_SRC} ${CABINET_SRC} source/game.cpp)
 target_link_libraries(invaders SDL2)
 
-add_executable(disassembler ${MEMORY_SRC} source/disassembler.cpp)
+add_executable(disassembler ${CABINET_SRC} source/disassembler.cpp)
 
 # Test executable
 file(GLOB_RECURSE TESTS ${CMAKE_CURRENT_LIST_DIR}/test/*)
-add_executable(unittests ${TESTS} ${I8080_SRC} ${MEMORY_SRC})
+add_executable(unittests ${TESTS} ${CABINET_SRC} ${MEMORY_SRC})
 target_link_libraries(unittests gtest_main gtest pthread)
 
 target_compile_options(unittests PUBLIC --coverage)

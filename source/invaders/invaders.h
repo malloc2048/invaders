@@ -3,12 +3,12 @@
 
 #define SDL_MAIN_HANDLED
 
-#include "cabinet.h"
 #include <SDL2/SDL.h>
+#include "cabinet/cabinet.h"
 
 class Invaders {
 public:
-    explicit Invaders(Cabinet& cabinet);
+    explicit Invaders(cabinet::Cabinet& cabinet);
     ~Invaders();
 
     void run();
@@ -28,7 +28,7 @@ protected:
     void handleKeyDown(SDL_Scancode keyCode);
 
 private:
-    Cabinet& cabinet;
+    cabinet::Cabinet& cabinet;
     uint32_t timer = 0;
     bool shouldQuit = false;
     bool initialized = false;

@@ -1,13 +1,13 @@
 #include <cstdio>
 #include <iomanip>
-#include "constants.h"
-#include "memory/memory.h"
+#include "cabinet/constants.h"
+#include "cabinet/memory.h"
 
 int main() {
-    std::ifstream rom_file(ROM_FILENAME());
-    std::ofstream disassembly_file(DISASSEMBLY_FILENAME());
+    std::ifstream rom_file(cabinet::ROM_FILENAME());
+    std::ofstream disassembly_file(cabinet::DISASSEMBLY_FILENAME());
 
-    Memory memory;
+    cabinet::Memory memory;
     memory.load_rom(rom_file);
 
     for(uint32_t i = 0; i < 0x2000; ) {
