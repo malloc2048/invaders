@@ -3,10 +3,9 @@
 
 #include <cstdio>
 #include "flags.h"
-#include "opcodes.h"
 #include "registers.h"
 #include "memory/memory.h"
-#include "i8080/instruction.h"
+#include "instructions/instructions.h"
 
 class Intel8080 {
 public:
@@ -29,25 +28,14 @@ public:
     uint8_t nextByte();
 
 protected:
-    void init();
-    uint16_t nextWord();
     void initializeInstructions();
 
 private:
-    bool halted = true;
-    OpCode* opcodes[256]{};
+    Instruction* opcodes[256]{};
     unsigned long cycles = 0;
 
     Flags flags;
     Memory& memory;
     Registers registers;
-
-    bool interruptPending = false;
-    uint8_t interruptVector = 0x00;
-
-    void debug() const;
-    FILE* log = fopen(LOG_FILENAME().c_str(), "w");
-
-    std::map<uint8_t, Instruction> instructions;
 };
 #endif

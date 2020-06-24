@@ -3,7 +3,6 @@
 
 #include "constants.h"
 #include "intel8080.h"
-#include "i8080/opcodes.h"
 
 Intel8080::Intel8080(Memory &memoryIn) : memory(memoryIn) {
     initializeInstructions();
@@ -57,135 +56,10 @@ uint8_t Intel8080::nextByte() {
     return memory.read_byte(registers.pc.d16++);
 }
 
-uint16_t Intel8080::nextWord() {
-    uint16_t word = nextByte();
-    word |= nextByte() << 8;
-    return word;
-}
-
-void Intel8080::debug() const {
-    switch(registers.pc.d16) {
-        case 0x00:
-            fprintf(stdout, "%04x reset\n", registers.pc.d16);
-            break;
-        case 0x01ef:
-            fprintf(stdout, "%04x DrawShieldPl1\n", registers.pc.d16);
-            break;
-        case 0x021A:
-            fprintf(stdout, "%04x RestoreShields1\n", registers.pc.d16);
-            break;
-        case 0x021e:
-            fprintf(stdout, "%04x CopyShields\n", registers.pc.d16);
-            break;
-        case 0x01cf:
-            fprintf(stdout, "%04x DrawBottomLine\n", registers.pc.d16);
-            break;
-        case 0x14D7:
-            fprintf(stdout, "%04x Return from ClearSmallSprite\n", registers.pc.d16);
-            break;
-        case 0x01d9:
-            fprintf(stdout, "%04x AddDelta\n", registers.pc.d16);
-            break;
-        case 0x01e4:
-            fprintf(stdout, "%04x CopyRAMMirror\n", registers.pc.d16);
-            break;
-        case 0x002d:
-            fprintf(stdout, "%04x Handle bumping credit count\n", registers.pc.d16);
-            break;
-        case 0x005d:
-            fprintf(stdout, "%04x no game is going and there are credits\n", registers.pc.d16);
-            break;
-        case 0x0067:
-            fprintf(stdout, "%04x Mark credit as needing registering\n", registers.pc.d16);
-            break;
-        case 0x006f:
-            fprintf(stdout, "%04x Main game-play timing loop\n", registers.pc.d16);
-            break;
-        case 0x00b1:
-            fprintf(stdout, "%04x InitRack\n", registers.pc.d16);
-            break;
-        case 0x0100:
-            fprintf(stdout, "%04x DrawAlien\n", registers.pc.d16);
-            break;
-        case 0x0141:
-            fprintf(stdout, "%04x CursorNextAlien\n", registers.pc.d16);
-            break;
-        case 0x017a:
-            fprintf(stdout, "%04x GetAlienCoords\n", registers.pc.d16);
-            break;
-        case 0x01a1:
-            fprintf(stdout, "%04x MoveRefAlien\n", registers.pc.d16);
-            break;
-        case 0x01c0:
-            fprintf(stdout, "%04x InitAliens\n", registers.pc.d16);
-            break;
-        case 0x14cb:
-            fprintf(stdout, "%04x ClearSmallSprite\n", registers.pc.d16);
-            break;
-        case 0x0248:
-            fprintf(stdout, "%04x RunGameObjs\n", registers.pc.d16);
-            break;
-        case 0x024b:
-            fprintf(stdout, "%04x RunGameObjs skipping first instruction\n", registers.pc.d16);
-            break;
-        case 0x0b4a:
-            fprintf(stdout, "%04x Play demo\n", registers.pc.d16);
-            break;
-        case 0x08d1:
-            fprintf(stdout, "%04x GetShipsPerCred\n", registers.pc.d16);
-            break;
-        case 0x09d6:
-            fprintf(stdout, "%04x ClearPlayField\n", registers.pc.d16);
-            break;
-        case 0x1a7f:
-            fprintf(stdout, "%04x RemoveShip\n", registers.pc.d16);
-            break;
-        case 0x1618:
-            fprintf(stdout, "%04x PlrFireOrDemo\n", registers.pc.d16);
-            break;
-        case 0x092e:
-            fprintf(stdout, "%04x Get number of ships for active player\n", registers.pc.d16);
-            break;
-        case 0x1611:
-            fprintf(stdout, "%04x GetPlayerDataPtr\n", registers.pc.d16);
-            break;
-        case 0x19e6:
-            fprintf(stdout, "%04x DrawNumShips\n", registers.pc.d16);
-            break;
-        case 0x01f8:
-            fprintf(stdout, "%04x Going to draw 4 shields\n", registers.pc.d16);
-            break;
-        case 0x0205:
-            fprintf(stdout, "%04x Drawing shields RESETTING here somwhere\n", registers.pc.d16);
-            break;
-        default:
-            break;
-    }
-}
-
-void Intel8080::init() {
-    instructions.insert(std::pair<uint8_t, Instruction>(0x00, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x01, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x02, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x03, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x04, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x05, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x06, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x07, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x08, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x09, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x0a, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x0b, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x0c, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x0d, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x0e, Instruction()));
-    instructions.insert(std::pair<uint8_t, Instruction>(0x0f, Instruction()));
-}
-
 void Intel8080::initializeInstructions() {
     opcodes[0x00] = new NOP(flags, memory, registers);
 
-    OpCode* unimplemented = new Unimplemented(flags, memory, registers);
+    Instruction* unimplemented = new Unimplemented(flags, memory, registers);
     opcodes[0x08] = unimplemented;
     opcodes[0x10] = unimplemented;
     opcodes[0x18] = unimplemented;
@@ -199,23 +73,23 @@ void Intel8080::initializeInstructions() {
     opcodes[0xed] = unimplemented;
     opcodes[0xfd] = unimplemented;
 
-    OpCode* lxi = new LXI(flags, memory, registers);
+    Instruction* lxi = new LXI(flags, memory, registers);
     opcodes[0x01] = lxi;
     opcodes[0x11] = lxi;
     opcodes[0x21] = lxi;
     opcodes[0x31] = lxi;
 
-    OpCode* stax = new STAX(flags, memory, registers);
+    Instruction* stax = new STAX(flags, memory, registers);
     opcodes[0x02] = stax;
     opcodes[0x12] = stax;
 
-    OpCode* inx = new INX(flags, memory, registers);
+    Instruction* inx = new INX(flags, memory, registers);
     opcodes[0x03] = inx;
     opcodes[0x13] = inx;
     opcodes[0x23] = inx;
     opcodes[0x33] = inx;
 
-    OpCode* inr = new INR(flags, memory, registers);
+    Instruction* inr = new INR(flags, memory, registers);
     opcodes[0x04] = inr;
     opcodes[0x0c] = inr;
     opcodes[0x14] = inr;
@@ -225,7 +99,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0x34] = inr;
     opcodes[0x3c] = inr;
 
-    OpCode* dcr = new DCR(flags, memory, registers);
+    Instruction* dcr = new DCR(flags, memory, registers);
     opcodes[0x05] = dcr;
     opcodes[0x0d] = dcr;
     opcodes[0x15] = dcr;
@@ -235,7 +109,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0x35] = dcr;
     opcodes[0x3d] = dcr;
 
-    OpCode* mvi = new MVI(flags, memory, registers);
+    Instruction* mvi = new MVI(flags, memory, registers);
     opcodes[0x06] = mvi;
     opcodes[0x0e] = mvi;
     opcodes[0x16] = mvi;
@@ -245,23 +119,23 @@ void Intel8080::initializeInstructions() {
     opcodes[0x36] = mvi;
     opcodes[0x3e] = mvi;
 
-    OpCode* rotate = new Rotate(flags, memory, registers);
+    Instruction* rotate = new Rotate(flags, memory, registers);
     opcodes[0x07] = rotate;
     opcodes[0x0f] = rotate;
     opcodes[0x17] = rotate;
     opcodes[0x1f] = rotate;
 
-    OpCode* dad = new DAD(flags, memory, registers);
+    Instruction* dad = new DAD(flags, memory, registers);
     opcodes[0x09] = dad;
     opcodes[0x19] = dad;
     opcodes[0x29] = dad;
     opcodes[0x39] = dad;
 
-    OpCode* ldax = new LDAX(flags, memory, registers);
+    Instruction* ldax = new LDAX(flags, memory, registers);
     opcodes[0x0a] = ldax;
     opcodes[0x1a] = ldax;
 
-    OpCode* dcx = new DCX(flags, memory, registers);
+    Instruction* dcx = new DCX(flags, memory, registers);
     opcodes[0x0b] = dcx;
     opcodes[0x1b] = dcx;
     opcodes[0x2b] = dcx;
@@ -276,7 +150,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0x3a] = new LDA(flags, memory, registers);
     opcodes[0x3f] = new CMC(flags, memory, registers);
 
-    OpCode* mov = new MOV(flags, memory, registers);
+    Instruction* mov = new MOV(flags, memory, registers);
 
     // MOV to B
     opcodes[0x40] = mov;
@@ -359,7 +233,7 @@ void Intel8080::initializeInstructions() {
 
     opcodes[0x76] = new HLT(flags, memory, registers);
 
-    OpCode* add = new ADD(flags, memory, registers);
+    Instruction* add = new ADD(flags, memory, registers);
     opcodes[0x80] = add;
     opcodes[0x81] = add;
     opcodes[0x82] = add;
@@ -369,7 +243,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0x86] = add;
     opcodes[0x87] = add;
 
-    OpCode* adc = new ADC(flags, memory, registers);
+    Instruction* adc = new ADC(flags, memory, registers);
     opcodes[0x88] = adc;
     opcodes[0x89] = adc;
     opcodes[0x8a] = adc;
@@ -379,7 +253,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0x8e] = adc;
     opcodes[0x8f] = adc;
 
-    OpCode* sub = new SUB(flags, memory, registers);
+    Instruction* sub = new SUB(flags, memory, registers);
     opcodes[0x90] = sub;
     opcodes[0x91] = sub;
     opcodes[0x92] = sub;
@@ -389,7 +263,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0x96] = sub;
     opcodes[0x97] = sub;
 
-    OpCode* sbb = new SBB(flags, memory, registers);
+    Instruction* sbb = new SBB(flags, memory, registers);
     opcodes[0x98] = sbb;
     opcodes[0x99] = sbb;
     opcodes[0x9a] = sbb;
@@ -399,7 +273,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0x9e] = sbb;
     opcodes[0x9f] = sbb;
 
-    OpCode* ana = new ANA(flags, memory, registers);
+    Instruction* ana = new ANA(flags, memory, registers);
     opcodes[0xa0] = ana;
     opcodes[0xa1] = ana;
     opcodes[0xa2] = ana;
@@ -409,7 +283,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0xa6] = ana;
     opcodes[0xa7] = ana;
 
-    OpCode* xra = new XRA(flags, memory, registers);
+    Instruction* xra = new XRA(flags, memory, registers);
     opcodes[0xa8] = xra;
     opcodes[0xa9] = xra;
     opcodes[0xaa] = xra;
@@ -419,7 +293,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0xae] = xra;
     opcodes[0xaf] = xra;
 
-    OpCode* ora = new ORA(flags, memory, registers);
+    Instruction* ora = new ORA(flags, memory, registers);
     opcodes[0xb0] = ora;
     opcodes[0xb1] = ora;
     opcodes[0xb2] = ora;
@@ -429,7 +303,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0xb6] = ora;
     opcodes[0xb7] = ora;
 
-    OpCode* cmp = new CMP(flags, memory, registers);
+    Instruction* cmp = new CMP(flags, memory, registers);
     opcodes[0xb8] = cmp;
     opcodes[0xb9] = cmp;
     opcodes[0xba] = cmp;
@@ -439,7 +313,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0xbe] = cmp;
     opcodes[0xbf] = cmp;
 
-    OpCode* ret = new Return(flags, memory, registers);
+    Instruction* ret = new Return(flags, memory, registers);
     opcodes[0xc0] = ret;
     opcodes[0xc8] = ret;
     opcodes[0xc9] = ret;
@@ -450,13 +324,13 @@ void Intel8080::initializeInstructions() {
     opcodes[0xf0] = ret;
     opcodes[0xf8] = ret;
 
-    OpCode* pop = new POP(flags, memory, registers);
+    Instruction* pop = new POP(flags, memory, registers);
     opcodes[0xc1] = pop;
     opcodes[0xd1] = pop;
     opcodes[0xe1] = pop;
     opcodes[0xf1] = pop;
 
-    OpCode* jump = new Jump(flags, memory, registers);
+    Instruction* jump = new Jump(flags, memory, registers);
     opcodes[0xc2] = jump;
     opcodes[0xc3] = jump;
     opcodes[0xca] = jump;
@@ -467,7 +341,7 @@ void Intel8080::initializeInstructions() {
     opcodes[0xf2] = jump;
     opcodes[0xfa] = jump;
 
-    OpCode* call = new CALL(flags, memory, registers);
+    Instruction* call = new CALL(flags, memory, registers);
     opcodes[0xc4] = call;
     opcodes[0xcc] = call;
     opcodes[0xcd] = call;
@@ -478,13 +352,13 @@ void Intel8080::initializeInstructions() {
     opcodes[0xf4] = call;
     opcodes[0xfc] = call;
 
-    OpCode* push = new PUSH(flags, memory, registers);
+    Instruction* push = new PUSH(flags, memory, registers);
     opcodes[0xc5] = push;
     opcodes[0xd5] = push;
     opcodes[0xe5] = push;
     opcodes[0xf5] = push;
 
-    OpCode* rst = new RST(flags, memory, registers);
+    Instruction* rst = new RST(flags, memory, registers);
     opcodes[0xc7] = rst;
     opcodes[0xcf] = rst;
     opcodes[0xd7] = rst;

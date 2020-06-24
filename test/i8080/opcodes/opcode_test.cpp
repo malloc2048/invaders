@@ -3,9 +3,9 @@
 
 //    void updateCarry(uint8_t original, uint8_t updated) ;
 
-class OpCodeTestImpl : public OpCode {
+class OpCodeTestImpl : public Instruction {
 public:
-    OpCodeTestImpl(Flags& flags, Memory& memory, Registers& registers): OpCode(flags, memory, registers){}
+    OpCodeTestImpl(Flags& flags, Memory& memory, Registers& registers): Instruction(flags, memory, registers){}
 
     void Execute(uint8_t opcode) override {};
 };
