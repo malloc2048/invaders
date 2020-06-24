@@ -26,6 +26,6 @@ void Memory::write(uint16_t address, uint8_t value) {
     if(address >= ROM_SIZE) {
         memory[address] = value;
     } else {
-        fprintf(stdout, "attepmt to write to ROM %04x\n", address);
+        fprintf(stdout, "attempt to write to ROM %04x\n", address);
     }
 }
