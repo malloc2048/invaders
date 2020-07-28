@@ -20,6 +20,7 @@ public:
         if(flags.carry || msb > 9) {
             registers.a += 0x60;
         }
+
         updateFlags(registers.a);
         flags.halfCarry = (lsb & 0x10u) != 0;
         flags.carry = msb > 9 ? 1 : 0;
