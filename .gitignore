@@ -4,3 +4,4 @@ cmake-build-debug
 /roms/debug.out
 /roms/invaders.log
 /bin/
+build
