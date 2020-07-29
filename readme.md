@@ -25,8 +25,6 @@ Tested Windows 10 using the following:
 4. Change to build directory ```cd build```
 5. Run CMake ```cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" ..```
 6. Run Make ```mingw32-make```
-    Note this will build all executables
-7. Executables will be put into the bin directory in the root of the project.
 
 ### Linux
 Tested on Ubuntu 20.04 using the following:
@@ -39,5 +37,3 @@ Tested on Ubuntu 20.04 using the following:
 4. Change to build directory ```cd build```
 5. Run CMake ```cmake -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" ..```
 6. Run Make ```make```
-    Note this will build all executables
-7. Executables will be put into the bin directory in the root of the project.
