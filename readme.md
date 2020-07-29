@@ -8,6 +8,7 @@ This is my attempt at an emulator for the classic arcade game Space Invaders.
 
 ## Build Instructions
 ### Available Targets
+All built executables are put into the bin directory in the root of the project.
 * all - this is the default of the generated make file (builds all following targets)
 * invaders - the game
 * disassembler - utility to disassemble the invaders ROM file
