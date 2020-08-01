@@ -16,7 +16,6 @@ namespace hardware {
         void add(byte data);
         void subtract(byte data);
         void increment(byte dst);
-        bool isIncrement(byte opcode);
     };
 }
 #endif
