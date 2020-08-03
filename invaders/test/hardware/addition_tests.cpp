@@ -119,9 +119,11 @@ TEST_F(ArithmeticTestFixture, addImmediate) {
 
     arithmetic.execute(0xc6);
     ASSERT_EQ(0x00, registers.accumulator);
+    ASSERT_EQ(0x5001, registers.program_counter);
 
     arithmetic.execute(0xce);
     ASSERT_EQ(0xab, registers.accumulator);
+    ASSERT_EQ(0x5002, registers.program_counter);
 }
 
 TEST_F(ArithmeticTestFixture, addWrongOpcode) {

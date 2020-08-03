@@ -29,6 +29,7 @@ namespace hardware {
         Operation(Flags& flags, Memory& memory, Registers& registers);
 
         byte nextByte() const;
+        byte nextWord() const;
         word getData(byte src) const;
         void setData(byte dst, word data);
 

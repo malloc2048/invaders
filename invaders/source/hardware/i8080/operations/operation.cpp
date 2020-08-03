@@ -38,6 +38,12 @@ byte hardware::Operation::nextByte() const {
     return memory.read_byte(registers.program_counter++);
 }
 
+byte hardware::Operation::nextWord() const {
+    auto data = memory.read_word(registers.program_counter);
+    registers.program_counter += 2;
+    return data;
+}
+
 void hardware::Operation::setData(byte dst, word data) {
     switch(dst) {
         case B:

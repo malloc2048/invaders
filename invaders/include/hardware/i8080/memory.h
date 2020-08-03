@@ -14,6 +14,7 @@ namespace hardware {
         byte read_byte(word address) const;
         word read_word(word address) const;
         void write(word address, byte value);
+        void write_word(word address, word value);
 
         static const uint16_t ROM_SIZE = 0x2000;
 
