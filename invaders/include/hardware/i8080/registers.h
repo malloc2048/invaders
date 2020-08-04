@@ -5,7 +5,7 @@
 
 namespace hardware {
     struct Registers {
-        byte readRegister(byte reg) const;
+        word readRegister(byte reg) const;
         word readRegisterPair(byte regPair) const;
 
         byte b = 0;

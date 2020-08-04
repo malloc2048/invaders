@@ -1,7 +1,9 @@
 #include "hardware/i8080/memory.h"
 
 void hardware::Memory::load_rom(std::ifstream &rom_file) {
-
+    if (rom_file.is_open()) {
+        rom_file.read((char *) memory, ROM_SIZE);
+    }
 }
 
 byte hardware::Memory::read_byte(word address) const {
@@ -9,7 +11,8 @@ byte hardware::Memory::read_byte(word address) const {
 }
 
 word hardware::Memory::read_word(word address) const {
-    return memory[address] | (memory[address + 1] << 0x08u);
+    word data = memory[address] | (memory[address + 1] << 0x08u);
+    return data;
 }
 
 void hardware::Memory::write(word address, byte value) {

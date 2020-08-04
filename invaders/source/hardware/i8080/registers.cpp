@@ -1,38 +1,55 @@
 #include "hardware/i8080/registers.h"
 
-byte hardware::Registers::readRegister(byte reg) const {
+word hardware::Registers::readRegister(byte reg) const {
+    word data = 0;
     switch(reg) {
-        case 0x00:
+        case B:
             return b;
-        case 0x01:
+        case C:
             return c;
-        case 0x02:
+        case D:
             return d;
-        case 0x03:
+        case E:
             return e;
-        case 0x04:
+        case H:
             return h;
-        case 0x05:
+        case L:
             return l;
-        case 0x06:
+        case M:
             return 0;
-        case 0x07:
+        case A:
             return accumulator;
+        case BC:
+            return word((b << 8u) | c);
+        case DE:
+            return word((d << 8u) | e);
+        case HL:
+            return word((h << 8u) | l);
+        case SP:
+            return stack_pointer;
         default:
-            return 0;
+            return data;
     }
+    return data;
 }
 
 word hardware::Registers::readRegisterPair(byte regPair) const {
+    word data = 0;
     switch(regPair) {
         case 0x00:
-            return (b << 8u) | c;
+            data = (b << 8u) | c;
+            break;
         case 0x01:
-            return (d << 8u) | e;
+            data = (d << 8u) | e;
+            break;
         case 0x02:
-            return (h << 8u) | l;
+            data = (h << 8u) | l;
+            break;
         case 0x03:
-            return stack_pointer;
+            data = stack_pointer;
+            break;
+        default:
+            data = 0;
     }
-    return 0;
+    return data;
 }

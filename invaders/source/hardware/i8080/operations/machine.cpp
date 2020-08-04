@@ -1,10 +1,85 @@
 #include "hardware/i8080/operations/machine.h"
 
 hardware::Machine::Machine(hardware::Flags &flags, hardware::Memory &memory, hardware::Registers &registers)
-    : Operation(flags, memory, registers) {
+    : Operation(flags, memory, registers) {}
+
+void hardware::Machine::execute(byte opcode) {
+    if((opcode & 0xcfu) == 0xc5u) // PUSH
+        push(getData(((opcode & 0x30u) >> 0x04u) + BC));
+    else if(opcode  == 0xf5u) // PUSH PSW
+        push(getPSW());
+    else if((opcode & 0xcfu) == 0xc1u) // POP
+        pop(((opcode & 0x30u) >> 0x04u) + BC);
+    else if(opcode == 0xf1u) // POP PSW
+        setPSW();
+    else if(opcode == 0xe3u)
+        xthl();
+    else if(opcode == 0xf9u)
+        registers.stack_pointer = getData(HL);
+    else if(opcode == 0xfbu)  // EI
+        flags.interruptEnabled = true;
+    else if(opcode == 0xf3u)  // DI
+        flags.interruptEnabled = false;
+    else if(opcode == 0x76u)  // HLT
+        flags.halted = true;
+
+    // NOTE: NOP does nothing, IN and OUT ar handled at a higher level where access to I/O is more convenient
+}
+
+void hardware::Machine::push(word data) {
+    registers.stack_pointer -= 2;
+    memory.write_word(registers.stack_pointer, data);
+}
+
+word hardware::Machine::getPSW() const {
+    word psw = registers.accumulator << 8u;
+    psw &= 0xff02u;
+
+    psw |= flags.carry ? 0x01u : 0x00u;
+    psw |= flags.parity ? 0x04u : 0x00u;
+    psw |= flags.half_carry ? 0x10u : 0x00u;
+    psw |= flags.zero ? 0x40u : 0x00u;
+    psw |= flags.sign ? 0x80u : 0x00u;
+
+    return psw;
+}
+
+void hardware::Machine::pop(byte dst) {
+    word data = memory.read_word(registers.stack_pointer);
+    setData(dst, data);
+    registers.stack_pointer += 2;
+}
+
+void hardware::Machine::setPSW() {
+    auto psw = memory.read_word(registers.stack_pointer);
+    registers.stack_pointer += 2;
+
+    registers.accumulator = psw >> 0x08u;
+    flags.carry = psw & 0x01u;
+    flags.parity = psw & 0x04u;
+    flags.half_carry = psw & 0x10u;
+    flags.zero = psw & 0x40u;
+    flags.sign = psw & 0x80u;
+}
+
+void hardware::Machine::sphl() {
+    registers.stack_pointer = getData(HL);
+}
+
+void hardware::Machine::xthl() {
+    auto sp = memory.read_word(registers.stack_pointer);
+    memory.write_word(registers.stack_pointer, getData(HL));
+    setData(HL, sp);
+}
+
+void hardware::Machine::in() {
 
 }
 
-void hardware::Machine::execute(byte opcode) {
+void hardware::Machine::out() {
+
+}
+
+void hardware::Machine::nop() {
 
 }

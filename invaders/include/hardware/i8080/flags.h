@@ -11,6 +11,9 @@ namespace hardware {
         bool parity = false;
         bool half_carry = false;
 
+        bool halted = false;
+        bool interruptEnabled = false;
+
         void calculateParity(byte value);
     };
 }

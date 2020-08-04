@@ -2,21 +2,23 @@
 
 hardware::Branching::Branching(hardware::Flags &flags, hardware::Memory &memory, hardware::Registers &registers)
     : Operation(flags, memory, registers) {
-
 }
 
 void hardware::Branching::execute(byte opcode) {
     if(opcode  == 0xc3u) // Jump
         registers.program_counter = nextWord();
     else if((opcode & 0xc7u) == 0xc2u) { // Conditional Jump
+        auto address = nextWord();
         if (checkCondition((opcode & 0x38u) >> 0x03u))
-            registers.program_counter = nextWord();
+            registers.program_counter = address;
     }
     else if(opcode  == 0xcdu) // Call
         call();
     else if((opcode & 0xc7u) == 0xc4u) { // Conditional Call
         if (checkCondition((opcode & 0x38u) >> 0x03u))
             call();
+        else
+            registers.program_counter += 2;
     } else if(opcode  == 0xc9u) // RET
         ret();
     else if((opcode & 0xc7u) == 0xc0u) { // Conditional Ret

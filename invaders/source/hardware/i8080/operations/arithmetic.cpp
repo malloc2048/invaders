@@ -22,9 +22,11 @@ void hardware::Arithmetic::execute(byte opcode) {
         subtract(nextByte() + (flags.carry ? 0x01 : 0x00));
     else if((opcode & 0xC7u) == 0x04u)          // INR
         increment((opcode & 0x38u) >> 3u);
-    else if((opcode & 0xCFu) == 0x03)           // INX
-        increment(((opcode & 0x30u) >> 4u) + BC);
-    else if((opcode & 0xc5u) == 0x05)           // DCR
+    else if((opcode & 0xCFu) == 0x03) {         // INX
+        auto data = getData(((opcode & 0x30u) >> 4u) + BC) + 1;
+        setData(((opcode & 0x30u) >> 4u) + BC, data);
+    }
+    else if((opcode & 0xc7u) == 0x05)           // DCR
         decrement((opcode & 0x38u) >> 3u);
     else if((opcode & 0xCFu) == 0x0b)           // DCX
         decrement(((opcode & 0x30u) >> 4u) + BC);
@@ -59,7 +61,7 @@ void hardware::Arithmetic::subtract(byte data) {
 }
 
 void hardware::Arithmetic::increment(byte dst) {
-    byte value = getData(dst) + 1;
+    word value = getData(dst) + 1;
 
     flags.zero = (value & 0xffu) == 0;
     flags.sign = (value & 0xffu) > 0x007fu;
@@ -70,6 +72,9 @@ void hardware::Arithmetic::increment(byte dst) {
 
 void hardware::Arithmetic::decrement(byte dst) {
     byte value = getData(dst) - 1;
+    if(dst == B){
+        value = getData(dst) - 1;
+    }
 
     flags.zero = (value & 0xffu) == 0;
     flags.sign = (value & 0xffu) > 0x007fu;
@@ -79,8 +84,8 @@ void hardware::Arithmetic::decrement(byte dst) {
 }
 
 void hardware::Arithmetic::dad(byte src) {
-    byte sum = getData(src) - getData(HL);
-    flags.carry = (sum & 0x100u) != 0;
+    word sum = getData(src) + getData(HL);
+    flags.carry = (sum & 0x10000u) != 0;
     setData(HL, sum);
 }
 

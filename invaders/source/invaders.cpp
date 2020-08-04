@@ -113,13 +113,13 @@ void Invaders::run() {
 void Invaders::gameUpdate() {
     uint32_t cycleCount = 0;
     while(cycleCount <= hardware::CYCLES_PER_FRAME()) {
-        const uint32_t start_cyc = cabinet.cpu.getCycleCount();
+        const uint32_t start_cyc = cabinet.getCycleCount();
 
         // grab the next opcode for later to handle space invader special codes
         // if hte opcode is one of the special codes the cpu will treat as a NOP
-        const uint8_t opcode = cabinet.memory.read_byte(cabinet.cpu.getPC());
+        const uint8_t opcode = cabinet.memory.read_byte(cabinet.getPC());
         cabinet.cpu.step();
-        cycleCount += cabinet.cpu.getCycleCount() - start_cyc;
+        cycleCount += cabinet.getCycleCount() - start_cyc;
 
         // now handle special codes if needed
         switch(opcode) {
@@ -134,9 +134,9 @@ void Invaders::gameUpdate() {
         }
 
         // now we look to see if we are at a half frame so we send an interrupt for the screen
-        if(cabinet.cpu.getCycleCount() >= hardware::HALF_CYCLES_PER_FRAME()) {
-            cabinet.cpu.interrupt(cabinet.nextInterrupt);
-            cabinet.cpu.setCycleCount(cabinet.cpu.getCycleCount() - hardware::HALF_CYCLES_PER_FRAME());
+        if(cabinet.getCycleCount() >= hardware::HALF_CYCLES_PER_FRAME()) {
+            cabinet.interrupt(cabinet.nextInterrupt);
+            cabinet.setCycleCount(cabinet.getCycleCount() - hardware::HALF_CYCLES_PER_FRAME());
             cabinet.nextInterrupt = cabinet.nextInterrupt == 0x08 ? 0x10 : 0x08;
         }
     }
@@ -177,17 +177,17 @@ void Invaders::updateScreen() {
 }
 
 void Invaders::handleIn() {
-    uint8_t port = cabinet.cpu.nextByte();
+    byte port = cabinet.cpu.nextByte();
     switch(port) {
         case 1:
-            cabinet.cpu.setAccumulator(cabinet.port1);
+            cabinet.setAccumulator(cabinet.port1);
             break;
         case 2:
-            cabinet.cpu.setAccumulator(cabinet.port2);
+            cabinet.setAccumulator(cabinet.port2);
             break;
         case 3: {
             uint16_t shiftVal = cabinet.shift1 << 8u | cabinet.shift0;
-            cabinet.cpu.setAccumulator((shiftVal >> (8 - cabinet.shiftOffset)) & 0xff);
+            cabinet.setAccumulator((shiftVal >> (8 - cabinet.shiftOffset)) & 0xff);
             break;
         }
         default:
@@ -196,9 +196,9 @@ void Invaders::handleIn() {
 }
 
 void Invaders::handleOut() {
-    uint8_t port = cabinet.memory.read_byte(cabinet.cpu.getPC());
-    cabinet.cpu.incrementPC(1);
-    uint8_t value = cabinet.cpu.getAccumulator();
+    uint8_t port = cabinet.memory.read_byte(cabinet.getPC());
+    cabinet.incrementPC(1);
+    uint8_t value = cabinet.getAccumulator();
 
     switch(port) {
         case 2:
@@ -272,4 +272,8 @@ void Invaders::handleKeyDown(SDL_Scancode keyCode) {
         default:
             break;
     }
+}
+
+void Invaders::load_rom(std::ifstream &rom_file) {
+    cabinet.memory.load_rom(rom_file);
 }

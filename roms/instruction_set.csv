@@ -1,4 +1,4 @@
-00:NOP:1:4:nop
+00:NOP:1:4:machine
 01:LXI B,D16:3:10:transfer
 02:STAX B:1:7:transfer
 03:INX B:1:5:arithmetic
@@ -6,7 +6,7 @@
 05:DCR B:1:5:arithmetic
 06:MVI B, D8:2:7:transfer
 07:RLC:1:4:logical
-08:-::4:nop
+08:-::4:machine
 09:DAD B:1:10:arithmetic
 0a:LDAX B:1:7:transfer
 0b:DCX B:1:5:arithmetic
@@ -14,7 +14,7 @@
 0d:DCR C:1:5:arithmetic
 0e:MVI C,D8:2:7:transfer
 0f:RRC:1:4:logical
-10:-:1:4:nop
+10:-:1:4:machine
 11:LXI D,D16:3:10:transfer
 12:STAX D:1:7:transfer
 13:INX D:1:5:arithmetic
@@ -22,7 +22,7 @@
 15:DCR D:1:5:arithmetic
 16:MVI D, D8:2:7:transfer
 17:RAL:1:4:logical
-18:-:1:4:nop
+18:-:1:4:machine
 19:DAD D:1:10:arithmetic
 1a:LDAX D:1:7:transfer
 1b:DCX D:1:5:arithmetic
@@ -30,7 +30,7 @@
 1d:DCR E:1:5:arithmetic
 1e:MVI E,D8:2:7:transfer
 1f:RAR:1:4:logical
-20:-:1:4:nop
+20:-:1:4:machine
 21:LXI H,D16:3:10:transfer
 22:SHLD adr:3:16:transfer
 23:INX H:1:5:arithmetic
@@ -38,7 +38,7 @@
 25:DCR H:1:5:arithmetic
 26:MVI H,D8:2:7:transfer
 27:DAA:1:4:arithmetic
-28:-:1:4:nop
+28:-:1:4:machine
 29:DAD H:1:10:arithmetic
 2a:LHLD adr:3:16:transfer
 2b:DCX H:1:5:arithmetic
@@ -46,7 +46,7 @@
 2d:DCR L:1:5:arithmetic
 2e:MVI L, D8:2:7:transfer
 2f:CMA:1:4:logical
-30:-:1:4:nop
+30:-:1:4:machine
 31:LXI SP, D16:3:10:transfer
 32:STA adr:3:13:transfer
 33:INX SP:1:5:arithmetic
@@ -54,7 +54,7 @@
 35:DCR M:1:10:arithmetic
 36:MVI M,D8:2:10:transfer
 37:STC:1:4:logical
-38:-:1:4:nop
+38:-:1:4:machine
 39:DAD SP:1:10:arithmetic
 3a:LDA adr:3:13:transfer
 3b:DCX SP:1:5:arithmetic
@@ -201,7 +201,7 @@ c7:RST 0:1:11:branch
 c8:RZ:1:5:branch
 c9:RET:1:10:branch
 ca:JZ adr:3:10:branch
-cb:-:1:10:nop
+cb:-:1:10:machine
 cc:CZ adr:3:11:branch
 cd:CALL adr:3:17:branch
 ce:ACI D8:2:7:arithmetic
@@ -215,11 +215,11 @@ d5:PUSH D:1:11:machine
 d6:SUI D8:2:7:arithmetic
 d7:RST 2:1:11:branch
 d8:RC:1:5:branch
-d9:-:1:10:nop
+d9:-:1:10:machine
 da:JC adr:3:10:branch
 db:IN D8:2:10:machine
 dc:CC adr:3:11:branch
-dd:-:1:17:nop
+dd:-:1:17:machine
 de:SBI D8:2:7:arithmetic
 df:RST 3:1:11:branch
 e0:RPO:1:5:branch
@@ -235,7 +235,7 @@ e9:PCHL:1:5:branch
 ea:JPE adr:3:10:branch
 eb:XCHG:1:4:transfer
 ec:CPE adr:3:11:branch
-ed:-:1:17:nop
+ed:-:1:17:machine
 ee:XRI D8:2:7:logical
 ef:RST 5:1:11:branch
 f0:RP:1:5:branch
@@ -251,6 +251,6 @@ f9:SPHL:1:5:machine
 fa:JM adr:3:10:branch
 fb:EI:1:4:machine
 fc:CM adr:3:11:branch
-fd:-:1:17:nop
+fd:-:1:17:machine
 fe:CPI D8:2:7:logical
 ff:RST 7:1:11:branch

@@ -1,6 +1,7 @@
 #ifndef INVADERS_MEMORY_H
 #define INVADERS_MEMORY_H
 
+#include <fstream>
 #include "hardware/constants.h"
 
 namespace hardware {

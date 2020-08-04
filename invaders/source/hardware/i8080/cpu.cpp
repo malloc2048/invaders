@@ -1,54 +1,91 @@
 #include <regex>
 #include <fstream>
 #include "hardware/i8080/cpu.h"
+#include "hardware/i8080/operations/logical.h"
+#include "hardware/i8080/operations/machine.h"
+#include "hardware/i8080/operations/branching.h"
 #include "hardware/i8080/operations/arithmetic.h"
+#include "hardware/i8080/operations/data_transfer.h"
 
-hardware::CPU::CPU() {
+hardware::CPU::CPU(hardware::Memory &memory) : memory(memory) {
     operationsMap = {
-        {"arithmetic", new Arithmetic(flags, memory, registers)}
+        {"machine", new Machine(flags, memory, registers)},
+        {"logical", new Logical(flags, memory, registers)},
+        {"branch", new Branching(flags, memory, registers)},
+        {"transfer", new DataTransfer(flags, memory, registers)},
+        {"arithmetic", new Arithmetic(flags, memory, registers)},
     };
+
+    log.open("../roms/invaders.log");
 }
 
+#include <iostream>
+
 void hardware::CPU::step() {
+    auto address = registers.program_counter;
     auto opcode = nextByte();
+    auto hl = registers.readRegisterPair(0x02);
+
+    if(address == 0x1a5c)
+        std::cout << "STOP" << std::endl;
+
+    log << "Opcode: " << std::hex << (int)opcode << "\tprogram counter: " << std::hex << address
+                  << "\tstack: " << std::hex << memory.read_word(registers.stack_pointer)
+                  << "\tB: " << (int)registers.b
+                  << "\tC: " << (int)registers.c
+                  << "\tA: " << (int)registers.accumulator
+                  << "\tD: " << (int)registers.d
+                  << "\tE: " << (int)registers.e
+                  << "\tH: " << (int)registers.h
+                  << "\tL: " << (int)registers.l
+                  << "\tsign: " << flags.sign
+                  << "\tzero: " << flags.zero
+                  << "\tcarry: " << flags.carry
+                  <<std::endl;
 
     if(instructions.find(opcode) != instructions.end()) {
         cycles += instructions[opcode].cycles;
         instructions[opcode].operation->execute(opcode);
+        instructionsProcessed++;
     }
 }
 
-#include <iostream>
 void hardware::CPU::loadInstructionSet() {
     std::string line;
     std::ifstream instruction_set(InstructionSetCSV());
-    while (std::getline(instruction_set, line)) {
-        auto const re = std::regex{R"(:+)"};
-        auto const tokens = std::vector<std::string>(
-            std::sregex_token_iterator{begin(line), end(line), re, -1},
-            std::sregex_token_iterator{}
-        );
+    if(instruction_set.is_open()) {
+        while (std::getline(instruction_set, line)) {
+            auto const re = std::regex{R"(:+)"};
+            auto const tokens = std::vector<std::string>(
+                std::sregex_token_iterator{begin(line), end(line), re, -1},
+                std::sregex_token_iterator{}
+            );
 
-        if(tokens.size() == 5) {
-            makeInstruction(tokens);
+            if (tokens.size() == 5) {
+                makeInstruction(tokens);
+            }
         }
+        instruction_set.close();
     }
-    instruction_set.close();
 }
 
 void hardware::CPU::makeInstruction(const std::vector<std::string> &tokens) {
     try {
         auto opcode = std::stoi(tokens[0], 0, 16);
         auto mnemonic = tokens[1];
+        auto size = std::stoi(tokens[2], 0, 10);
+        auto instrCycles = std::stoi(tokens[3], 0, 10);
 
         Operation *operation = nullptr;
-        if (operationsMap.find(tokens[3]) != operationsMap.end()) {
-            operation = operationsMap[tokens[3]];
+        if (operationsMap.find(tokens[4]) != operationsMap.end()) {
+            operation = operationsMap[tokens[4]];
         }
 
         instructions.insert(
             std::pair<byte, Instruction>(
                 opcode, Instruction{
+                    .size = byte(size),
+                    .cycles = byte(instrCycles),
                     .opcode =  byte(opcode),
                     .mnemonic =  mnemonic,
                     .operation = operation,

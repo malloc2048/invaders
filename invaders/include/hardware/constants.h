@@ -9,6 +9,21 @@ typedef unsigned int dword;
 typedef unsigned long qword;
 
 namespace hardware {
+    enum DATA_SRC_DST {
+        B = 0,
+        C = 1,
+        D = 2,
+        E = 3,
+        H = 4,
+        L = 5,
+        M = 6,
+        A = 7,
+        BC = 8,
+        DE = 9,
+        HL = 10,
+        SP = 11
+    };
+
     int FPS();
     int SCREEN_WIDTH();
     int SCREEN_HEIGHT();
