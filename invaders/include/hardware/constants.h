@@ -30,6 +30,7 @@ namespace hardware {
     word VRAM_ADDRESS();
     dword CYCLES_PER_FRAME();
     std::string ROM_FILENAME();
+    std::string ConfigFileName();
     dword HALF_CYCLES_PER_FRAME();
     std::string InstructionSetCSV();
     std::string DISASSEMBLY_FILENAME();

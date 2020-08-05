@@ -28,8 +28,10 @@ void hardware::Arithmetic::execute(byte opcode) {
     }
     else if((opcode & 0xc7u) == 0x05)           // DCR
         decrement((opcode & 0x38u) >> 3u);
-    else if((opcode & 0xCFu) == 0x0b)           // DCX
-        decrement(((opcode & 0x30u) >> 4u) + BC);
+    else if((opcode & 0xCFu) == 0x0b) {         // DCX
+        auto data = getData(((opcode & 0x30u) >> 4u) + BC) - 1;
+        setData(((opcode & 0x30u) >> 4u) + BC, data);
+    }
     else if((opcode & 0xCFu) == 0x09)          // DAD
         dad(((opcode & 0x30u) >> 4u) + BC);
     else if(opcode == 0x27)                    // DAA
@@ -72,14 +74,11 @@ void hardware::Arithmetic::increment(byte dst) {
 
 void hardware::Arithmetic::decrement(byte dst) {
     byte value = getData(dst) - 1;
-    if(dst == B){
-        value = getData(dst) - 1;
-    }
 
     flags.zero = (value & 0xffu) == 0;
     flags.sign = (value & 0xffu) > 0x007fu;
     flags.calculateParity(value);
-    flags.half_carry = (registers.accumulator & 0x0fu) > (value & 0x000fu);
+    flags.half_carry = (value & 0x0fu) == 0x000fu;
     setData(dst, value);
 }
 

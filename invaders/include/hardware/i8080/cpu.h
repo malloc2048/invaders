@@ -17,6 +17,7 @@ namespace hardware {
         ~CPU() = default;
 
         void step();
+        void readCfg();
         void loadInstructionSet();
         void makeInstruction(const std::vector<std::string>& tokens);
 
@@ -28,6 +29,7 @@ namespace hardware {
         qword cycles = 0;
         Registers registers;
         qword instructionsProcessed = 0;
+        std::map<std::string, bool> cfg;
         std::map<byte, Instruction> instructions;
         std::map<std::string, Operation*> operationsMap;
 

@@ -24,10 +24,10 @@ void hardware::DataTransfer::execute(byte opcode) {
         auto address = nextWord();
         registers.l = memory.read_byte(address);
         registers.h = memory.read_byte(address + 1);
-    } else if(opcode == 0x33) { // SHLD
+    } else if(opcode == 0x22) { // SHLD
         auto address = nextWord();
-        memory.write(address, registers.l);
-        memory.write(address + 1, registers.h);
+        memory.write(address, getData(L));
+        memory.write(address + 1, getData(H));
     } else if((opcode & 0xcfu) == 0x0a) { // LDAX
         word address = getData(regPair);
         registers.accumulator = memory.read_byte(address);

@@ -26,8 +26,8 @@ void hardware::Branching::execute(byte opcode) {
             ret();
     } else if((opcode & 0xc7u) == 0xc7u) { // RST
         restart((opcode & 0x038u) >> 3u);
-    } else if(opcode == 0xe9u)
-        registers.program_counter = registers.readRegisterPair(HL);
+    } else if(opcode == 0xe9u)  // PCHL
+        registers.program_counter = registers.readRegister(HL);
 }
 
 void hardware::Branching::ret() {
@@ -42,6 +42,7 @@ void hardware::Branching::call() {
     registers.program_counter = address;
 }
 
+#include <iostream>
 void hardware::Branching::restart(byte restartNum) {
     registers.stack_pointer -= 2;
     memory.write_word(registers.stack_pointer, registers.program_counter);

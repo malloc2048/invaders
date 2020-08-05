@@ -16,43 +16,64 @@ hardware::CPU::CPU(hardware::Memory &memory) : memory(memory) {
         {"arithmetic", new Arithmetic(flags, memory, registers)},
     };
 
-    log.open("../roms/invaders.log");
+    readCfg();
+    if(cfg["LogEnable"])
+        log.open("../roms/invaders.log");
 }
-
-#include <iostream>
 
 void hardware::CPU::step() {
     auto address = registers.program_counter;
     auto opcode = nextByte();
-    auto hl = registers.readRegisterPair(0x02);
 
-    if(address == 0x1a5c)
-        std::cout << "STOP" << std::endl;
-
-    log << "Opcode: " << std::hex << (int)opcode << "\tprogram counter: " << std::hex << address
-                  << "\tstack: " << std::hex << memory.read_word(registers.stack_pointer)
-                  << "\tB: " << (int)registers.b
-                  << "\tC: " << (int)registers.c
-                  << "\tA: " << (int)registers.accumulator
-                  << "\tD: " << (int)registers.d
-                  << "\tE: " << (int)registers.e
-                  << "\tH: " << (int)registers.h
-                  << "\tL: " << (int)registers.l
-                  << "\tsign: " << flags.sign
-                  << "\tzero: " << flags.zero
-                  << "\tcarry: " << flags.carry
-                  <<std::endl;
+    if(cfg["LogEnable"])
+        log << "Opcode: " << std::hex << (int)opcode << "\tprogram counter: " << std::hex << address
+            << "\tstack pointer: " << std::hex << registers.stack_pointer
+            << "\tstack: " << std::hex << memory.read_word(registers.stack_pointer)
+            << "\tB: " << (int)registers.b
+            << "\tC: " << (int)registers.c
+            << "\tA: " << (int)registers.accumulator
+            << "\tD: " << (int)registers.d
+            << "\tE: " << (int)registers.e
+            << "\tH: " << (int)registers.h
+            << "\tL: " << (int)registers.l
+            << "\tzero: " << flags.zero
+            << "\tsign: " << flags.sign
+            << "\tparity: " << flags.parity
+            << "\tcarry: " << flags.carry
+            << "\thalf carry: " << flags.half_carry
+            <<std::endl;
 
     if(instructions.find(opcode) != instructions.end()) {
         cycles += instructions[opcode].cycles;
         instructions[opcode].operation->execute(opcode);
-        instructionsProcessed++;
+    }
+}
+
+void hardware::CPU::readCfg() {
+    std::string line;
+    std::ifstream cfgFile(ConfigFileName());
+
+    if(cfgFile.is_open()) {
+        while (std::getline(cfgFile, line)) {
+            auto const re = std::regex{R"(:+)"};
+            auto const tokens = std::vector<std::string>(
+                std::sregex_token_iterator{begin(line), end(line), re, -1},
+                std::sregex_token_iterator{}
+            );
+
+            if (tokens.size() == 2) {
+                std::istringstream(tokens[1]) >> std::boolalpha >> cfg[tokens[0]];
+            }
+        }
+    } else {
+        cfg["logEnabled"] = false;
     }
 }
 
 void hardware::CPU::loadInstructionSet() {
     std::string line;
     std::ifstream instruction_set(InstructionSetCSV());
+
     if(instruction_set.is_open()) {
         while (std::getline(instruction_set, line)) {
             auto const re = std::regex{R"(:+)"};
@@ -71,10 +92,10 @@ void hardware::CPU::loadInstructionSet() {
 
 void hardware::CPU::makeInstruction(const std::vector<std::string> &tokens) {
     try {
-        auto opcode = std::stoi(tokens[0], 0, 16);
+        auto opcode = std::stoi(tokens[0], nullptr, 16);
         auto mnemonic = tokens[1];
-        auto size = std::stoi(tokens[2], 0, 10);
-        auto instrCycles = std::stoi(tokens[3], 0, 10);
+        auto size = std::stoi(tokens[2], nullptr, 10);
+        auto instrCycles = std::stoi(tokens[3], nullptr, 10);
 
         Operation *operation = nullptr;
         if (operationsMap.find(tokens[4]) != operationsMap.end()) {
@@ -91,7 +112,8 @@ void hardware::CPU::makeInstruction(const std::vector<std::string> &tokens) {
                     .operation = operation,
                 }));
     } catch (std::exception& ex) {
-        std::cout << ex.what() << std::endl;
+        if(cfg["LogEnable"])
+            log << ex.what() << std::endl;
     }
 }
 

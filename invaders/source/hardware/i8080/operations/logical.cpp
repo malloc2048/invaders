@@ -21,7 +21,7 @@ void hardware::Logical::execute(byte opcode) {
         ora(nextByte());
     else if ((opcode & 0xf8u) == 0xb8)        // CMP
         compare(getData(opcode & 0x07u));
-    else if (opcode == 0x0feu)                // CPI
+    else if (opcode == 0xfeu)                // CPI
         compare(nextByte());
     else if (opcode == 0x07u) {               // RLC
         flags.carry = registers.accumulator >> 7u;
@@ -83,7 +83,7 @@ void hardware::Logical::compare(byte data) {
     word result = registers.accumulator - data;
 
     flags.zero = result == 0;
-    flags.sign = result > 0x7fu;
+    flags.sign = (result & 0x00ff) > 0x7fu;
     flags.calculateParity(result);
     flags.carry = (result & 0x0100u) != 0;
     flags.half_carry = (result & 0x000fu) > (registers.accumulator & 0x0fu);

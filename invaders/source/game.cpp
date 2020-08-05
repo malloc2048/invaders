@@ -3,7 +3,6 @@
 
 int main(int argc, char** argv) {
     std::ifstream rom_file(hardware::ROM_FILENAME());
-    hardware::Cabinet cabinet;
 
     if(rom_file.is_open()) {
         Invaders game;

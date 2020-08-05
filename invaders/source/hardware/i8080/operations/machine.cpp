@@ -4,14 +4,14 @@ hardware::Machine::Machine(hardware::Flags &flags, hardware::Memory &memory, har
     : Operation(flags, memory, registers) {}
 
 void hardware::Machine::execute(byte opcode) {
-    if((opcode & 0xcfu) == 0xc5u) // PUSH
-        push(getData(((opcode & 0x30u) >> 0x04u) + BC));
-    else if(opcode  == 0xf5u) // PUSH PSW
+    if(opcode == 0xf5u) // PUSH PSW
         push(getPSW());
-    else if((opcode & 0xcfu) == 0xc1u) // POP
-        pop(((opcode & 0x30u) >> 0x04u) + BC);
+    else if((opcode & 0xcfu) == 0xc5u) // PUSH
+        push(getData(((opcode & 0x30u) >> 0x04u) + BC));
     else if(opcode == 0xf1u) // POP PSW
         setPSW();
+    else if((opcode & 0xcfu) == 0xc1u) // POP
+        pop(((opcode & 0x30u) >> 0x04u) + BC);
     else if(opcode == 0xe3u)
         xthl();
     else if(opcode == 0xf9u)
@@ -33,13 +33,13 @@ void hardware::Machine::push(word data) {
 
 word hardware::Machine::getPSW() const {
     word psw = registers.accumulator << 8u;
-    psw &= 0xff02u;
+    psw &= 0xff00u;
 
-    psw |= flags.carry ? 0x01u : 0x00u;
+    psw |= flags.zero ? 0x01u : 0x00u;
+    psw |= flags.sign ? 0x02u : 0x00u;
     psw |= flags.parity ? 0x04u : 0x00u;
+    psw |= flags.carry ? 0x08u : 0x00u;
     psw |= flags.half_carry ? 0x10u : 0x00u;
-    psw |= flags.zero ? 0x40u : 0x00u;
-    psw |= flags.sign ? 0x80u : 0x00u;
 
     return psw;
 }
@@ -55,11 +55,11 @@ void hardware::Machine::setPSW() {
     registers.stack_pointer += 2;
 
     registers.accumulator = psw >> 0x08u;
-    flags.carry = psw & 0x01u;
+    flags.zero = psw & 0x01u;
+    flags.sign = psw & 0x02u;
     flags.parity = psw & 0x04u;
+    flags.carry = psw & 0x08u;
     flags.half_carry = psw & 0x10u;
-    flags.zero = psw & 0x40u;
-    flags.sign = psw & 0x80u;
 }
 
 void hardware::Machine::sphl() {
