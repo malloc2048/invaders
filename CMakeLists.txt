@@ -34,14 +34,20 @@ endif()
 
 include_directories(${CMAKE_CURRENT_LIST_DIR}/invaders/include)
 
-file(GLOB_RECURSE src
+
+file(GLOB_RECURSE hardware_src
+    ${CMAKE_CURRENT_LIST_DIR}/invaders/include/hardware/*.h
+    ${CMAKE_CURRENT_LIST_DIR}/invaders/source/hardware/*.cpp
+)
+
+file(GLOB src
     ${CMAKE_CURRENT_LIST_DIR}/invaders/include/*.h
     ${CMAKE_CURRENT_LIST_DIR}/invaders/source/*.cpp
 )
-add_executable(invaders ${src})
+add_executable(invaders ${src} ${hardware_src})
 target_link_libraries(invaders SDL2)
 
-#file(GLOB_RECURSE tests ${CMAKE_CURRENT_LIST_DIR}/invaders/test/*)
-#add_executable(unittests ${tests} ${hardware_src})
-#target_link_libraries(unittests gtest_main gtest gcov pthread)
-#target_compile_options(unittests PUBLIC --coverage)
+file(GLOB_RECURSE tests ${CMAKE_CURRENT_LIST_DIR}/invaders/test/*)
+add_executable(unittests ${tests} ${hardware_src})
+target_link_libraries(unittests gtest_main gtest gcov pthread)
+target_compile_options(unittests PUBLIC --coverage)

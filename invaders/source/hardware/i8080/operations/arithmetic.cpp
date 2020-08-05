@@ -97,7 +97,9 @@ void hardware::Arithmetic::daa() {
 
     byte msb = registers.accumulator >> 4u;
     if(flags.carry || msb > 9) {
-        registers.accumulator += 0x60;
+        msb += 6;
+        registers.accumulator &= 0x0fu;
+        registers.accumulator |= msb << 0x04u;
     }
 
     flags.zero = (registers.accumulator & 0xffu) == 0;

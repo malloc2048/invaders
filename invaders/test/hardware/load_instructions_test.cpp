@@ -2,6 +2,7 @@
 #include "hardware/i8080/cpu.h"
 
 TEST(CPUTest, LoadInstructionSet) {
-    hardware::CPU cpu;
+    hardware::Memory memory;
+    hardware::CPU cpu(memory);
     cpu.loadInstructionSet();
 }

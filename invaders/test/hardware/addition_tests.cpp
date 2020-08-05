@@ -1,3 +1,6 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-err58-cpp"
+#include <random>
 #include "arithmetic_test_fixture.h"
 
 TEST_F(ArithmeticTestFixture, add) {
@@ -149,4 +152,196 @@ TEST_F(ArithmeticTestFixture, addWrongOpcode) {
     ASSERT_TRUE(flags.parity);
     ASSERT_TRUE(flags.half_carry);
     ASSERT_EQ(0x00, registers.accumulator);
+}
+
+TEST_F(ArithmeticTestFixture, subtraction) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 255);
+
+    for(byte opcode = 0x90; opcode < 0x98; opcode++) {
+        byte value = dist(mt);
+        registers.accumulator = 0x01;
+        memory.write(0x5000, value);
+        registers.writeRegister(hardware::HL, 0x5000);
+        registers.writeRegister(opcode & 0x0fu, value);
+
+        arithmetic.execute(opcode);
+        if(opcode == 0x97) {
+            ASSERT_EQ(byte(0), registers.accumulator);
+        } else {
+            ASSERT_EQ(byte(1 - value), registers.accumulator);
+        }
+    }
+}
+
+TEST_F(ArithmeticTestFixture, subtractionWithBorrow) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 255);
+
+    for(byte opcode = 0x98; opcode < 0xa0; opcode++) {
+        flags.carry = true;
+        byte value = dist(mt);
+        registers.accumulator = 0x01;
+        memory.write(0x5000, value);
+
+        registers.writeRegister(hardware::HL, 0x5000);
+        registers.writeRegister((opcode & 0x0fu) - 8, value);
+
+        arithmetic.execute(opcode);
+        if(opcode == 0x9f) {
+            ASSERT_EQ(byte(0xff), registers.accumulator);
+        } else {
+            ASSERT_EQ(byte(1 - (value + 1)), registers.accumulator);
+        }
+    }
+}
+
+TEST_F(ArithmeticTestFixture, subtractionImmediate) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 255);
+    byte value = dist(mt);
+
+    registers.accumulator = 0x01;
+    registers.program_counter = 0x5000;
+    memory.write(0x5000, value);
+
+    arithmetic.execute(0xd6);
+    ASSERT_EQ(byte(1 - value), registers.accumulator);
+
+    flags.carry = true;
+    registers.accumulator = 0x01;
+    registers.program_counter = 0x5000;
+
+    arithmetic.execute(0xde);
+    ASSERT_EQ(byte(1 - (value + 1)), registers.accumulator);
+}
+
+TEST_F(ArithmeticTestFixture, increment) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 255);
+    std::vector<byte> opcodes = { 0x04, 0x0c, 0x14, 0x1c, 0x24, 0x2c, 0x34, 0x3c };
+
+    for(auto opcode: opcodes) {
+        byte value = dist(mt);
+        auto reg = (opcode & 0x38u) >> 0x03u;
+
+        registers.writeRegister(hardware::HL, 0x5000);
+        memory.write(0x5000, value);
+        registers.writeRegister(reg, value);
+
+        arithmetic.execute(opcode);
+        if(opcode == 0x34) {
+            ASSERT_EQ(byte(value + 1), memory.read_byte(0x5000));
+        } else {
+            ASSERT_EQ(byte(value + 1), registers.readRegister(reg));
+        }
+    }
+}
+
+TEST_F(ArithmeticTestFixture, incrementPair) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 255);
+    std::vector<byte> opcodes = { 0x03, 0x13, 0x23, 0x33 };
+
+    for(auto opcode: opcodes) {
+        byte value = dist(mt);
+        auto reg = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+        registers.writeRegister(reg, value);
+
+        arithmetic.execute(opcode);
+        ASSERT_EQ(byte(value + 1), registers.readRegister(reg));
+    }
+}
+
+TEST_F(ArithmeticTestFixture, decrement) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 255);
+    std::vector<byte> opcodes = { 0x05, 0x0d, 0x15, 0x1d, 0x25, 0x2d, 0x35, 0x3d };
+
+    for(auto opcode: opcodes) {
+        byte value = dist(mt);
+        auto reg = (opcode & 0x38u) >> 0x03u;
+
+        registers.writeRegister(hardware::HL, 0x5000);
+        memory.write(0x5000, value);
+        registers.writeRegister(reg, value);
+
+        arithmetic.execute(opcode);
+        if(opcode == 0x35) {
+            ASSERT_EQ(byte(value - 1), memory.read_byte(0x5000));
+        } else {
+            ASSERT_EQ(byte(value - 1), registers.readRegister(reg));
+        }
+    }
+}
+
+TEST_F(ArithmeticTestFixture, decrementPair) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 255);
+    std::vector<byte> opcodes = { 0x0b, 0x1b, 0x2b, 0x3b };
+
+    for(auto opcode: opcodes) {
+        byte value = dist(mt);
+        auto reg = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+        registers.writeRegister(reg, value);
+
+        arithmetic.execute(opcode);
+        ASSERT_EQ(byte(value - 1), registers.readRegister(reg));
+    }
+}
+
+TEST_F(ArithmeticTestFixture, dad) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 255);
+    std::vector<byte> opcodes = { 0x09, 0x19, 0x29, 0x39 };
+
+    for(auto opcode: opcodes) {
+        byte value = dist(mt);
+        auto reg = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+
+        if(opcode != 0x29)
+            registers.writeRegister(hardware::HL, 0x01);
+
+        registers.writeRegister(reg, value);
+        arithmetic.execute(opcode);
+
+        if(opcode == 0x29)
+            ASSERT_EQ(word(value + value), registers.readRegister(hardware::HL));
+        else
+            ASSERT_EQ(word(value + 1), registers.readRegister(hardware::HL));
+    }
+}
+
+TEST_F(ArithmeticTestFixture, daa) {
+    registers.accumulator = 0x00;
+    arithmetic.execute(0x27);
+    ASSERT_EQ(byte(0x00), registers.accumulator);
+
+    registers.accumulator = 0x0a;
+    arithmetic.execute(0x27);
+    ASSERT_EQ(byte(0x06 + 0x0a), registers.accumulator);
+
+    registers.accumulator = 0xa0;
+    arithmetic.execute(0x27);
+    ASSERT_EQ(byte(0x60 + 0xa0), registers.accumulator);
+
+    flags.carry = false;
+    flags.half_carry = true;
+    registers.accumulator = 0x00;
+    arithmetic.execute(0x27);
+    ASSERT_EQ(byte(0x06), registers.accumulator);
+
+    flags.carry = true;
+    flags.half_carry = false;
+    registers.accumulator = 0x00;
+    arithmetic.execute(0x27);
+    ASSERT_EQ(byte(0x60), registers.accumulator);
 }

@@ -18,7 +18,7 @@ word hardware::Operation::getData(byte src) const {
         case L:
             return registers.l;
         case M:
-            return memory.read_byte(registers.readRegisterPair(0x02));
+            return memory.read_byte(registers.readRegister(HL));
         case A:
             return registers.accumulator;
         case BC:
@@ -65,7 +65,7 @@ void hardware::Operation::setData(byte dst, word data) {
             registers.l = data;
             break;
         case M:
-            memory.write(registers.readRegisterPair(0x02), data);
+            memory.write(registers.readRegister(HL), data);
             break;
         case A:
             registers.accumulator = data;
