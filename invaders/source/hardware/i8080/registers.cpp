@@ -33,23 +33,45 @@ word hardware::Registers::readRegister(byte reg) const {
     return data;
 }
 
-word hardware::Registers::readRegisterPair(byte regPair) const {
-    word data = 0;
-    switch(regPair) {
-        case 0x00:
-            data = (b << 8u) | c;
+void hardware::Registers::writeRegister(byte reg, word data) {
+    switch(reg) {
+        case B:
+            b = data & 0xffu;
             break;
-        case 0x01:
-            data = (d << 8u) | e;
+        case C:
+            c = data & 0xffu;
             break;
-        case 0x02:
-            data = (h << 8u) | l;
+        case D:
+            d = data & 0xffu;
             break;
-        case 0x03:
-            data = stack_pointer;
+        case E:
+            e = data & 0xffu;
+            break;
+        case H:
+            h = data & 0xffu;
+            break;
+        case L:
+            l = data & 0xffu;
+            break;
+        case A:
+            accumulator = data & 0xffu;
+            break;
+        case BC:
+            writeRegister(B, data >> 8u);
+            writeRegister(C, data & 0xffu);
+            break;
+        case DE:
+            writeRegister(D, data >> 8u);
+            writeRegister(E, data & 0xffu);
+            break;
+        case HL:
+            writeRegister(H, data >> 8u);
+            writeRegister(L, data & 0xffu);
+            break;
+        case SP:
+            stack_pointer = data;
             break;
         default:
-            data = 0;
+            break;
     }
-    return data;
 }
