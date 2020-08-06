@@ -10,9 +10,9 @@ void hardware::DataTransfer::execute(byte opcode) {
 
     if(opcode >= 0x40u && opcode <= 0x7f)   // MOV
         setData(dst, getData(src));
-    else if((opcode & 0xc7u) == 0x06u)        // MVI
+    else if((opcode & 0xc7u) == 0x06u)      // MVI
         setData(dst, nextByte());
-    else if((opcode & 0xcfu) == 0x01) {  // LXI
+    else if((opcode & 0xcfu) == 0x01) {     // LXI
         word data = nextWord();
         setData(regPair, data);
     }

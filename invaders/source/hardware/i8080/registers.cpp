@@ -30,7 +30,6 @@ word hardware::Registers::readRegister(byte reg) const {
         default:
             return data;
     }
-    return data;
 }
 
 void hardware::Registers::writeRegister(byte reg, word data) {
