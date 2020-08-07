@@ -254,7 +254,7 @@ TEST_F(ArithmeticTestFixture, incrementPair) {
         registers.writeRegister(reg, value);
 
         arithmetic.execute(opcode);
-        ASSERT_EQ(byte(value + 1), registers.readRegister(reg));
+        ASSERT_EQ(byte(value + 1), byte(registers.readRegister(reg)));
     }
 }
 
@@ -293,7 +293,7 @@ TEST_F(ArithmeticTestFixture, decrementPair) {
         registers.writeRegister(reg, value);
 
         arithmetic.execute(opcode);
-        ASSERT_EQ(byte(value - 1), registers.readRegister(reg));
+        ASSERT_EQ(byte(value - 1), byte(registers.readRegister(reg)));
     }
 }
 

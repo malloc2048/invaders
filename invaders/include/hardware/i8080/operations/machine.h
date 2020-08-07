@@ -11,16 +11,11 @@ namespace hardware {
 
         void execute(byte opcode) override;
 
-        void pop(byte dst);
-        void push(word data);
-        word getPSW() const;
-        void setPSW();
-
-        void in();
-        void out();
-        void nop();
-        void sphl();
         void xthl();
+        void setPSW();
+        void pop(byte dst);
+        word getPSW() const;
+        void push(word data);
     };
 }
 #endif

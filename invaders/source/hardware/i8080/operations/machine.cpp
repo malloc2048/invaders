@@ -14,7 +14,7 @@ void hardware::Machine::execute(byte opcode) {
         pop(((opcode & 0x30u) >> 0x04u) + BC);
     else if(opcode == 0xe3u)
         xthl();
-    else if(opcode == 0xf9u)
+    else if(opcode == 0xf9u)    // SPHL
         registers.stack_pointer = getData(HL);
     else if(opcode == 0xfbu)  // EI
         flags.interruptEnabled = true;
@@ -62,24 +62,8 @@ void hardware::Machine::setPSW() {
     flags.half_carry = psw & 0x10u;
 }
 
-void hardware::Machine::sphl() {
-    registers.stack_pointer = getData(HL);
-}
-
 void hardware::Machine::xthl() {
     auto sp = memory.read_word(registers.stack_pointer);
     memory.write_word(registers.stack_pointer, getData(HL));
     setData(HL, sp);
-}
-
-void hardware::Machine::in() {
-
-}
-
-void hardware::Machine::out() {
-
-}
-
-void hardware::Machine::nop() {
-
 }

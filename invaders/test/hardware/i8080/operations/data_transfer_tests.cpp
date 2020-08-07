@@ -101,8 +101,97 @@ TEST_F(DataTransferTestFixture, sta) {
     byte value = dist(mt);
     registers.accumulator = value;
     registers.program_counter = 0x2000;
-    memory.write(0x2002, value);
+    memory.write_word(0x2000, 0x2400);
 
     dataTransfer.execute(0x32);
-    ASSERT_EQ(value, memory.read_byte(0x2002));
+    ASSERT_EQ(value, memory.read_byte(0x2400));
+}
+
+TEST_F(DataTransferTestFixture, lhld) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 0xff);
+
+    byte value = dist(mt);
+    byte value2 = dist(mt);
+    registers.program_counter = 0x2000;
+    memory.write(0x2000, 0x00);
+    memory.write(0x2001, 0x24);
+    memory.write(0x2400, value);
+    memory.write(0x2401, value2);
+
+    dataTransfer.execute(0x2a);
+    ASSERT_EQ(value, registers.l);
+    ASSERT_EQ(value2, registers.h);
+    ASSERT_EQ(0x2002, registers.program_counter);
+}
+
+TEST_F(DataTransferTestFixture, shld) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 0xff);
+
+    byte value = dist(mt);
+    byte value2 = dist(mt);
+    registers.l = value;
+    registers.h = value2;
+    registers.program_counter = 0x2000;
+    memory.write(0x2000, 0x00);
+    memory.write(0x2001, 0x24);
+
+    dataTransfer.execute(0x22);
+    ASSERT_EQ(value, memory.read_byte(0x2400));
+    ASSERT_EQ(value2, memory.read_byte(0x2401));
+    ASSERT_EQ(0x2002, registers.program_counter);
+}
+
+TEST_F(DataTransferTestFixture, ldax) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 0xff);
+
+    std::vector<byte> opcodes = { 0x0a, 0x1a };
+    for(auto& opcode : opcodes) {
+        byte value = dist(mt);
+        byte rp = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+
+        registers.writeRegister(rp, 0x2000);
+        memory.write_word(0x2000, value);
+
+        dataTransfer.execute(opcode);
+        ASSERT_EQ(value, registers.accumulator);
+    }
+}
+
+TEST_F(DataTransferTestFixture, stax) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<byte> dist(0, 0xff);
+
+    std::vector<byte> opcodes = { 0x02, 0x12 };
+    for(auto& opcode : opcodes) {
+        byte value = dist(mt);
+        byte rp = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+
+        registers.accumulator = value;
+        registers.writeRegister(rp, 0x2000);
+
+        dataTransfer.execute(opcode);
+        ASSERT_EQ(value, memory.read_byte(0x2000));
+    }
+}
+
+TEST_F(DataTransferTestFixture, xchg) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<word> dist(0, 0xffff);
+
+    word value = dist(mt);
+    word value2 = dist(mt);
+    registers.writeRegister(hardware::DE, value);
+    registers.writeRegister(hardware::HL, value2);
+
+    dataTransfer.execute(0xeb);
+    ASSERT_EQ(value, registers.readRegister(hardware::HL));
+    ASSERT_EQ(value2, registers.readRegister(hardware::DE));
 }

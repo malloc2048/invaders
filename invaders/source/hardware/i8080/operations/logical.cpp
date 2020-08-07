@@ -6,14 +6,14 @@ hardware::Logical::Logical(hardware::Flags &flags, hardware::Memory &memory, har
 }
 
 void hardware::Logical::execute(byte opcode) {
-    if ((opcode & 0xf8u) == 0xa0)            // ANA
+    if ((opcode & 0xf8u) == 0xa0) {          // ANA
         ana(getData(opcode & 0x07u));
-    else if (opcode == 0xe6) {               // ANI
+    } else if (opcode == 0xe6) {               // ANI
         ana(nextByte());
         flags.half_carry = false;
-    } else if ((opcode & 0xf8u) == 0xa8)      // XRA
+    } else if ((opcode & 0xf8u) == 0xa8) {     // XRA
         xra(getData(opcode & 0x07u));
-    else if (opcode == 0xeeu)                 // XRI
+    } else if (opcode == 0xeeu)                 // XRI
         xra(nextByte());
     else if ((opcode & 0xf8u) == 0xb0)        // ORA
         ora(getData(opcode & 0x07u));
@@ -25,18 +25,18 @@ void hardware::Logical::execute(byte opcode) {
         compare(nextByte());
     else if (opcode == 0x07u) {               // RLC
         flags.carry = registers.accumulator >> 7u;
-        registers.accumulator = registers.accumulator << 0x01u | flags.carry;
+        registers.accumulator = (registers.accumulator << 0x01u) | (flags.carry ? 0x01 : 0x00);
     } else if (opcode == 0x0fu) {                // RRC
         flags.carry = registers.accumulator & 0x01u;
-        registers.accumulator = (registers.accumulator >> 0x01u) | (flags.carry << 7u);
+        registers.accumulator = (registers.accumulator >> 0x01u) | (flags.carry ? 0x80u : 0x00);
     } else if(opcode == 0x17u) {                 // RAL
-        uint8_t carry = flags.carry;
+        byte carry = flags.carry ? 0x01u : 0x00;
         flags.carry = registers.accumulator >> 7u;
         registers.accumulator = (registers.accumulator << 1u) | carry;
     } else if(opcode == 0x1fu) {               // RAR
-        uint8_t carry = flags.carry;
+        byte carry = flags.carry ? 0x80u : 0x00;
         flags.carry = registers.accumulator & 1u;
-        registers.accumulator = (registers.accumulator >> 1u) | carry << 7u;
+        registers.accumulator = (registers.accumulator >> 1u) | carry;
     }
     else if(opcode == 0x2fu)                 // CMA
         registers.accumulator ^= 0xffu;

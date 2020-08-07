@@ -18,9 +18,9 @@ void hardware::DataTransfer::execute(byte opcode) {
     }
     else if(opcode == 0x3a)     // LDA
         registers.accumulator = memory.read_byte(nextWord());
-    else if(opcode == 0x32)     // STA
+    else if(opcode == 0x32) {    // STA
         memory.write(nextWord(), registers.accumulator);
-    else if(opcode == 0x2a) {   // LHLD
+    } else if(opcode == 0x2a) {   // LHLD
         auto address = nextWord();
         registers.l = memory.read_byte(address);
         registers.h = memory.read_byte(address + 1);
@@ -31,7 +31,7 @@ void hardware::DataTransfer::execute(byte opcode) {
     } else if((opcode & 0xcfu) == 0x0a) { // LDAX
         word address = getData(regPair);
         registers.accumulator = memory.read_byte(address);
-    } else if((opcode & 0xcfu) == 0x01) // STAX
+    } else if(opcode == 0x02 || opcode == 0x12) // STAX
         memory.write(getData(regPair), registers.accumulator);
     else if(opcode == 0xeb) {
         auto temp = registers.h;
