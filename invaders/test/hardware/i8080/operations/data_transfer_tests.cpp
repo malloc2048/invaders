@@ -31,8 +31,7 @@ TEST_F(DataTransferTestFixture, mov) {
         dataTransfer.execute(opcode);
 
         if(dst == hardware::M) {
-//            std::cout << std::hex << int(memory.read_byte(0x2000)) << std::endl;
-//            ASSERT_EQ(0x20, memory.read_byte(0x2000));
+
         } else {
             ASSERT_EQ(value, registers.readRegister(dst));
         }

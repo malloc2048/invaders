@@ -5,3 +5,4 @@ cmake-build-debug
 /roms/invaders.log
 /bin/
 build
+/roms/error.log

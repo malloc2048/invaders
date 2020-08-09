@@ -16,16 +16,17 @@ hardware::CPU::CPU(hardware::Memory &memory) : memory(memory) {
         {"arithmetic", new Arithmetic(flags, memory, registers)},
     };
 
-    readCfg();
-    if(cfg["LogEnable"])
-        log.open("../roms/invaders.log");
+    errorLog.open(ErrorLogFileName());
+    cfg.loadConfig(ConfigFileName());
+    if(cfg.getBool("LogEnable"))
+        log.open(LogFileName());
 }
 
 void hardware::CPU::step() {
     auto address = registers.program_counter;
     auto opcode = nextByte();
 
-    if(cfg["LogEnable"])
+    if(cfg.getBool("LogEnable"))
         log << "Opcode: " << std::hex << (int)opcode << "\tprogram counter: " << std::hex << address
             << "\tstack pointer: " << std::hex << registers.stack_pointer
             << "\tstack: " << std::hex << memory.read_word(registers.stack_pointer)
@@ -46,27 +47,6 @@ void hardware::CPU::step() {
     if(instructions.find(opcode) != instructions.end()) {
         cycles += instructions[opcode].cycles;
         instructions[opcode].operation->execute(opcode);
-    }
-}
-
-void hardware::CPU::readCfg() {
-    std::string line;
-    std::ifstream cfgFile(ConfigFileName());
-
-    if(cfgFile.is_open()) {
-        while (std::getline(cfgFile, line)) {
-            auto const re = std::regex{R"(:+)"};
-            auto const tokens = std::vector<std::string>(
-                std::sregex_token_iterator{begin(line), end(line), re, -1},
-                std::sregex_token_iterator{}
-            );
-
-            if (tokens.size() == 2) {
-                std::istringstream(tokens[1]) >> std::boolalpha >> cfg[tokens[0]];
-            }
-        }
-    } else {
-        cfg["logEnabled"] = false;
     }
 }
 
@@ -112,8 +92,7 @@ void hardware::CPU::makeInstruction(const std::vector<std::string> &tokens) {
                     .operation = operation,
                 }));
     } catch (std::exception& ex) {
-        if(cfg["LogEnable"])
-            log << ex.what() << std::endl;
+        errorLog << ex.what() << std::endl;
     }
 }
 

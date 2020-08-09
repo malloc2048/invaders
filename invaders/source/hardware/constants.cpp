@@ -6,6 +6,8 @@ int hardware::SCREEN_HEIGHT() { return 256; }
 word hardware::VRAM_ADDRESS() { return 0x2400; }
 dword hardware::CYCLES_PER_FRAME() { return 2000000 / FPS(); }
 std::string hardware::ROM_FILENAME() { return "../roms/invaders"; }
+std::string hardware::LogFileName() { return "../roms/invaders.log"; }
+std::string hardware::ErrorLogFileName() { return "../roms/error.log"; }
 std::string hardware::ConfigFileName() { return "../roms/invaders.cfg"; }
 dword hardware::HALF_CYCLES_PER_FRAME() { return CYCLES_PER_FRAME() / 2; }
 std::string hardware::DISASSEMBLY_FILENAME() { return "../roms/invaders.dis"; }
