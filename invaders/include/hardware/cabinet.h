@@ -2,13 +2,13 @@
 #define INVADERS_CABINET_H
 
 #include "memory.h"
-#include "constants.h"
 #include "i8080/cpu.h"
+#include "common/constants.h"
 
 namespace hardware {
     class Cabinet {
     public:
-        Cabinet();
+        explicit Cabinet(common::Config& cfg);
         ~Cabinet() = default;
 
         word getPC() const ;
@@ -20,6 +20,7 @@ namespace hardware {
         void setAccumulator(byte value);
         void incrementPC(byte increment);
 
+        common::Config& cfg;
         Memory memory;
         CPU cpu;
 

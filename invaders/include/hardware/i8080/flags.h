@@ -1,7 +1,7 @@
 #ifndef INVADERS_FLAGS_H
 #define INVADERS_FLAGS_H
 
-#include "hardware/constants.h"
+#include "common/constants.h"
 
 namespace hardware {
     struct Flags {

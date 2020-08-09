@@ -2,7 +2,7 @@
 #define INVADERS_MEMORY_H
 
 #include <fstream>
-#include "hardware/constants.h"
+#include "common/constants.h"
 
 namespace hardware {
     class Memory {

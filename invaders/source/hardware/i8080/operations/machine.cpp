@@ -7,15 +7,15 @@ void hardware::Machine::execute(byte opcode) {
     if(opcode == 0xf5u) // PUSH PSW
         push(getPSW());
     else if((opcode & 0xcfu) == 0xc5u) // PUSH
-        push(getData(((opcode & 0x30u) >> 0x04u) + BC));
+        push(getData(((opcode & 0x30u) >> 0x04u) + common::BC));
     else if(opcode == 0xf1u) // POP PSW
         setPSW();
     else if((opcode & 0xcfu) == 0xc1u) // POP
-        pop(((opcode & 0x30u) >> 0x04u) + BC);
+        pop(((opcode & 0x30u) >> 0x04u) + common::BC);
     else if(opcode == 0xe3u)
         xthl();
     else if(opcode == 0xf9u)    // SPHL
-        registers.stack_pointer = getData(HL);
+        registers.stack_pointer = getData(common::HL);
     else if(opcode == 0xfbu)  // EI
         flags.interruptEnabled = true;
     else if(opcode == 0xf3u)  // DI
@@ -64,6 +64,6 @@ void hardware::Machine::setPSW() {
 
 void hardware::Machine::xthl() {
     auto sp = memory.read_word(registers.stack_pointer);
-    memory.write_word(registers.stack_pointer, getData(HL));
-    setData(HL, sp);
+    memory.write_word(registers.stack_pointer, getData(common::HL));
+    setData(common::HL, sp);
 }

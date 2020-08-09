@@ -27,3 +27,9 @@ void common::Config::loadConfig(const std::string &filename) {
         }
     }
 }
+
+std::string common::Config::getString(const std::string &name) {
+    if(cfg.find(name) != cfg.end())
+        return cfg[name];
+    return std::string();
+}

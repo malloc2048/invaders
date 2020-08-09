@@ -6,7 +6,7 @@ hardware::DataTransfer::DataTransfer(hardware::Flags &flags, hardware::Memory &m
 void hardware::DataTransfer::execute(byte opcode) {
     byte src = opcode & 0x07u;
     byte dst = (opcode & 0x38u) >> 0x03u;
-    byte regPair = ((opcode & 0x30u) >> 0x04u) + BC;
+    byte regPair = ((opcode & 0x30u) >> 0x04u) + common::BC;
 
     if(opcode >= 0x40u && opcode <= 0x7f)   // MOV
         setData(dst, getData(src));
@@ -26,8 +26,8 @@ void hardware::DataTransfer::execute(byte opcode) {
         registers.h = memory.read_byte(address + 1);
     } else if(opcode == 0x22) { // SHLD
         auto address = nextWord();
-        memory.write(address, getData(L));
-        memory.write(address + 1, getData(H));
+        memory.write(address, getData(common::L));
+        memory.write(address + 1, getData(common::H));
     } else if((opcode & 0xcfu) == 0x0a) { // LDAX
         word address = getData(regPair);
         registers.accumulator = memory.read_byte(address);

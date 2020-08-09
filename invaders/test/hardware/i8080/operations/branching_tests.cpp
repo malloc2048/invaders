@@ -196,7 +196,7 @@ TEST_F(BranchingTestFixture, restart) {
 
 TEST_F(BranchingTestFixture, JumpToHL) {
     registers.program_counter = 0x5000;
-    registers.writeRegister(hardware::HL, 0x18d4);
+    registers.writeRegister(common::HL, 0x18d4);
 
     branching.execute(0xe9);
     ASSERT_EQ(0x18d4, registers.program_counter);

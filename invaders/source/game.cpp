@@ -2,10 +2,12 @@
 #include "invaders.h"
 
 int main(int argc, char** argv) {
-    std::ifstream rom_file(hardware::ROM_FILENAME());
+    common::Config cfg;
+    cfg.loadConfig(common::ConfigFileName());
 
+    std::ifstream rom_file(cfg.getString("ROM_FILENAME"));
     if(rom_file.is_open()) {
-        Invaders game;
+        Invaders game(cfg);
         game.load_rom(rom_file);
         rom_file.close();
 

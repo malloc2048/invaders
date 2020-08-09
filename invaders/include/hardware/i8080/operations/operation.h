@@ -1,7 +1,7 @@
 #ifndef INVADERS_OPERATION_H
 #define INVADERS_OPERATION_H
 
-#include "hardware/constants.h"
+#include "common/constants.h"
 #include "hardware/i8080/flags.h"
 #include "hardware/i8080/memory.h"
 #include "hardware/i8080/registers.h"

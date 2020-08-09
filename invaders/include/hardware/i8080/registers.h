@@ -1,7 +1,7 @@
 #ifndef INVADERS_REGISTERS_H
 #define INVADERS_REGISTERS_H
 
-#include "hardware/constants.h"
+#include "common/constants.h"
 
 namespace hardware {
     struct Registers {

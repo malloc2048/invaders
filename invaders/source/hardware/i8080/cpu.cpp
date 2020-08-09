@@ -7,7 +7,7 @@
 #include "hardware/i8080/operations/arithmetic.h"
 #include "hardware/i8080/operations/data_transfer.h"
 
-hardware::CPU::CPU(hardware::Memory &memory) : memory(memory) {
+hardware::CPU::CPU(hardware::Memory &memory, common::Config& cfg) : memory(memory), cfg(cfg) {
     operationsMap = {
         {"machine", new Machine(flags, memory, registers)},
         {"logical", new Logical(flags, memory, registers)},
@@ -16,10 +16,9 @@ hardware::CPU::CPU(hardware::Memory &memory) : memory(memory) {
         {"arithmetic", new Arithmetic(flags, memory, registers)},
     };
 
-    errorLog.open(ErrorLogFileName());
-    cfg.loadConfig(ConfigFileName());
+    errorLog.open(cfg.getString("ErrorLogFileName"));
     if(cfg.getBool("LogEnable"))
-        log.open(LogFileName());
+        log.open(cfg.getString("LogFileName"));
 }
 
 void hardware::CPU::step() {
@@ -52,7 +51,7 @@ void hardware::CPU::step() {
 
 void hardware::CPU::loadInstructionSet() {
     std::string line;
-    std::ifstream instruction_set(InstructionSetCSV());
+    std::ifstream instruction_set(cfg.getString("InstructionSetCSV"));
 
     if(instruction_set.is_open()) {
         while (std::getline(instruction_set, line)) {

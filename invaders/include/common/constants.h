@@ -8,7 +8,7 @@ typedef unsigned short word;
 typedef unsigned int dword;
 typedef unsigned long qword;
 
-namespace hardware {
+namespace common {
     enum DATA_SRC_DST {
         B = 0,
         C = 1,
@@ -29,12 +29,12 @@ namespace hardware {
     int SCREEN_HEIGHT();
     word VRAM_ADDRESS();
     dword CYCLES_PER_FRAME();
-    std::string LogFileName();
-    std::string ROM_FILENAME();
+//    std::string LogFileName();
+//    std::string ROM_FILENAME();
     std::string ConfigFileName();
     dword HALF_CYCLES_PER_FRAME();
-    std::string ErrorLogFileName();
-    std::string InstructionSetCSV();
-    std::string DISASSEMBLY_FILENAME();
+//    std::string ErrorLogFileName();
+//    std::string InstructionSetCSV();
+//    std::string DISASSEMBLY_FILENAME();
 }
 #endif

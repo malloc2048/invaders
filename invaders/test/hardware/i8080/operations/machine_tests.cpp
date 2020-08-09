@@ -13,7 +13,7 @@ TEST_F(MachineTestFixture, push) {
         registers.stack_pointer = 0x2400;
 
         auto value = dist(mt);
-        auto rp = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+        auto rp = ((opcode & 0x30u) >> 0x04u) + common::BC;
         registers.writeRegister(rp, value);
 
         operation.execute(opcode);
@@ -54,7 +54,7 @@ TEST_F(MachineTestFixture, pop) {
         auto value = dist(mt);
         registers.stack_pointer = 0x23fe;
         memory.write_word(registers.stack_pointer, value);
-        auto rp = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+        auto rp = ((opcode & 0x30u) >> 0x04u) + common::BC;
 
         operation.execute(opcode);
         ASSERT_EQ(0x2400, registers.stack_pointer);
@@ -91,10 +91,10 @@ TEST_F(MachineTestFixture, xthl) {
     memory.write_word(registers.stack_pointer, value);
 
     auto value2 = dist(mt);
-    registers.writeRegister(hardware::HL, value2);
+    registers.writeRegister(common::HL, value2);
 
     operation.execute(0xe3);
-    ASSERT_EQ(value, registers.readRegister(hardware::HL));
+    ASSERT_EQ(value, registers.readRegister(common::HL));
     ASSERT_EQ(value2, memory.read_word(registers.stack_pointer));
 }
 
@@ -105,7 +105,7 @@ TEST_F(MachineTestFixture, SPHL) {
 
     auto value = dist(mt);
     registers.stack_pointer = 0x2400;
-    registers.writeRegister(hardware::HL, value);
+    registers.writeRegister(common::HL, value);
 
     operation.execute(0xf9u);
     ASSERT_EQ(value, registers.stack_pointer);

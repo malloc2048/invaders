@@ -1,7 +1,7 @@
 #ifndef INVADERS_INSTRUCTION_H
 #define INVADERS_INSTRUCTION_H
 
-#include "hardware/constants.h"
+#include "common/constants.h"
 #include "operations/operation.h"
 
 namespace hardware {

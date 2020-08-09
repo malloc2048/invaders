@@ -13,6 +13,7 @@ namespace common {
 
         bool getBool(const std::string& name);
         void loadConfig(const std::string& filename);
+        std::string getString(const std::string& name);
 
     private:
         std::map<std::string, std::string> cfg;

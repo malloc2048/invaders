@@ -9,7 +9,7 @@
 
 class Invaders {
 public:
-    Invaders();
+    explicit Invaders(common::Config& cfg);
     ~Invaders();
 
     void run();
@@ -31,6 +31,7 @@ protected:
 
 private:
     uint32_t timer = 0;
+    common::Config& cfg;
     bool shouldQuit = false;
     bool initialized = false;
     hardware::Cabinet cabinet;

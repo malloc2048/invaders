@@ -23,17 +23,17 @@ void hardware::Arithmetic::execute(byte opcode) {
     else if((opcode & 0xC7u) == 0x04u)          // INR
         increment((opcode & 0x38u) >> 3u);
     else if((opcode & 0xCFu) == 0x03) {         // INX
-        auto data = getData(((opcode & 0x30u) >> 4u) + BC) + 1;
-        setData(((opcode & 0x30u) >> 4u) + BC, data);
+        auto data = getData(((opcode & 0x30u) >> 4u) + common::BC) + 1;
+        setData(((opcode & 0x30u) >> 4u) + common::BC, data);
     }
     else if((opcode & 0xc7u) == 0x05)           // DCR
         decrement((opcode & 0x38u) >> 3u);
     else if((opcode & 0xCFu) == 0x0b) {         // DCX
-        auto data = getData(((opcode & 0x30u) >> 4u) + BC) - 1;
-        setData(((opcode & 0x30u) >> 4u) + BC, data);
+        auto data = getData(((opcode & 0x30u) >> 4u) + common::BC) - 1;
+        setData(((opcode & 0x30u) >> 4u) + common::BC, data);
     }
     else if((opcode & 0xCFu) == 0x09)          // DAD
-        dad(((opcode & 0x30u) >> 4u) + BC);
+        dad(((opcode & 0x30u) >> 4u) + common::BC);
     else if(opcode == 0x27)                    // DAA
         daa();
 }
@@ -83,9 +83,9 @@ void hardware::Arithmetic::decrement(byte dst) {
 }
 
 void hardware::Arithmetic::dad(byte src) {
-    word sum = getData(src) + getData(HL);
+    word sum = getData(src) + getData(common::HL);
     flags.carry = (sum & 0x10000u) != 0;
-    setData(HL, sum);
+    setData(common::HL, sum);
 }
 
 void hardware::Arithmetic::daa() {

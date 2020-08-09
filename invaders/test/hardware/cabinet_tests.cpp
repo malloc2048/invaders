@@ -12,7 +12,7 @@ TEST(CabinetTest, cabinet) {
     cabinet.interrupt(address);
 
     ASSERT_EQ(address, cabinet.getPC());
-    ASSERT_EQ(15, cabinet.getCycleCount());
+    ASSERT_EQ(11, cabinet.getCycleCount());
     ASSERT_FALSE(cabinet.cpu.flags.interruptEnabled);
 
     cabinet.setCycleCount(0xaaaa);

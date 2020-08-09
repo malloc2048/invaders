@@ -8,14 +8,14 @@
 #include "registers.h"
 #include "instruction.h"
 #include "common/config.h"
-#include "hardware/constants.h"
+#include "common/constants.h"
 #include "operations/operation.h"
 
 
 namespace hardware {
     class CPU {
     public:
-        explicit CPU(Memory& memory);
+        explicit CPU(Memory& memory, common::Config& cfg);
         ~CPU() = default;
 
         void step();

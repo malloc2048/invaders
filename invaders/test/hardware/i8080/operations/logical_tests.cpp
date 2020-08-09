@@ -15,7 +15,7 @@ TEST_F(LogicalTestFixture, ana) {
 
         if((opcode & 0x07u) == 0x06) {
             memory.write(0x2000, value);
-            registers.writeRegister(hardware::HL, 0x2000);
+            registers.writeRegister(common::HL, 0x2000);
         } else {
             registers.writeRegister(opcode & 0x07u, value);
         }
@@ -51,7 +51,7 @@ TEST_F(LogicalTestFixture, xra) {
 
         if((opcode & 0x07u) == 0x06) {
             memory.write(0x2000, value);
-            registers.writeRegister(hardware::HL, 0x2000);
+            registers.writeRegister(common::HL, 0x2000);
         } else {
             registers.writeRegister(opcode & 0x07u, value);
         }
@@ -94,7 +94,7 @@ TEST_F(LogicalTestFixture, ora) {
 
         if((opcode & 0x07u) == 0x06) {
             memory.write(0x2000, value);
-            registers.writeRegister(hardware::HL, 0x2000);
+            registers.writeRegister(common::HL, 0x2000);
         } else {
             registers.writeRegister(opcode & 0x07u, value);
         }
@@ -131,7 +131,7 @@ TEST_F(LogicalTestFixture, cmpEqual) {
 
         if ((opcode & 0x07u) == 0x06) {
             memory.write(0x2000, value);
-            registers.writeRegister(hardware::HL, 0x2000);
+            registers.writeRegister(common::HL, 0x2000);
         } else {
             registers.writeRegister(opcode & 0x07u, value);
         }
@@ -154,7 +154,7 @@ TEST_F(LogicalTestFixture, cmpA_Larger) {
 
         if((opcode & 0x07u) == 0x06) {
             memory.write(0x2000, 0x55);
-            registers.writeRegister(hardware::HL, 0x2000);
+            registers.writeRegister(common::HL, 0x2000);
         } else {
             registers.writeRegister(opcode & 0x07u, 0x55);
         }
@@ -186,7 +186,7 @@ TEST_F(LogicalTestFixture, cmpA_Smaller) {
 
         if((opcode & 0x07u) == 0x06) {
             memory.write(0x2000, 0x55);
-            registers.writeRegister(hardware::HL, 0x2000);
+            registers.writeRegister(common::HL, 0x2000);
         } else {
             registers.writeRegister(opcode & 0x07u, 0x55);
         }

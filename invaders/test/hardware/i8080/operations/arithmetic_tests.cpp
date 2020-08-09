@@ -163,7 +163,7 @@ TEST_F(ArithmeticTestFixture, subtraction) {
         byte value = dist(mt);
         registers.accumulator = 0x01;
         memory.write(0x5000, value);
-        registers.writeRegister(hardware::HL, 0x5000);
+        registers.writeRegister(common::HL, 0x5000);
         registers.writeRegister(opcode & 0x0fu, value);
 
         arithmetic.execute(opcode);
@@ -186,7 +186,7 @@ TEST_F(ArithmeticTestFixture, subtractionWithBorrow) {
         registers.accumulator = 0x01;
         memory.write(0x5000, value);
 
-        registers.writeRegister(hardware::HL, 0x5000);
+        registers.writeRegister(common::HL, 0x5000);
         registers.writeRegister((opcode & 0x0fu) - 8, value);
 
         arithmetic.execute(opcode);
@@ -229,7 +229,7 @@ TEST_F(ArithmeticTestFixture, increment) {
         byte value = dist(mt);
         auto reg = (opcode & 0x38u) >> 0x03u;
 
-        registers.writeRegister(hardware::HL, 0x5000);
+        registers.writeRegister(common::HL, 0x5000);
         memory.write(0x5000, value);
         registers.writeRegister(reg, value);
 
@@ -250,7 +250,7 @@ TEST_F(ArithmeticTestFixture, incrementPair) {
 
     for(auto opcode: opcodes) {
         byte value = dist(mt);
-        auto reg = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+        auto reg = ((opcode & 0x30u) >> 0x04u) + common::BC;
         registers.writeRegister(reg, value);
 
         arithmetic.execute(opcode);
@@ -268,7 +268,7 @@ TEST_F(ArithmeticTestFixture, decrement) {
         byte value = dist(mt);
         auto reg = (opcode & 0x38u) >> 0x03u;
 
-        registers.writeRegister(hardware::HL, 0x5000);
+        registers.writeRegister(common::HL, 0x5000);
         memory.write(0x5000, value);
         registers.writeRegister(reg, value);
 
@@ -289,7 +289,7 @@ TEST_F(ArithmeticTestFixture, decrementPair) {
 
     for(auto opcode: opcodes) {
         byte value = dist(mt);
-        auto reg = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+        auto reg = ((opcode & 0x30u) >> 0x04u) + common::BC;
         registers.writeRegister(reg, value);
 
         arithmetic.execute(opcode);
@@ -305,18 +305,18 @@ TEST_F(ArithmeticTestFixture, dad) {
 
     for(auto opcode: opcodes) {
         byte value = dist(mt);
-        auto reg = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+        auto reg = ((opcode & 0x30u) >> 0x04u) + common::BC;
 
         if(opcode != 0x29)
-            registers.writeRegister(hardware::HL, 0x01);
+            registers.writeRegister(common::HL, 0x01);
 
         registers.writeRegister(reg, value);
         arithmetic.execute(opcode);
 
         if(opcode == 0x29)
-            ASSERT_EQ(word(value + value), registers.readRegister(hardware::HL));
+            ASSERT_EQ(word(value + value), registers.readRegister(common::HL));
         else
-            ASSERT_EQ(word(value + 1), registers.readRegister(hardware::HL));
+            ASSERT_EQ(word(value + 1), registers.readRegister(common::HL));
     }
 }
 

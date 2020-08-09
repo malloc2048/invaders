@@ -27,7 +27,7 @@ void hardware::Branching::execute(byte opcode) {
     } else if((opcode & 0xc7u) == 0xc7u) { // RST
         restart((opcode & 0x038u) >> 3u);
     } else if(opcode == 0xe9u)  // PCHL
-        registers.program_counter = registers.readRegister(HL);
+        registers.program_counter = registers.readRegister(common::HL);
 }
 
 void hardware::Branching::ret() {

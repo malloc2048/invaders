@@ -19,18 +19,18 @@ TEST_F(DataTransferTestFixture, mov) {
         byte dst = (opcode & 0x38u) >> 0x03u;
         registers.writeRegister(src, value);
 
-        if(src == hardware::M) {
-            registers.writeRegister(hardware::HL, 0x2000);
+        if(src == common::M) {
+            registers.writeRegister(common::HL, 0x2000);
             memory.write(0x2000, value);
         }
 
-        if(dst == hardware::M) {
-            registers.writeRegister(hardware::HL, 0x2000);
+        if(dst == common::M) {
+            registers.writeRegister(common::HL, 0x2000);
         }
 
         dataTransfer.execute(opcode);
 
-        if(dst == hardware::M) {
+        if(dst == common::M) {
 
         } else {
             ASSERT_EQ(value, registers.readRegister(dst));
@@ -51,11 +51,11 @@ TEST_F(DataTransferTestFixture, mvi) {
         byte dst = (opcode & 0x38u) >> 0x03u;
 
         if(opcode == 0x36)
-            registers.writeRegister(hardware::HL, 0x2400);
+            registers.writeRegister(common::HL, 0x2400);
         dataTransfer.execute(opcode);
 
         if(opcode == 0x36)
-            ASSERT_EQ(value, memory.read_byte(registers.readRegister(hardware::HL)));
+            ASSERT_EQ(value, memory.read_byte(registers.readRegister(common::HL)));
         else
             ASSERT_EQ(value, registers.readRegister(dst));
     }
@@ -74,7 +74,7 @@ TEST_F(DataTransferTestFixture, lxi) {
         byte rp = (opcode & 0x30u) >> 0x04u;
 
         dataTransfer.execute(opcode);
-        ASSERT_EQ(value, registers.readRegister(rp + hardware::BC));
+        ASSERT_EQ(value, registers.readRegister(rp + common::BC));
     }
 }
 
@@ -152,7 +152,7 @@ TEST_F(DataTransferTestFixture, ldax) {
     std::vector<byte> opcodes = { 0x0a, 0x1a };
     for(auto& opcode : opcodes) {
         byte value = dist(mt);
-        byte rp = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+        byte rp = ((opcode & 0x30u) >> 0x04u) + common::BC;
 
         registers.writeRegister(rp, 0x2000);
         memory.write_word(0x2000, value);
@@ -170,7 +170,7 @@ TEST_F(DataTransferTestFixture, stax) {
     std::vector<byte> opcodes = { 0x02, 0x12 };
     for(auto& opcode : opcodes) {
         byte value = dist(mt);
-        byte rp = ((opcode & 0x30u) >> 0x04u) + hardware::BC;
+        byte rp = ((opcode & 0x30u) >> 0x04u) + common::BC;
 
         registers.accumulator = value;
         registers.writeRegister(rp, 0x2000);
@@ -187,10 +187,10 @@ TEST_F(DataTransferTestFixture, xchg) {
 
     word value = dist(mt);
     word value2 = dist(mt);
-    registers.writeRegister(hardware::DE, value);
-    registers.writeRegister(hardware::HL, value2);
+    registers.writeRegister(common::DE, value);
+    registers.writeRegister(common::HL, value2);
 
     dataTransfer.execute(0xeb);
-    ASSERT_EQ(value, registers.readRegister(hardware::HL));
-    ASSERT_EQ(value2, registers.readRegister(hardware::DE));
+    ASSERT_EQ(value, registers.readRegister(common::HL));
+    ASSERT_EQ(value2, registers.readRegister(common::DE));
 }

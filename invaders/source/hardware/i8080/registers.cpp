@@ -3,29 +3,29 @@
 word hardware::Registers::readRegister(byte reg) const {
     word data = 0;
     switch(reg) {
-        case B:
+        case common::B:
             return b;
-        case C:
+        case common::C:
             return c;
-        case D:
+        case common::D:
             return d;
-        case E:
+        case common::E:
             return e;
-        case H:
+        case common::H:
             return h;
-        case L:
+        case common::L:
             return l;
-        case M:
+        case common::M:
             return 0;
-        case A:
+        case common::A:
             return accumulator;
-        case BC:
+        case common::BC:
             return word((b << 8u) | c);
-        case DE:
+        case common::DE:
             return word((d << 8u) | e);
-        case HL:
+        case common::HL:
             return word((h << 8u) | l);
-        case SP:
+        case common::SP:
             return stack_pointer;
         default:
             return data;
@@ -34,40 +34,40 @@ word hardware::Registers::readRegister(byte reg) const {
 
 void hardware::Registers::writeRegister(byte reg, word data) {
     switch(reg) {
-        case B:
+        case common::B:
             b = data & 0xffu;
             break;
-        case C:
+        case common::C:
             c = data & 0xffu;
             break;
-        case D:
+        case common::D:
             d = data & 0xffu;
             break;
-        case E:
+        case common::E:
             e = data & 0xffu;
             break;
-        case H:
+        case common::H:
             h = data & 0xffu;
             break;
-        case L:
+        case common::L:
             l = data & 0xffu;
             break;
-        case A:
+        case common::A:
             accumulator = data & 0xffu;
             break;
-        case BC:
-            writeRegister(B, data >> 8u);
-            writeRegister(C, data & 0xffu);
+        case common::BC:
+            writeRegister(common::B, data >> 8u);
+            writeRegister(common::C, data & 0xffu);
             break;
-        case DE:
-            writeRegister(D, data >> 8u);
-            writeRegister(E, data & 0xffu);
+        case common::DE:
+            writeRegister(common::D, data >> 8u);
+            writeRegister(common::E, data & 0xffu);
             break;
-        case HL:
-            writeRegister(H, data >> 8u);
-            writeRegister(L, data & 0xffu);
+        case common::HL:
+            writeRegister(common::H, data >> 8u);
+            writeRegister(common::L, data & 0xffu);
             break;
-        case SP:
+        case common::SP:
             stack_pointer = data;
             break;
         default:

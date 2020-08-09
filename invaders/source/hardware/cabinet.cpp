@@ -1,7 +1,7 @@
 
 #include "hardware/cabinet.h"
 
-hardware::Cabinet::Cabinet(): memory(), cpu(memory) {
+hardware::Cabinet::Cabinet(common::Config& cfg): cfg(cfg), memory(), cpu(memory, cfg) {
     cpu.loadInstructionSet();
 }
 
