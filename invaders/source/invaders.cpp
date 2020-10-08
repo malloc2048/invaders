@@ -65,22 +65,6 @@ bool Invaders::hardwareInit() {
     return true;
 }
 
-void Invaders::mainLoop() {
-    // poll for events
-    pollEvents();
-
-    // update the game for each frame (every 1/60 second)
-    if(SDL_GetTicks() - timer > (1.0f / hardware::FPS()) * 1000) {
-        timer = SDL_GetTicks();
-        gameUpdate();
-        gpuUpdate();
-    }
-
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, texture, nullptr, nullptr);
-    SDL_RenderPresent(renderer);
-}
-
 void Invaders::pollEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -102,11 +86,19 @@ void Invaders::pollEvents() {
 }
 
 void Invaders::run() {
-    // game loop
-
     timer = SDL_GetTicks();
     while(!shouldQuit) {
-        mainLoop();
+        pollEvents();
+
+        if(SDL_GetTicks() - timer > (1.0f / hardware::FPS()) * 1000) {
+            timer = SDL_GetTicks();
+            gameUpdate();
+            gpuUpdate();
+        }
+
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, texture, nullptr, nullptr);
+        SDL_RenderPresent(renderer);
     }
 }
 

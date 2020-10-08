@@ -5,7 +5,6 @@
 
 #include <SDL2/SDL.h>
 #include <hardware/cabinet.h>
-#include "hardware/i8080/cpu.h"
 
 class Invaders {
 public:
@@ -16,7 +15,6 @@ public:
     void load_rom(std::ifstream &rom_file);
 
 protected:
-    void mainLoop();
     void gpuUpdate();
     bool windowInit();
     void pollEvents();

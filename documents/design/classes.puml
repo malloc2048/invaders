@@ -1,0 +1,29 @@
+@startuml
+class CPU
+class Flags
+class Memory
+class Logical
+class Machine
+class Cabinet
+class Invaders
+class Registers
+class Branching
+class Operation
+class Arithmetic
+class DataTransfer
+
+CPU --up> Flags
+CPU --down> Memory
+CPU -right-> Registers
+CPU -down-> Operation
+
+Logical --|> Operation
+Machine --|> Operation
+Branching -left-|> Operation
+Arithmetic -right-|> Operation
+DataTransfer -up-|> Operation
+
+Cabinet -> CPU
+Invaders --> Cabinet
+
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+
+Flags --* CPU
+Memory --* CPU
+Registers --* CPU
+
+class CPU {
+    +CPU(Memory& memory)
+    +~CPU()
+
+    +void step()
+    +void readCfg()
+    +void loadInstructionSet()
+    +void makeInstruction(const std::vector<std::string>& tokens)
+
+    +byte nextByte()
+}
+@enduml

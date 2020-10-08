@@ -1,0 +1,23 @@
+@startuml
+loop while cycles <= CYCLES_PER_FRAME
+    Invaders -> Memory:read_byte(program_counter)
+    Invaders -> CPU:step()
+
+    alt opcode == 0xdb
+        Invaders -> Invaders:handleIn()
+    else if opcode == 0xd3
+        Invaders -> Invaders:handleOut()
+    end
+
+    alt if cycle >= HALF_CYCLES_PER_FRAME
+        Invaders -> Cabinet:interrupt(cabinet.nextInterrupt)
+        Invaders -> Cabinet:setCycleCount(cycle - HALF_CYCLES_PER_FRAME)
+
+        alt if Cabinet.nextInterrupt == 0x08 ? 0x10 : 0x08
+            Invaders -> Cabinet:nextInterrupt(0x10)
+        else if nextInterrupt == 0x10
+            Invaders -> Cabinet:nextInterrupt(0x08)
+        end
+    end
+end
+@enduml

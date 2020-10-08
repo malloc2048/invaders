@@ -1,0 +1,30 @@
+@startuml
+
+main -> Invaders:Invaders()
+Invaders -> SDL:Init(SDL_INIT_VIDEO)
+Invaders -> SDL:CreateWindow()
+Invaders -> SDL:CreateRenderer()
+Invaders -> SDL:CreateTexture()
+Invaders -> Invaders:hardwareInit()
+Invaders -> Invaders:updateScreen()
+
+main -> Invaders:load_rom(rom_file)
+main -> Invaders:run()
+loop while shouldQuit == false
+    Invaders -> Invaders:pollEvents()
+    alt if frame timer elapsed
+        Invaders -> SDL:GetTicks
+        Invaders -> Invaders:gameUpdate()
+        Invaders -> Invaders:gpuUpdate()
+    end
+    Invaders -> SDL:RenderClear(renderer)
+    Invaders -> SDL:RenderCopy(renderer, texture, nullptr, nullptr)
+    Invaders -> SDL:RenderPresent(renderer)
+end
+
+main -> Invaders:~Invaders()
+Invaders -> SDL:DestroyTexture(texture)
+Invaders -> SDL:DestroyRenderer(renderer)
+Invaders -> SDL:DestroyWindow(window)
+Invaders -> SDL:Quit()
+@enduml

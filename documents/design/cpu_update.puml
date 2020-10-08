@@ -1,0 +1,7 @@
+@startuml
+Invaders -> CPU:step()
+CPU -> CPU:nextByte()
+alt if instructions.find(opcode)
+    CPU -> Operation:execute(opcode)
+end
+@enduml
